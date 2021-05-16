@@ -1,39 +1,33 @@
 package co.edu.icesi.controller;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-
 import co.edu.icesi.model.Userr;
 
 @Controller
-public class LoginController {
+public class LoginController implements LoginControllerI {
+	@Override
 	@GetMapping("/login")
 	public String customLogin(Model model) {
 		model.addAttribute("user", new Userr());
 		return "custom-login";
 	}
 	
-	@PostMapping("/login")
-	public String login(@Validated @ModelAttribute("user") Userr user, BindingResult bindingResult, Model model) {
-		if(bindingResult.hasErrors()) {
-			return "login?error=true";
-		}
-		return "index";
-	}
-	
+	@Override
 	@GetMapping("/")
 	public String index() {
 		return "index";
 	}
 	
+	@Override
 	@GetMapping("/access-denied")
-	public String accessDeniedPage() {
-		System.out.println("asdasda");
+	public String accessDeniedPage(@Param(value = "url") String url, Model model) {
+		if(url == null) {
+			url = "/";
+		}
+		model.addAttribute("url", url);
 		return "denied";
 	}
 }

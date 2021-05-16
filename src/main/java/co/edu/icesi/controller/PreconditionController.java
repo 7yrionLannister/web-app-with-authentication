@@ -22,7 +22,7 @@ import co.edu.icesi.service.PreconditionService;
 
 @Controller
 @RequestMapping("pres")
-public class PreconditionController {
+public class PreconditionController implements PreconditionControllerI {
 
 	private PreconditionService preconditionService;
 	private PreconditionRepositoryI preconditionRepository;
@@ -43,6 +43,7 @@ public class PreconditionController {
 		logicalOperands.add("NAND");
 	}
 
+	@Override
 	@GetMapping
 	public String index(@RequestParam(required = false, value = "id") Long id, 
 			@RequestParam(required = false, value = "autotransition") Autotransition autotransition, 
@@ -59,6 +60,7 @@ public class PreconditionController {
 		return "pres/index";
 	}
 
+	@Override
 	@GetMapping("/add")
 	public String addPreconditionForm(Model model, @ModelAttribute("pre") Precondition pre) {
 		model.addAttribute("auts", autotransitionService.findAll());
@@ -66,6 +68,7 @@ public class PreconditionController {
 		return "pres/add-pre";
 	}
 
+	@Override
 	@PostMapping("/add")
 	public String savePrecondition(@ModelAttribute("pre") @Validated Precondition pre, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action) {
 		if (!action.equals("Cancel")) {
@@ -80,6 +83,7 @@ public class PreconditionController {
 		return "redirect:/pres/";
 	}
 
+	@Override
 	@GetMapping("/del/{id}")
 	public String deletePrecondition(@PathVariable("id") long id, Model model) {
 		Precondition pre = preconditionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid pre Id:" + id));
@@ -87,6 +91,7 @@ public class PreconditionController {
 		return "redirect:/pres/";
 	}
 
+	@Override
 	@GetMapping("/edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
 		Precondition pre = preconditionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid pre Id:" + id));
@@ -96,6 +101,7 @@ public class PreconditionController {
 		return "pres/update-pre";
 	}
 
+	@Override
 	@PostMapping("/edit/{id}")
 	public String updatePrecondition(@PathVariable("id") long id, @RequestParam(value = "action", required = true) String action,
 			@ModelAttribute("pre") @Validated Precondition pre, BindingResult bindingResult, Model model) {

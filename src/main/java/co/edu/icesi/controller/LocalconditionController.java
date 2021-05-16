@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import co.edu.icesi.model.Localcondition;
 import co.edu.icesi.model.Precondition;
+import co.edu.icesi.model.Threshold;
 import co.edu.icesi.repository.LocalconditionRepositoryI;
 import co.edu.icesi.service.LocalconditionService;
 import co.edu.icesi.service.PreconditionService;
@@ -23,7 +24,7 @@ import co.edu.icesi.service.ThresholdService;
 
 @Controller
 @RequestMapping("locs")
-public class LocalconditionController {
+public class LocalconditionController implements LocalconditionControllerI {
 
 	private LocalconditionService localconditionService;
 	private LocalconditionRepositoryI localconditionRepository;
@@ -44,17 +45,23 @@ public class LocalconditionController {
 		operators.add("<=");
 		operators.add("<>");
 	}
-
+	
+	@Override
 	@GetMapping
-	public String index(@RequestParam(required = false, value = "precondition") Precondition precondition, Model model) {
-		if(precondition == null) {
-			model.addAttribute("locs", localconditionService.findAll());
-		} else {
+	public String index(@RequestParam(required = false, value = "threshold") Threshold threshold,
+			@RequestParam(required = false, value = "precondition") Precondition precondition,
+			Model model) {
+		if(threshold != null) {
+			model.addAttribute("locs", localconditionRepository.findAllByThreshold(threshold));
+		} else if(precondition != null) {
 			model.addAttribute("locs", localconditionRepository.findAllByPrecondition(precondition));
+		} else {
+			model.addAttribute("locs", localconditionService.findAll());
 		}
 		return "locs/index";
 	}
 
+	@Override
 	@GetMapping("/add")
 	public String addLocalconditionForm(Model model, @ModelAttribute("loc") Localcondition loc) {
 		model.addAttribute("pres", preconditionService.findAll());
@@ -63,6 +70,7 @@ public class LocalconditionController {
 		return "locs/add-loc";
 	}
 
+	@Override
 	@PostMapping("/add")
 	public String saveLocalcondition(@ModelAttribute("loc") @Validated Localcondition loc, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action) {
 		if (!action.equals("Cancel")) {
@@ -78,6 +86,7 @@ public class LocalconditionController {
 		return "redirect:/locs/";
 	}
 
+	@Override
 	@GetMapping("/del/{id}")
 	public String deleteLocalcondition(@PathVariable("id") long id, Model model) {
 		Localcondition loc = localconditionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid loc Id:" + id));
@@ -85,6 +94,7 @@ public class LocalconditionController {
 		return "redirect:/locs/";
 	}
 
+	@Override
 	@GetMapping("/edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
 		Localcondition loc = localconditionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid loc Id:" + id));
@@ -95,6 +105,7 @@ public class LocalconditionController {
 		return "locs/update-loc";
 	}
 
+	@Override
 	@PostMapping("/edit/{id}")
 	public String updateLocalcondition(@PathVariable("id") long id, @RequestParam(value = "action", required = true) String action,
 			@Validated Localcondition loc, BindingResult bindingResult, Model model) {

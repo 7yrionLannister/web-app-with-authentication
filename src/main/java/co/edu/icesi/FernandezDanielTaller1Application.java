@@ -24,6 +24,7 @@ import co.edu.icesi.service.UserrService;
 @ComponentScan(basePackages = {"co.edu.icesi"})
 //@EnableAutoConfiguration(exclude= {DataSourceAutoConfiguration.class})
 public class FernandezDanielTaller1Application {
+	
 	private static InstitutionService is;
 	private static long i1;
 	private static long i2;
@@ -61,7 +62,6 @@ public class FernandezDanielTaller1Application {
 		Institution inst = new Institution();
 		inst.setInstName("inst1");
 		inst.setInstAcademicserverurl("inst1.edu.co");
-		inst.setInstAcadextradataurl("isnt1extra.edu.co");
 		inst.setInstAcadloginurl("banner.inst1.edu.co");
 		inst.setInstAcadloginusername("username1");
 		inst.setInstAcadloginpassword("password1");
@@ -136,14 +136,12 @@ public class FernandezDanielTaller1Application {
 	
 	public static void addDummyLocalconditions(ConfigurableApplicationContext context) {
 		Localcondition lc = new Localcondition();
-		// TODO set the attributes
 		lc.setPrecondition(ps.findById(p1).get());
 		lc.setThreshold(ts.findById(t1).get());
 		lc.setLoconOperator("<");
 		lc.setLoconValuetype("lcvt1");
 		ls.save(lc);
 		lc = new Localcondition();
-		// TODO set the attributes
 		lc.setPrecondition(ps.findById(p2).get());
 		lc.setThreshold(ts.findById(t2).get());
 		lc.setLoconOperator(">");

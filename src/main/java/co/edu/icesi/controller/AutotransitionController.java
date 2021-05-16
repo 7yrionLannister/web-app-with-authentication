@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/auts")
-public class AutotransitionController {
+public class AutotransitionController implements AutotransitionControllerI {
 
 	private AutotransitionService autService;
 	private AutotransitionRepositoryI autotransitionRepository;
@@ -38,6 +38,7 @@ public class AutotransitionController {
 		logicalOperands.add("NAND");
 	}
 
+	@Override
 	@GetMapping("/add")
 	public String addAutotransition(Model model, @ModelAttribute("aut") Autotransition aut) {
 		model.addAttribute("logicalOperands", logicalOperands);
@@ -45,6 +46,7 @@ public class AutotransitionController {
 		return "/auts/add-aut";
 	}
 
+	@Override
 	@GetMapping("/del/{id}")
 	public String deleteAutotransition(@PathVariable("id") long id, Model model) {
 		Autotransition aut = autService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid aut Id:" + id));
@@ -52,6 +54,7 @@ public class AutotransitionController {
 		return "redirect:/auts/";
 	}
 
+	@Override
 	@GetMapping
 	public String indexAutotransition(@RequestParam(required = false, value = "institution") Institution institution, 
 			@RequestParam(required = false, value = "id") Long id,
@@ -68,6 +71,7 @@ public class AutotransitionController {
 		return "/auts/index";
 	}
 
+	@Override
 	@PostMapping("/add")
 	public String saveAutotransition1(@ModelAttribute("aut") @Validated Autotransition aut, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action) {
 		if (!action.equals("Cancel")) {
@@ -82,6 +86,7 @@ public class AutotransitionController {
 		return "redirect:/auts/";
 	}
 
+	@Override
 	@GetMapping("/edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
 		Autotransition aut = autService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid aut Id:" + id));
@@ -92,6 +97,7 @@ public class AutotransitionController {
 		return "/auts/update-aut";
 	}
 
+	@Override
 	@PostMapping("/edit/{id}")
 	public String updateAutotransition(@PathVariable("id") long id, @RequestParam(value = "action", required = true) String action,
 			@ModelAttribute("aut") @Validated Autotransition aut, BindingResult bindingResult, Model model) {

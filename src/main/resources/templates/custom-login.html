@@ -12,9 +12,10 @@
 	integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
 	crossorigin="anonymous" />
 </head>
-<body>
-	<form class="container my-5" th:action="@{/login}" method="post" authentication-failure-url="/login?error=true">
-		<h2>Please enter your login details</h2>
+<body style="display: flex;
+  flex-wrap: wrap;">
+	<form class="container my-5" th:action="@{/login}" method="post" authentication-failure-url="/login?error=true" style="width: 30vw">
+		<h2 style="text-align: center">Please enter your login details</h2>
 		<span th:if="${param.error}" class="text-danger">
             Invalid credentials!
         </span>

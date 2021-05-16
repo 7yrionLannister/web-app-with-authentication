@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("users")
-public class UserrController {
+public class UserrController implements UserrControllerI {
 
     private UserrService userService;
     private UserRepositoryI userRepository;
@@ -30,6 +30,7 @@ public class UserrController {
         this.userRepository = userRepository;
     }
     
+    @Override
     @GetMapping("/add")
     public String addUser(Model model) {
     	model.addAttribute("user", new Userr());
@@ -38,6 +39,7 @@ public class UserrController {
         return "users/add-user";
     }
 
+    @Override
     @GetMapping("/del/{id}")
     public String deleteUser(@PathVariable("id") long id, Model model) {
         Userr user = userService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
@@ -45,6 +47,7 @@ public class UserrController {
         return "redirect:/users/";
     }
 
+    @Override
     @GetMapping
     public String indexUser(@RequestParam(required = false, value = "institution") Institution institution, Model model) {
     	if(institution == null) {
@@ -55,6 +58,7 @@ public class UserrController {
         return "users/index";
     }
 
+    @Override
     @PostMapping("/add")
     public String saveUser(@ModelAttribute("user") @Validated Userr user, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action) {
         if (!action.equals("Cancel")) {
@@ -73,6 +77,7 @@ public class UserrController {
         return "redirect:/users/";
     }
     
+    @Override
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
         Userr user = userService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
@@ -82,6 +87,7 @@ public class UserrController {
         return "users/update-user";
     }
     
+    @Override
     @PostMapping("/edit/{id}")
     public String updateUser(@PathVariable("id") long id, @RequestParam(value = "action", required = true) String action,
                              @ModelAttribute("user") @Validated Userr user, BindingResult bindingResult, Model model) {

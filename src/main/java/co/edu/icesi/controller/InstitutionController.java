@@ -19,7 +19,7 @@ import co.edu.icesi.service.InstitutionService;
 
 @Controller
 @RequestMapping("insts")
-public class InstitutionController {
+public class InstitutionController implements InstitutionControllerI {
 
 	private InstitutionService institutionService;
 	private InstitutionRepositoryI institutionRepository;
@@ -30,6 +30,7 @@ public class InstitutionController {
 		this.institutionRepository = institutionRepository;
 	}
 
+	@Override
 	@GetMapping
 	public String index(@RequestParam(required = false, value = "id") Long id, Model model) {
 		if(id == null) {
@@ -42,12 +43,14 @@ public class InstitutionController {
 		return "insts/index";
 	}
 
+	@Override
 	@GetMapping("/add")
 	public String addInstitutionForm(Model model) {
 		model.addAttribute("inst", new Institution());
 		return "insts/add-inst";
 	}
 
+	@Override
 	@PostMapping("/add")
 	public String saveInstitution(@ModelAttribute("inst") @Validated Institution inst, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action) {
 		if (!action.equals("Cancel")) {
@@ -60,6 +63,7 @@ public class InstitutionController {
 		return "redirect:/insts/";
 	}
 
+	@Override
 	@GetMapping("/del/{id}")
 	public String deleteInstitution(@PathVariable("id") long id, Model model) {
 		Institution inst = institutionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid inst Id:" + id));
@@ -67,6 +71,7 @@ public class InstitutionController {
 		return "redirect:/insts/";
 	}
 
+	@Override
 	@GetMapping("/edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
 		Institution inst = institutionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid inst Id:" + id));
@@ -74,6 +79,7 @@ public class InstitutionController {
 		return "insts/update-inst";
 	}
 
+	@Override
 	@PostMapping("/edit/{id}")
 	public String updateInstitution(@PathVariable("id") long id, @RequestParam(value = "action", required = true) String action,
 			@ModelAttribute("inst") @Validated Institution inst, BindingResult bindingResult, Model model) {

@@ -16,7 +16,8 @@
 	crossorigin="anonymous">
   <title>Document</title>
 </head>
-<body style="background: #FAFAFA;margin:0;padding: 0;height: 400px;width: 800px;display: flex;flex-direction: column;justify-content: center;text-align: center;" class="my-5 ml-5">
+<body style="background: #ccebff;margin:0;padding: 0;display: flex;flex-direction: column;justify-content: center;text-align: center;flex-wrap: wrap;">
+<div style="width: 70pw">
   <use>
   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve" style="margin:0;padding: 0;width: 20%;fill: #f95959;margin: 100px 40%;text-align: left;transform: translate(-50%, -50%);transform: rotate(0);transform-origin: 80% 30%;animation: wiggle .2s infinite;">
 <metadata> Svg Vector Icons : http://www.onlinewebfonts.com/height: 400px;width: 800px;display: flex;flex-direction: column;justify-content: center;text-align: center;icon </metadata>
@@ -26,8 +27,9 @@
 </use>
 <h1 style="margin:0;padding: 0;">403</h1>
 <h2 style="margin:0;padding: 0;">Not this time, access forbidden!</h2>
-<h3>Go home, log out and try to access with a user with different role 🚶</h3>
+<h5>You were trying to access <span class="text-success" th:text="${url}"></span>, copy the URI and try to go there when you have changed your role</h5>
 <p><a href="/"><i class="fas fa-home ml-2"></i> Home</a></p>
 <p><a href="/logout"><i class="fas fa-sign-out-alt ml-2"></i> Log out</a></p>
+</div>
 </body>
 </html>

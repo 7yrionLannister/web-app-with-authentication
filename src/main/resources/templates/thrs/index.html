@@ -37,6 +37,7 @@
 								<th>Value</th>
 								<th>Value Type</th>
 								<th>Institution</th>
+								<th>Local conditions</th>
 								<th>Edit</th>
 								<th>Delete</th>
 							</tr>
@@ -49,6 +50,7 @@
 								<td th:text="${thr.thresValuetype}"></td>
 								<!-- <td th:text="${thr.instInstId}"></td> -->
 								<td><a th:text="${thr.institution.instName}" th:href="@{/insts?id={id}(id=${thr.institution.instId})}"></a></td>
+								<td><a th:href="@{/locs?threshold={id}(id=${thr.thresId})}">Go to local conditions</a></td>
 								<td><a th:href="@{/thrs/edit/{id}(id=${thr.thresId})}"
 									class="btn btn-primary"> <i class="fas fa-edit"></i>
 								</a></td>

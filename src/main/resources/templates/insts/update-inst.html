@@ -29,21 +29,23 @@
   <label for="instName">Name: </label>
   <input type="text" name="instName" id="instName" class="form-control" th:value="${inst.instName}" />
   <span th:if="${#fields.hasErrors('instName')}" th:errors="*{instName}" class="text-danger"></span>
+  <br>
   <label for="instAcademicserverurl">Server URL: </label>
   <input type="text" name="instAcademicserverurl" id="instAcademicserverurl" class="form-control" th:value="${inst.instAcademicserverurl}" />
   <span th:if="${#fields.hasErrors('instAcademicserverurl')}" th:errors="*{instAcademicserverurl}" class="text-danger"></span>
-  <label for="instAcadextradataurl">Extra data URL: </label>
-  <input type="text" name="instAcadextradataurl" id="instAcadextradataurl" class="form-control" th:value="${inst.instAcadextradataurl}" />
-  <span th:if="${#fields.hasErrors('instAcadextradataurl')}" th:errors="*{instAcadextradataurl}" class="text-danger"></span>
+  <br>
   <label for="instAcadloginurl">Login URL: </label>
   <input type="text" name="instAcadloginurl" id="instAcadloginurl" class="form-control" th:value="${inst.instAcadloginurl}" />
   <span th:if="${#fields.hasErrors('instAcadloginurl')}" th:errors="*{instAcadloginurl}" class="text-danger"></span>
+  <br>
   <label for="instAcadloginusername">Login username: </label>
   <input type="text" name="instAcadloginusername" id="instAcadloginusername" class="form-control" th:value="${inst.instAcadloginusername}" />
   <span th:if="${#fields.hasErrors('instAcadloginusername')}" th:errors="*{instAcadloginusername}" class="text-danger"></span>
+  <br>
   <label for="instAcadloginpassword">Login password: </label>
   <input type="password" name="instAcadloginpassword" id="instAcadloginpassword" class="form-control" th:value="${inst.instAcadloginpassword}" />
   <span th:if="${#fields.hasErrors('instAcadloginpassword')}" th:errors="*{instAcadloginpassword}" class="text-danger"></span>
+  <br>
   <label for="instAcadprogrammedcoursesurl">Programmed courses URL: </label>
   <input type="text" name="instAcadprogrammedcoursesurl" id="instAcadprogrammedcoursesurl" class="form-control" th:value="${inst.instAcadprogrammedcoursesurl}" />
   <span th:if="${#fields.hasErrors('instAcadprogrammedcoursesurl')}" th:errors="*{instAcadprogrammedcoursesurl}" class="text-danger"></span>
