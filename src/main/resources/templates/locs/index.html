@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Local conditions</title>
+<link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous"
+/>
+<link
+        rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+        integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+        crossorigin="anonymous"
+/>
+<link rel="stylesheet" href="../css/shards.min.css" />
+</head>
+<body>
+	<div class="container my-5">
+		<div class="row">
+			<div class="col-md-10">
+				<div>
+					<h2 class="my-5">Local conditions</h2>
+					<h3 class="alert alert-primary"
+						th:if="${locs.iterator().hasNext() == false}">
+						There are not local conditions
+					</h3>
+					<table class="table table-striped table-responsive-md">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Threshold</th>
+								<th>Operator</th>
+								<th>Value Type</th>
+								<th>Precondition</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="loc : ${locs}" th:value="${loc}">
+								<td th:text="${loc.loconId}"></td>
+								<td th:text="${loc.threshold.thresName}"></td>
+								<td th:text="${loc.loconOperator}"></td>
+								<td th:text="${loc.loconValuetype}"></td>
+								<td><a th:text="${loc.precondition.preconId}" th:href="@{/pres?id={id}(id=${loc.precondition.preconId})}"></a></td>
+								<td><a th:href="@{/locs/edit/{id}(id=${loc.loconId})}"
+									class="btn btn-primary"> <i class="fas fa-edit"></i>
+								</a></td>
+								<td><a th:href="@{/locs/del/{id}(id=${loc.loconId})}"
+									class="btn btn-primary"> <i class="fas fa-times"></i>
+								</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p class="my-5"><a href="/users/add"><i class="fas fa-user-plus ml-2 btn btn-primary"></i> <label>Add User</label></a></p>
+				<p class="my-5"><a href="/auts/add"><i class="fas fa-plus ml-2 btn btn-primary"></i> <label>Add Autotransition</label></a></p>
+				<p class="my-5"><a href="/insts/add"><i class="fas fa-university ml-2 btn btn-primary"></i> <label>Add Institution</label></a></p>
+				<p class="my-5"><a href="/locs/add"><i class="fas fa-arrows-alt-h ml-2 btn btn-primary"></i> <label>Add Local condition</label></a></p>
+				<p class="my-5"><a href="/pres/add"><i class="fas fa-check ml-2 btn btn-primary"></i> <label>Add Precondition</label></a></p>
+				<p class="my-5"><a href="/thrs/add"><i class="fas fa-question ml-2 btn btn-primary"></i> <label>Add Threshold</label></a></p>
+			</div>
+		</div>
+		<a href="/"><i class="fas fa-home ml-2"></i> Go back to main</a>
+	</div>
+</body>
+</html>
