@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>co.edu.icesi</groupId>
-	<artifactId>fernandez-daniel-taller2</artifactId>
+	<artifactId>fernandez-daniel-taller3</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>fernandez-daniel-taller2</name>
+	<name>fernandez-daniel-taller3</name>
 	<description>Taller 2 Computacion en Internet</description>
 	<properties>
 		<java.version>11</java.version>
