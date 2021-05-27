@@ -5,21 +5,26 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import co.edu.icesi.model.Precondition;
-import co.edu.icesi.repository.PreconditionRepositoryI;
+//import co.edu.icesi.repository.PreconditionRepositoryI;
+import co.edu.icesi.daos.PreconditionDao;
 
 @Service
 public class PreconditionService implements PreconditionServiceI {
 
 
-	private PreconditionRepositoryI preconditionRepository;
+	//private PreconditionRepositoryI preconditionRepository; // Workshop2
+	private PreconditionDao preconditionDao; // Workshop3
 	
-	public PreconditionService(PreconditionRepositoryI preconditionRepository) {
-		this.preconditionRepository = preconditionRepository;
+	//public PreconditionService(PreconditionRepositoryI preconditionRepository) { // Workshop2
+	public PreconditionService(PreconditionDao preconditionDao) { // Workshop3
+		//this.preconditionRepository = preconditionRepository; // Workshop2
+		this.preconditionDao = preconditionDao; // Workshop3
 	}
 	
 	@Override
 	public <S extends Precondition> S save(S preotransition) {
-		preconditionRepository.save(preotransition);
+		//preconditionRepository.save(preotransition); // Workshop2
+		preconditionDao.save(preotransition); // Workshop3
 		return preotransition;
 	}
 
@@ -34,62 +39,70 @@ public class PreconditionService implements PreconditionServiceI {
 	
 	@Override
 	public Optional<Precondition> findById(Long id) {
-		return preconditionRepository.findById(id);
+		//return preconditionRepository.findById(id); // Workshop2
+		return preconditionDao.get(id); // Workshop3
 	}
 
 	
 	@Override
 	public boolean existsById(Long id) {
-		return preconditionRepository.existsById(id);
+		//return preconditionRepository.existsById(id); // Workshop2
+		return findById(id).isPresent(); // Workshop3
 	}
 
 	@Override
 	public Iterable<Precondition> findAll() {
-		return preconditionRepository.findAll();
+		//return preconditionRepository.findAll(); // Workshop2
+		return preconditionDao.getAll(); // Workshop3
 	}
 
 	
 	@Override
 	public Iterable<Precondition> findAllById(Iterable<Long> ids) {
-		return preconditionRepository.findAllById(ids);
+		//return preconditionRepository.findAllById(ids); // Workshop2
+		return null; // Workshop3
 	}
 
 	
 	@Override
 	public long count() {
-		return preconditionRepository.count();
+		//return preconditionRepository.count(); // Workshop2
+		return preconditionDao.getAll().size(); // Workshop3
 	}
 
 	
 	@Override
 	public void deleteById(Long id) {
-		preconditionRepository.deleteById(id);
+		//preconditionRepository.deleteById(id); //Workshop2
+		preconditionDao.delete(preconditionDao.get(id).orElse(null)); //Workshop3
 	}
 
 	
 	@Override
 	public void delete(Precondition preotransition) {
-		preconditionRepository.delete(preotransition);
+		//preconditionRepository.delete(preotransition); // Workshop2
+		preconditionDao.delete(preotransition); // Workshop3
 	}
 
 	
 	@Override
 	public void deleteAll(Iterable<? extends Precondition> pres) {
-		preconditionRepository.deleteAll(pres);
+		//preconditionRepository.deleteAll(pres); //Workshop2
+		//Workshop3
+		for(Precondition p : pres) {
+			preconditionDao.delete(p);
+		}
 	}
 
 	@Override
 	public void deleteAll() {
-		preconditionRepository.deleteAll();
+		//preconditionRepository.deleteAll(); // Workshop2
+		// Workshop3
+		deleteAll(preconditionDao.getAll());
 	}
 
 	@Override
-	public void editPrecondition(long id, String logicalOperand) {
-		if(!logicalOperand.equals("AND") && !logicalOperand.equals("OR")) {
-			throw new IllegalArgumentException("One of the arguments is not valid");
-		}
-		Precondition pre = findById(id).get();
-		pre.setPreconLogicaloperand(logicalOperand);
-		save(pre); // Agrego esto porque sino en las pruebas de integracion el cambio no se hace y es raro, SPRING ES RARO
+	public void editPrecondition(Precondition p) {
+		preconditionDao.update(p);
 	}
 }

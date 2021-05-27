@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.TransactionSystemException;
 
 import co.edu.icesi.FernandezDanielTaller1Application;
 import co.edu.icesi.model.Autotransition;
@@ -133,11 +134,17 @@ public class FernandezDanielTaller1ApplicationIntegrationTests {
 	@Order(2)
 	public void editAutotransitionTest() {
 		String aStringToTest = "AStringToTest";
-		assertThrows(IllegalArgumentException.class, () -> autotransitionService.editAutotransition(0, aStringToTest, aStringToTest, aStringToTest));
+		autotransitionId.setAutotranName(aStringToTest);
+		autotransitionId.setAutotranIsactive(null);
+		autotransitionId.setAutotranLogicaloperand("");
+		assertThrows(TransactionSystemException.class, () -> autotransitionService.editAutotransition(autotransitionId));
 		
 		String logicalOperator = "OR";
 		String isActive = "N";
-		autotransitionService.editAutotransition(autotransitionId.getAutotranId(), isActive, logicalOperator, aStringToTest);
+		autotransitionId.setAutotranIsactive("N");
+		autotransitionId.setAutotranName(aStringToTest);
+		autotransitionId.setAutotranLogicaloperand(logicalOperator);
+		autotransitionService.editAutotransition(autotransitionId);
 		Autotransition aut = autotransitionService.findById(autotransitionId.getAutotranId()).get();
 		assertEquals(isActive, aut.getAutotranIsactive());
 		assertEquals(logicalOperator, aut.getAutotranLogicaloperand());
@@ -176,11 +183,12 @@ public class FernandezDanielTaller1ApplicationIntegrationTests {
 	@Test
 	@Order(4)
 	public void editPreconditionTest() {
-		String aStringToTest = "AStringToTest";
-		assertThrows(IllegalArgumentException.class, () -> preconditionService.editPrecondition(0, aStringToTest));
+		preconditionId.setPreconLogicaloperand("");
+		assertThrows(TransactionSystemException.class, () -> preconditionService.editPrecondition(preconditionId));
 		
 		String logicalOperand = "OR";
-		preconditionService.editPrecondition(preconditionId.getPreconId(), logicalOperand);
+		preconditionId.setPreconLogicaloperand(logicalOperand);
+		preconditionService.editPrecondition(preconditionId);
 		Precondition pre = preconditionService.findById(preconditionId.getPreconId()).get();
 		
 		assertEquals(logicalOperand, pre.getPreconLogicaloperand());
@@ -224,9 +232,14 @@ public class FernandezDanielTaller1ApplicationIntegrationTests {
 	@Order(6)
 	public void editThresholdTest() {
 		String aStringToTest = "AStringToTest";
-		assertThrows(IllegalArgumentException.class, () -> thresholdService.editThreshold(0, "", "", aStringToTest));
-		
-		thresholdService.editThreshold(thresholdId.getThresId(), aStringToTest, aStringToTest, aStringToTest);
+		thresholdId.setThresName(aStringToTest);
+		thresholdId.setThresValue("");
+		thresholdId.setThresValue("");
+		assertThrows(TransactionSystemException.class, () -> thresholdService.editThreshold(thresholdId));
+		thresholdId.setThresName(aStringToTest);
+		thresholdId.setThresValue(aStringToTest);
+		thresholdId.setThresValuetype(aStringToTest);
+		thresholdService.editThreshold(thresholdId);
 		Threshold th = thresholdService.findById(thresholdId.getThresId()).get();
 		assertEquals(aStringToTest, th.getThresName());
 		assertEquals(aStringToTest, th.getThresValue());
@@ -280,10 +293,27 @@ public class FernandezDanielTaller1ApplicationIntegrationTests {
 		String aStringToTest = "AStringToTest";
 		Precondition pre = preconditionService.findById(preconditionId.getPreconId()).get();
 		Threshold th = thresholdService.findById(thresholdId.getThresId()).get();
-		assertThrows(IllegalArgumentException.class, () -> localconditionService.editLocalcondition(localconditionId.getLoconId(), aStringToTest, aStringToTest, aStringToTest, aStringToTest, aStringToTest, aStringToTest, pre, th));
+		
+		localconditionId.setLoconColumnname(aStringToTest);
+		localconditionId.setLoconQuerystring(""); // illegal
+		localconditionId.setLoconKeycolumn(aStringToTest);
+		localconditionId.setLoconOperator(""); // illegal
+		localconditionId.setLoconValuetype(aStringToTest);
+		localconditionId.setPrecondition(pre);
+		localconditionId.setThreshold(th);
+		localconditionId.setLoconTablename(aStringToTest);
+		assertThrows(TransactionSystemException.class, () -> localconditionService.editLocalcondition(localconditionId));
 		
 		String operator = ">=";
-		localconditionService.editLocalcondition(localconditionId.getLoconId(), aStringToTest, aStringToTest, operator, aStringToTest, aStringToTest, aStringToTest, pre, th);
+		localconditionId.setLoconColumnname(aStringToTest);
+		localconditionId.setLoconQuerystring(aStringToTest);
+		localconditionId.setLoconKeycolumn(aStringToTest);
+		localconditionId.setLoconOperator(operator);
+		localconditionId.setLoconValuetype(aStringToTest);
+		localconditionId.setPrecondition(pre);
+		localconditionId.setThreshold(th);
+		localconditionId.setLoconTablename(aStringToTest);
+		localconditionService.editLocalcondition(localconditionId);
 		
 		Localcondition loc = localconditionService.findById(localconditionId.getLoconId()).get();
 		assertEquals(aStringToTest, loc.getLoconColumnname());

@@ -41,9 +41,9 @@
 						<tbody>
 							<tr th:each="aut : ${auts}" th:value="${aut}">
 								<td th:text="${aut.autotranId}"></td>
-								<td th:text="${aut.autotranIsactive}"></td>
+								<td><a th:text="${aut.autotranIsactive}" th:href="@{/auts?active='{active}'(active=${aut.autotranIsactive})}"></a></td>
 								<td th:text="${aut.autotranLogicaloperand}"></td>
-								<td th:text="${aut.autotranName}"></td>
+								<td><a th:text="${aut.autotranName}" th:href="@{/auts?name='{name}'(name=${aut.autotranName})}"></a></td>
 								<!-- <td th:text="${aut.instInstId}"></td> -->
 								<td><a th:text="${aut.institution.instName}" th:href="@{/insts?id={id}(id=${aut.institution.instId})}"></a></td>
 								<td><a th:href="@{/pres?autotransition={id}(id=${aut.autotranId})}">Go to preconditions</a></td>

@@ -12,7 +12,7 @@ import co.edu.icesi.model.Precondition;
 
 public interface PreconditionControllerI {
 	public String index(@RequestParam(required = false, value = "id") Long id, 
-			@RequestParam(required = false, value = "autotransition") Autotransition autotransition, 
+			@RequestParam(required = false, value = "autotransition") Long autotransition, 
 			Model model);
 	public String addPreconditionForm(Model model, @ModelAttribute("pre") Precondition pre);
 	public String savePrecondition(@ModelAttribute("pre") @Validated Precondition pre, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action);

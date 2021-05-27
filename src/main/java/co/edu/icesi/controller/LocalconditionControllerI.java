@@ -12,8 +12,10 @@ import co.edu.icesi.model.Precondition;
 import co.edu.icesi.model.Threshold;
 
 public interface LocalconditionControllerI {
-	public String index(@RequestParam(required = false, value = "threshold") Threshold threshold,
-			@RequestParam(required = false, value = "precondition") Precondition precondition,
+	public String index(@RequestParam(required = false, value = "threshold") Long threshold,
+			@RequestParam(required = false, value = "precondition") Long precondition,
+			@RequestParam(required = false, value = "name") String name,
+			@RequestParam(required = false, value = "type") String type,
 			Model model);
 	public String addLocalconditionForm(Model model, @ModelAttribute("loc") Localcondition loc);
 	public String saveLocalcondition(@ModelAttribute("loc") @Validated Localcondition loc, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action);

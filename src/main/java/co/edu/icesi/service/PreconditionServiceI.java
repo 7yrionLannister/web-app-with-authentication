@@ -26,8 +26,8 @@ public interface PreconditionServiceI {
 
 	void deleteAll();
 
-	void editPrecondition(long id, String logicalOperand);
-
 	Iterable<Precondition> findAll();
+
+	void editPrecondition(Precondition p);
 
 }

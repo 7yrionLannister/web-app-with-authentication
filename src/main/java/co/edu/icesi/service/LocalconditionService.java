@@ -5,22 +5,25 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import co.edu.icesi.model.Localcondition;
-import co.edu.icesi.model.Precondition;
-import co.edu.icesi.model.Threshold;
-import co.edu.icesi.repository.LocalconditionRepositoryI;
+//import co.edu.icesi.repository.LocalconditionRepositoryI; // Workshop2
+import co.edu.icesi.daos.LocalconditionDao; // Workshop3
 
 @Service
 public class LocalconditionService implements LocalconditionServiceI {
 
-	private LocalconditionRepositoryI localconditionRepository;
+	//private LocalconditionRepositoryI localconditionRepository; // Workshop2
+	private LocalconditionDao localconditionDao; // Workshop3
 	
-	public LocalconditionService(LocalconditionRepositoryI localconditionRepository) {
-		this.localconditionRepository = localconditionRepository;
+	//public LocalconditionService(LocalconditionRepositoryI localconditionRepository) { // Workshop2
+	public LocalconditionService(LocalconditionDao localconditionDao) { // Workshop3
+		//this.localconditionRepository = localconditionRepository; // Workshop2
+		this.localconditionDao = localconditionDao; // Workshop3
 	}
 	
 	@Override
 	public <S extends Localcondition> S save(S localconotransition) {
-		localconditionRepository.save(localconotransition);
+		//localconditionRepository.save(localconotransition); // Workshop2
+		localconditionDao.save(localconotransition); // Workshop3
 		return localconotransition;
 	}
 
@@ -34,65 +37,63 @@ public class LocalconditionService implements LocalconditionServiceI {
 
 	@Override
 	public Optional<Localcondition> findById(Long id) {
-		return localconditionRepository.findById(id);
+		//return localconditionRepository.findById(id); // Workshop2
+		return localconditionDao.get(id); // Workshop3
 	}
 
 	@Override
 	public boolean existsById(Long id) {
-		return localconditionRepository.existsById(id);
+		//return localconditionRepository.existsById(id); // Workshop2
+		return localconditionDao.get(id).isPresent(); // Workshop3
 	}
 
 	@Override
 	public Iterable<Localcondition> findAll() {
-		return localconditionRepository.findAll();
+		//return localconditionRepository.findAll(); // Workshop2
+		return localconditionDao.getAll(); // Workshop3
 	}
 
 	@Override
 	public Iterable<Localcondition> findAllById(Iterable<Long> ids) {
-		return localconditionRepository.findAllById(ids);
+		//return localconditionRepository.findAllById(ids); // Workshop2
+		return null; // Workshop3
 	}
 
 	@Override
 	public long count() {
-		return localconditionRepository.count();
+		//return localconditionRepository.count(); // Workshop2
+		return localconditionDao.getAll().size(); // Workshop3
 	}
 
 	@Override
 	public void deleteById(Long id) {
-		localconditionRepository.deleteById(id);
+		//localconditionRepository.deleteById(id); // Workshop2
+		localconditionDao.delete(findById(id).orElse(null)); // Workshop3
 	}
 
 	@Override
 	public void delete(Localcondition localconotransition) {
-		localconditionRepository.delete(localconotransition);
+		//localconditionRepository.delete(localconotransition); // Workshop2
+		localconditionDao.delete(localconotransition); // Workshop3
 	}
 
 	@Override
 	public void deleteAll(Iterable<? extends Localcondition> localcons) {
-		localconditionRepository.deleteAll(localcons);
+		//localconditionRepository.deleteAll(localcons); // Workshop2
+		// Workshop3
+		for(Localcondition l : localcons) {
+			delete(l);
+		}
 	}
 
 	@Override
 	public void deleteAll() {
-		localconditionRepository.deleteAll();
+		//localconditionRepository.deleteAll(); // Workshop2
+		deleteAll(findAll()); // Workshop3
 	}
 
 	@Override
-	public void editLocalcondition(long id, String colname, String keycol, String operator, String query, String table, String type, Precondition pre, Threshold th) {
-		
-		if(colname.contains(" ") || keycol.contains(" ") || !((operator.length() == 2 || operator.length() == 1) && operator.replace(">", "").replace("<", "").replace("=", "").isEmpty())) {
-			throw new IllegalArgumentException("One of the arguments is not valid");
-		}
-		
-		Localcondition localcon = findById(id).get();
-		localcon.setLoconColumnname(colname);
-		localcon.setLoconKeycolumn(keycol);
-		localcon.setLoconOperator(operator);
-		localcon.setLoconQuerystring(query);
-		localcon.setLoconTablename(table);
-		localcon.setLoconValuetype(type);
-		localcon.setPrecondition(pre);
-		localcon.setThreshold(th);
-		save(localcon); // Agrego esto porque sino en las pruebas de integracion el cambio no se hace y es raro, SPRING ES RARO
+	public void editLocalcondition(Localcondition l) {
+		localconditionDao.update(l);
 	}
 }

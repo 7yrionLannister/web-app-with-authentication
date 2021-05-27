@@ -3,14 +3,8 @@ package co.edu.icesi.service;
 import java.util.Optional;
 
 import co.edu.icesi.model.Localcondition;
-import co.edu.icesi.model.Precondition;
-import co.edu.icesi.model.Threshold;
 
 public interface LocalconditionServiceI {
-
-	void editLocalcondition(long id, String colname, String keycol, String operator, String query, String table,
-			String type, Precondition pre, Threshold th);
-
 	void deleteAll(Iterable<? extends Localcondition> localcons);
 
 	void deleteAll();
@@ -32,5 +26,7 @@ public interface LocalconditionServiceI {
 	<S extends Localcondition> Iterable<S> saveAll(Iterable<S> localcons);
 
 	<S extends Localcondition> S save(S localconotransition);
+
+	void editLocalcondition(Localcondition l);
 
 }

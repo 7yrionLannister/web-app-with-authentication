@@ -16,5 +16,5 @@ public interface AutotransitionServiceI {
 	public void delete(Autotransition autotransition);
 	public void deleteAll(Iterable<? extends Autotransition> auts);
 	public void deleteAll();
-	public void editAutotransition(long id, String isActive, String logicalOperand, String name);
+	void editAutotransition(Autotransition a);
 }

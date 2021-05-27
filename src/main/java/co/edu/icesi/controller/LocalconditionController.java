@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import co.edu.icesi.model.Localcondition;
 import co.edu.icesi.model.Precondition;
 import co.edu.icesi.model.Threshold;
-import co.edu.icesi.repository.LocalconditionRepositoryI;
+//import co.edu.icesi.repository.LocalconditionRepositoryI; // Workshop2
+import co.edu.icesi.daos.LocalconditionDao; // Workshop3
 import co.edu.icesi.service.LocalconditionService;
 import co.edu.icesi.service.PreconditionService;
 import co.edu.icesi.service.ThresholdService;
@@ -27,15 +28,18 @@ import co.edu.icesi.service.ThresholdService;
 public class LocalconditionController implements LocalconditionControllerI {
 
 	private LocalconditionService localconditionService;
-	private LocalconditionRepositoryI localconditionRepository;
+	//private LocalconditionRepositoryI localconditionRepository; // Workshop2
+	private LocalconditionDao localconditionDao; // Workshop3
 	private PreconditionService preconditionService;
 	private ThresholdService thresholdService;
 	private ArrayList<String> operators;
 
 	// @Autowired solo se necesita cuando hay varios constructores, ponerlo solo es costumbre
-	public LocalconditionController(LocalconditionService localconditionService, LocalconditionRepositoryI localconditionRepository, PreconditionService preconditionService, ThresholdService thresholdService) {
+	//public LocalconditionController(LocalconditionService localconditionService, LocalconditionRepositoryI localconditionRepository, PreconditionService preconditionService, ThresholdService thresholdService) { // Workshop2
+	public LocalconditionController(LocalconditionService localconditionService, LocalconditionDao localconditionDao, PreconditionService preconditionService, ThresholdService thresholdService) { // Workshop3
 		this.localconditionService = localconditionService;
-		this.localconditionRepository = localconditionRepository;
+		//this.localconditionRepository = localconditionRepository; // Workshop2
+		this.localconditionDao = localconditionDao; // Workshop3
 		this.preconditionService = preconditionService;
 		this.thresholdService = thresholdService;
 		operators = new ArrayList<>();
@@ -48,13 +52,21 @@ public class LocalconditionController implements LocalconditionControllerI {
 	
 	@Override
 	@GetMapping
-	public String index(@RequestParam(required = false, value = "threshold") Threshold threshold,
-			@RequestParam(required = false, value = "precondition") Precondition precondition,
+	public String index(@RequestParam(required = false, value = "threshold") Long threshold,
+			@RequestParam(required = false, value = "precondition") Long precondition,
+			@RequestParam(required = false, value = "name") String name,
+			@RequestParam(required = false, value = "type") String type,
 			Model model) {
 		if(threshold != null) {
-			model.addAttribute("locs", localconditionRepository.findAllByThreshold(threshold));
+			//model.addAttribute("locs", localconditionRepository.findAllByThreshold(thresholdService.findById(threshold).get().getThresId())); // Workshop2
+			model.addAttribute("locs", localconditionDao.findAllByThreshold(thresholdService.findById(threshold).get().getThresId())); // Workshop3
 		} else if(precondition != null) {
-			model.addAttribute("locs", localconditionRepository.findAllByPrecondition(precondition));
+			//model.addAttribute("locs", localconditionRepository.findAllByPrecondition(preconditionService.findById(precondition).get().getPreconId())); // Workshop2
+			model.addAttribute("locs", localconditionDao.findAllByPrecondition(preconditionService.findById(precondition).get().getPreconId())); // Workshop3
+		} else if(name != null) {
+			model.addAttribute("locs", localconditionDao.findAllByName(name));
+		} else if(type != null) {
+			model.addAttribute("locs", localconditionDao.findAllByType(type));
 		} else {
 			model.addAttribute("locs", localconditionService.findAll());
 		}

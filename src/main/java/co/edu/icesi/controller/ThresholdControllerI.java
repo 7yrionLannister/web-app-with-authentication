@@ -11,7 +11,12 @@ import co.edu.icesi.model.Institution;
 import co.edu.icesi.model.Threshold;
 
 public interface ThresholdControllerI {
-	public String index(@RequestParam(required = false, value = "id") Long id, @RequestParam(required = false, value = "institution") Institution institution, Model model);
+	public String index(@RequestParam(required = false, value = "id") Long id,
+			@RequestParam(required = false, value = "institution") Institution institution,
+			@RequestParam(required = false, value = "name") String name,
+			@RequestParam(required = false, value = "value") String value,
+			@RequestParam(required = false, value = "type") String type,
+			Model model);
 	public String addThresholdForm(Model model, @ModelAttribute("thr") Threshold thr);
 	public String saveThreshold(@ModelAttribute("thr") @Validated Threshold thr, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action);
 	public String deleteThreshold(@PathVariable("id") long id, Model model);

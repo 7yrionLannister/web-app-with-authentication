@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import co.edu.icesi.model.Institution;
 import co.edu.icesi.model.Threshold;
-import co.edu.icesi.repository.ThresholdRepositoryI;
+//import co.edu.icesi.repository.ThresholdRepositoryI; // Workshop2
+import co.edu.icesi.daos.ThresholdDao; // Workshop3
 import co.edu.icesi.service.InstitutionService;
 import co.edu.icesi.service.ThresholdService;
 
@@ -25,25 +26,40 @@ import co.edu.icesi.service.ThresholdService;
 public class ThresholdController implements ThresholdControllerI {
 
 	private ThresholdService thresholdService;
-	private ThresholdRepositoryI thresholdRepository;
+	//private ThresholdRepositoryI thresholdRepository; // Workshop2
+	private ThresholdDao thresholdDao; // Workshop3
 	private InstitutionService institutionService;
 
 	// @Autowired solo se necesita cuando hay varios constructores, ponerlo solo es costumbre
-	public ThresholdController(ThresholdService thresholdService, ThresholdRepositoryI thresholdRepository, InstitutionService institutionService) {
+	//public ThresholdController(ThresholdService thresholdService, ThresholdRepositoryI thresholdRepository, InstitutionService institutionService) { // Workshop2
+	public ThresholdController(ThresholdService thresholdService, ThresholdDao thresholdDao, InstitutionService institutionService) { // Workshop3
 		this.thresholdService = thresholdService;
 		this.institutionService = institutionService;
-		this.thresholdRepository = thresholdRepository;
+		this.thresholdDao = thresholdDao;
 	}
 
 	@Override
 	@GetMapping
-	public String index(@RequestParam(required = false, value = "id") Long id, @RequestParam(required = false, value = "institution") Institution institution, Model model) {
+	public String index(@RequestParam(required = false, value = "id") Long id,
+			@RequestParam(required = false, value = "institution") Institution institution,
+			@RequestParam(required = false, value = "name") String name,
+			@RequestParam(required = false, value = "value") String value,
+			@RequestParam(required = false, value = "type") String type,
+			Model model) {
 		if(id != null) {
 			ArrayList<Threshold> thrs = new ArrayList<>();
-			thrs.add(thresholdRepository.findById(id).get());
+			//thrs.add(thresholdRepository.findById(id).get()); // Workshop2
+			thrs.add(thresholdDao.get(id).get()); // Workshop3
 			model.addAttribute("thrs", thrs);
 		} else if(institution != null) {
-			model.addAttribute("thrs", thresholdRepository.findAllByInstitution(institution));
+			//model.addAttribute("thrs", thresholdRepository.findAllByInstitution(institution)); // Workshop2
+			model.addAttribute("thrs", thresholdDao.findAllByInstitution(institution.getInstId())); // Workshop3
+		} else if(name != null) {
+			model.addAttribute("thrs", thresholdDao.findAllByName(name));
+		} else if(value != null) {
+			model.addAttribute("thrs", thresholdDao.findAllByValue(value));
+		} else if(type != null) {
+			model.addAttribute("thrs", thresholdDao.findAllByType(type));
 		} else {
 			model.addAttribute("thrs", thresholdService.findAll());
 		}

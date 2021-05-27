@@ -27,18 +27,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.TransactionSystemException;
 
 import co.edu.icesi.FernandezDanielTaller1Application;
+import co.edu.icesi.daos.AutotransitionDao;
+import co.edu.icesi.daos.LocalconditionDao;
+import co.edu.icesi.daos.PreconditionDao;
+import co.edu.icesi.daos.ThresholdDao;
 import co.edu.icesi.model.Autotransition;
 import co.edu.icesi.model.Institution;
 import co.edu.icesi.model.Localcondition;
 import co.edu.icesi.model.Precondition;
 import co.edu.icesi.model.Threshold;
-import co.edu.icesi.repository.AutotransitionRepositoryI;
 import co.edu.icesi.repository.InstitutionRepositoryI;
-import co.edu.icesi.repository.LocalconditionRepositoryI;
-import co.edu.icesi.repository.PreconditionRepositoryI;
-import co.edu.icesi.repository.ThresholdRepositoryI;
 import co.edu.icesi.service.AutotransitionService;
 import co.edu.icesi.service.InstitutionService;
 import co.edu.icesi.service.LocalconditionService;
@@ -52,7 +53,7 @@ import co.edu.icesi.service.ThresholdService;
 @ContextConfiguration(classes = FernandezDanielTaller1Application.class)
 public class FernandezDanielTaller1ApplicationUnitTests {
 	@Mock
-	private AutotransitionRepositoryI autotransitionRepositoryMock;
+	private AutotransitionDao autotransitionRepositoryMock;
 	@InjectMocks
 	private AutotransitionService autotransitionService;
 	private Autotransition aut;
@@ -63,17 +64,17 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 	private InstitutionService institutionService;
 	
 	@Mock
-	private PreconditionRepositoryI preconditionRepositoryMock;
+	private PreconditionDao preconditionRepositoryMock;
 	@InjectMocks
 	private PreconditionService preconditionService;
 	
 	@Mock
-	private ThresholdRepositoryI thresholdRepositoryMock;
+	private ThresholdDao thresholdRepositoryMock;
 	@InjectMocks
 	private ThresholdService thresholdService;
 	
 	@Mock
-	private LocalconditionRepositoryI localconditionRepositoryMock;
+	private LocalconditionDao localconditionRepositoryMock;
 	@InjectMocks
 	private LocalconditionService localconditionService;
 	
@@ -115,7 +116,7 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 		String isActive = "Y";
 		aut.setAutotranIsactive(isActive);
 		
-		when(autotransitionRepositoryMock.save(aut)).thenReturn(aut);
+		//when(autotransitionRepositoryMock.save(aut)).thenReturn(aut);
 		aut = autotransitionService.save(aut);
 		when(autotransitionRepositoryMock.findById(0l)).thenReturn(Optional.of(aut));
 		// enunciado
@@ -135,7 +136,10 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 	@Order(2)
 	public void editAutotransitionTest() {
 		String aStringToTest = "AStringToTest";
-		assertThrows(IllegalArgumentException.class, () -> autotransitionService.editAutotransition(0, aStringToTest, aStringToTest, aStringToTest));
+		aut.setAutotranName(aStringToTest);
+		aut.setAutotranIsactive(null);
+		aut.setAutotranLogicaloperand("");
+		assertThrows(TransactionSystemException.class, () -> autotransitionService.editAutotransition(aut));
 		
 		/*Autotransition a = new Autotransition();
 		a.setPreconditions(new ArrayList<>()); // no se inicializa en el constructor, asi que uso el setter
@@ -144,7 +148,11 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 		
 		String logicalOperator = "OR";
 		String isActive = "N";
-		autotransitionService.editAutotransition(0l, isActive, logicalOperator, aStringToTest);
+		aut.setAutotranIsactive(isActive);
+		aut.setAutotranName(aStringToTest);
+		aut.setAutotranLogicaloperand(logicalOperator);
+		autotransitionService.editAutotransition(aut);
+		autotransitionService.editAutotransition(aut);
 		Autotransition aut = autotransitionService.findById(0l).get();
 		
 		assertEquals(isActive, aut.getAutotranIsactive());
@@ -162,7 +170,7 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 		// se debe validar que exista la autotransicion antes de guardarla. En caso de que no, ocurrira una excepcion de tipo NoSuchElementException
 		Autotransition aut = autotransitionService.findById(0l).get();
 		Precondition pre = new Precondition();
-		when(preconditionRepositoryMock.findById(0l)).thenReturn(Optional.of(pre));
+		when(preconditionRepositoryMock.get(0l)).thenReturn(Optional.of(pre));
 		
 		String logicalOperand = "AND";
 		pre.setPreconLogicaloperand(logicalOperand);
@@ -179,7 +187,7 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 		assertSame(pre, found);
 		
 		verify(preconditionRepositoryMock).save(pre);
-		verify(preconditionRepositoryMock).findById(0l);
+		verify(preconditionRepositoryMock).get(0l);
 		verify(autotransitionRepositoryMock, VerificationModeFactory.times(4)).findById(0l); // uno mas que en el metodo con @Order(2)
 	}
 
@@ -187,7 +195,7 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 	@Order(4)
 	public void editPreconditionTest() {
 		String aStringToTest = "AStringToTest";
-		assertThrows(IllegalArgumentException.class, () -> preconditionService.editPrecondition(0, aStringToTest));
+		assertThrows(TransactionSystemException.class, () -> preconditionService.editPrecondition(0, aStringToTest));
 		
 		String logicalOperand = "OR";
 		preconditionService.editPrecondition(0, logicalOperand);
@@ -195,7 +203,7 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 		
 		assertEquals(logicalOperand, pre.getPreconLogicaloperand());
 		
-		verify(preconditionRepositoryMock, VerificationModeFactory.times(3)).findById(0l);
+		verify(preconditionRepositoryMock, VerificationModeFactory.times(3)).get(0l);
 	}
 	
 	// PUNTO C
@@ -206,7 +214,7 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 		Threshold th = new Threshold();
 		Institution inst = institutionService.findById(0l).get();
 		th.setInstitution(inst);
-		when(thresholdRepositoryMock.findById(0l)).thenReturn(Optional.of(th));
+		when(thresholdRepositoryMock.get(0l)).thenReturn(Optional.of(th));
 		
 		String thName = "thName";
 		th.setThresName(thName);
@@ -226,7 +234,7 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 		assertEquals(thType, found.getThresValuetype());
 		
 		verify(thresholdRepositoryMock).save(th);
-		verify(thresholdRepositoryMock).findById(0l);
+		verify(thresholdRepositoryMock).get(0l);
 		verify(institutionRepositoryMock, VerificationModeFactory.times(2)).findById(0l);
 	}
 	
@@ -235,7 +243,8 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 	public void editThresholdTest() {
 		String aStringToTest = "AStringToTest";
 		BigDecimal instid = new BigDecimal(123);
-		assertThrows(IllegalArgumentException.class, () -> thresholdService.editThreshold(0, "", "", aStringToTest));
+		
+		assertThrows(TransactionSystemException.class, () -> thresholdService.editThreshold(0, "", "", aStringToTest));
 		
 		thresholdService.editThreshold(0, aStringToTest, aStringToTest, aStringToTest);
 		Threshold th = thresholdService.findById(0l).get();
@@ -245,7 +254,7 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 		assertEquals(aStringToTest, th.getThresValue());
 		assertEquals(aStringToTest, th.getThresValuetype());
 		
-		verify(thresholdRepositoryMock, VerificationModeFactory.times(3)).findById(0l);
+		verify(thresholdRepositoryMock, VerificationModeFactory.times(3)).get(0l);
 	}
 	
 	// PUNTO D
@@ -254,7 +263,7 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 	@Order(7)
 	public void saveLocalconditionTest() {
 		Localcondition localcondition = new Localcondition();
-		when(localconditionRepositoryMock.findById(0l)).thenReturn(Optional.of(localcondition));
+		when(localconditionRepositoryMock.get(0l)).thenReturn(Optional.of(localcondition));
 		
 		Precondition pre = preconditionService.findById(0l).get();
 		localcondition.setPrecondition(pre);
@@ -284,9 +293,9 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 		assertSame(th, found.getThreshold());
 		
 		verify(localconditionRepositoryMock).save(localcondition);
-		verify(localconditionRepositoryMock).findById(0l);
-		verify(thresholdRepositoryMock, VerificationModeFactory.times(4)).findById(0l);
-		verify(preconditionRepositoryMock, VerificationModeFactory.times(4)).findById(0l);
+		verify(localconditionRepositoryMock).get(0l);
+		verify(thresholdRepositoryMock, VerificationModeFactory.times(4)).get(0l);
+		verify(preconditionRepositoryMock, VerificationModeFactory.times(4)).get(0l);
 	}
 	
 	@Test
@@ -295,7 +304,7 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 		String aStringToTest = "AStringToTest";
 		Precondition pre = preconditionService.findById(0l).get();
 		Threshold th = thresholdService.findById(0l).get();
-		assertThrows(IllegalArgumentException.class, () -> localconditionService.editLocalcondition(0, aStringToTest, aStringToTest, aStringToTest, aStringToTest, aStringToTest, aStringToTest, pre, th));
+		assertThrows(TransactionSystemException.class, () -> localconditionService.editLocalcondition(0, aStringToTest, aStringToTest, aStringToTest, aStringToTest, aStringToTest, aStringToTest, pre, th));
 		
 		String operator = ">=";
 		localconditionService.editLocalcondition(0, aStringToTest, aStringToTest, operator, aStringToTest, aStringToTest, aStringToTest, pre, th);
@@ -310,6 +319,6 @@ public class FernandezDanielTaller1ApplicationUnitTests {
 		assertSame(pre, loc.getPrecondition());
 		assertSame(th, loc.getThreshold());
 		
-		verify(localconditionRepositoryMock, VerificationModeFactory.times(3)).findById(0l);
+		verify(localconditionRepositoryMock, VerificationModeFactory.times(3)).get(0l);
 	}
 }

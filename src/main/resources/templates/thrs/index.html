@@ -45,9 +45,9 @@
 						<tbody>
 							<tr th:each="thr : ${thrs}" th:value="${thr}">
 								<td th:text="${thr.thresId}"></td>
-								<td th:text="${thr.thresName}"></td>
-								<td th:text="${thr.thresValue}"></td>
-								<td th:text="${thr.thresValuetype}"></td>
+								<td><a th:text="${thr.thresName}" th:href="@{/thrs?name='{name}'(name=${thr.thresName})}"></a></td>
+								<td><a th:text="${thr.thresValue}" th:href="@{/thrs?value='{value}'(value=${thr.thresValue})}"></a></td>
+								<td><a th:text="${thr.thresValuetype}" th:href="@{/thrs?type='{type}'(type=${thr.thresValuetype})}"></a></td>
 								<!-- <td th:text="${thr.instInstId}"></td> -->
 								<td><a th:text="${thr.institution.instName}" th:href="@{/insts?id={id}(id=${thr.institution.instId})}"></a></td>
 								<td><a th:href="@{/locs?threshold={id}(id=${thr.thresId})}">Go to local conditions</a></td>

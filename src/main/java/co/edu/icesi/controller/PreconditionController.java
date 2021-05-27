@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import co.edu.icesi.model.Autotransition;
 import co.edu.icesi.model.Precondition;
-import co.edu.icesi.repository.PreconditionRepositoryI;
+//import co.edu.icesi.repository.PreconditionRepositoryI; // Workshop2
+import co.edu.icesi.daos.PreconditionDao; // Workshop3
 import co.edu.icesi.service.AutotransitionService;
 import co.edu.icesi.service.PreconditionService;
 
@@ -25,15 +26,17 @@ import co.edu.icesi.service.PreconditionService;
 public class PreconditionController implements PreconditionControllerI {
 
 	private PreconditionService preconditionService;
-	private PreconditionRepositoryI preconditionRepository;
+	//private PreconditionRepositoryI preconditionRepository; // Workshop2
+	private PreconditionDao preconditionDao; // Workshop3
 	private AutotransitionService autotransitionService;
 	private ArrayList<String> logicalOperands;
 
 	// @Autowired solo se necesita cuando hay varios constructores, ponerlo solo es costumbre
-	public PreconditionController(PreconditionService preconditionService, PreconditionRepositoryI preconditionRepository, AutotransitionService autotransitionService) {
+	//public PreconditionController(PreconditionService preconditionService, PreconditionRepositoryI preconditionRepository, AutotransitionService autotransitionService) { // Workshop2
+	public PreconditionController(PreconditionService preconditionService, PreconditionDao preconditionDao, AutotransitionService autotransitionService) { // Workshop3
 		this.preconditionService = preconditionService;
 		this.autotransitionService = autotransitionService;
-		this.preconditionRepository = preconditionRepository;
+		this.preconditionDao = preconditionDao;
 		logicalOperands = new ArrayList<>();
 		logicalOperands.add("AND");
 		logicalOperands.add("OR");
@@ -46,14 +49,16 @@ public class PreconditionController implements PreconditionControllerI {
 	@Override
 	@GetMapping
 	public String index(@RequestParam(required = false, value = "id") Long id, 
-			@RequestParam(required = false, value = "autotransition") Autotransition autotransition, 
+			@RequestParam(required = false, value = "autotransition") Long autotransition,
 			Model model) {
 		if(id != null) {
 			ArrayList<Precondition> pres = new ArrayList<>();
-			pres.add(preconditionRepository.findById(id).get());
+			//pres.add(preconditionRepository.findById(id).get()); // Workshop2
+			pres.add(preconditionDao.get(id).get()); // Workshop3
 			model.addAttribute("pres", pres);
 		} else if(autotransition != null) {
-			model.addAttribute("pres", preconditionRepository.findAllByAutotransition(autotransition));
+			//model.addAttribute("pres", preconditionRepository.findAllByAutotransition(autotransitionService.findById(autotransition).get().getAutotranId())); // Workshop2
+			model.addAttribute("pres", preconditionDao.findAllByAutotransition(autotransition)); // Workshop3
 		} else {
 			model.addAttribute("pres", preconditionService.findAll());
 		}

@@ -28,6 +28,6 @@ public interface ThresholdServiceI {
 
 	void deleteAll();
 
-	void editThreshold(long id, String name, String value, String vtype);
+	void editThreshold(Threshold t);
 
 }
