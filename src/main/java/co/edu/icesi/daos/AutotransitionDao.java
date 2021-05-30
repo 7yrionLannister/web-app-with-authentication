@@ -56,7 +56,8 @@ public class AutotransitionDao implements Dao<Autotransition> {
 
 	@Override
 	@Transactional
-	public void delete(Autotransition aut) {
+	public void deleteById(Long autId) {
+		Autotransition aut = get(autId).orElse(null);
 		executeInsideTransaction(entityManager -> entityManager.remove(aut));
 	}
 	

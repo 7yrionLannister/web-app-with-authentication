@@ -68,13 +68,13 @@ public class LocalconditionService implements LocalconditionServiceI {
 	@Override
 	public void deleteById(Long id) {
 		//localconditionRepository.deleteById(id); // Workshop2
-		localconditionDao.delete(findById(id).orElse(null)); // Workshop3
+		localconditionDao.deleteById(id); // Workshop3
 	}
 
 	@Override
-	public void delete(Localcondition localconotransition) {
+	public void delete(Localcondition localcondition) {
 		//localconditionRepository.delete(localconotransition); // Workshop2
-		localconditionDao.delete(localconotransition); // Workshop3
+		deleteById(localcondition.getLoconId()); // Workshop3
 	}
 
 	@Override

@@ -51,8 +51,9 @@ public class LocalconditionDao implements Dao<Localcondition> {
 
 	@Override
 	@Transactional
-	public void delete(Localcondition t) {
-		executeInsideTransaction(entityManager -> entityManager.remove(t));
+	public void deleteById(Long locId) {
+		Localcondition loc = get(locId).orElse(null);
+		executeInsideTransaction(entityManager -> entityManager.remove(loc));
 	}
 	
 	private void executeInsideTransaction(Consumer<EntityManager> action) {

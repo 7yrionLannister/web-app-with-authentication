@@ -78,7 +78,6 @@ public class PreconditionController implements PreconditionControllerI {
 	@Override
 	@PostMapping("/add")
 	public String savePrecondition(@ModelAttribute("pre") @Validated Precondition pre, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action, @RequestParam(value="autotransition" , required = true) Long autId) {
-		System.out.println("ME CAGO EN TODo");
 		if (!action.equals("Cancel")) {
 			if (result.hasErrors()) {
 				model.addAttribute("pre", pre);

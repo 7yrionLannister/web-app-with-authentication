@@ -34,6 +34,7 @@ public class AutotransitionDaoTest {
 	private AutotransitionDao autDao;
 	private InstitutionRepositoryI instRepo;
 	private Autotransition aut;
+	private Institution inst;
 	
 	@Autowired
 	public AutotransitionDaoTest(AutotransitionDao autDao, InstitutionRepositoryI instRepo) {
@@ -45,7 +46,7 @@ public class AutotransitionDaoTest {
 	@Order(1)
 	public void saveTest() {
 		aut = new Autotransition();
-		Institution inst = new Institution();
+		inst = new Institution();
 		inst.setInstAcademicserverurl("url");
 		inst.setInstAcadprogrammedcoursesurl("url");
 		String instName = "inst1";
@@ -108,7 +109,7 @@ public class AutotransitionDaoTest {
 		
 		List<Autotransition> auts = autDao.getAll();
 		
-		assertTrue(auts.size() == 1);
+		assertEquals(1, auts.size());
 		assertTrue(autDao.findAllByActive(isActive).size() == 1);
 		
 		Autotransition foundAut = autDao.findAllByName(nonEmptyNameAut).get(0);
@@ -131,32 +132,33 @@ public class AutotransitionDaoTest {
 	@Test
 	@Order(3)
 	public void queryTest() {
-		// TODO
 		insertStuffForTesting();
 		List<Autotransition> auts = autDao.getAll();
-		assertEquals(auts.size(), 5);
+		assertEquals(5, auts.size());
 		List<Autotransition> active = autDao.findAllByActive("Y");
-		assertEquals(active.size(), 2);
+		assertEquals(2, active.size());
 		List<Autotransition> inactive = autDao.findAllByActive("N");
-		assertEquals(inactive.size(), 3);
+		assertEquals(3, inactive.size());
 		List<Autotransition> ands = autDao.findAllByLogicalOperand("AND");
-		assertEquals(ands.size(), 2);
+		assertEquals(2, ands.size());
 		List<Autotransition> ors = autDao.findAllByLogicalOperand("OR");
-		assertEquals(ors.size(), 3);
+		assertEquals(3, ors.size());
 		List<Autotransition> nms = autDao.findAllByName("AUT");
-		assertEquals(nms.size(), 2);
+		assertEquals(2, nms.size());
+		List<Autotransition> insts = autDao.findAllByInstitutionInstId(inst.getInstId());
+		assertEquals(4, insts.size());
 	}
 	
 	@Test
 	@Order(4)
 	public void deleteTest() {
 		assertTrue(autDao.findById(aut.getAutotranId()).isPresent());
-		autDao.delete(autDao.get(aut.getAutotranId()).get());
+		autDao.deleteById(aut.getAutotranId());
 		assertFalse(autDao.findById(aut.getAutotranId()).isPresent());
 	}
 	
 	private void insertStuffForTesting() {
-		Institution inst = new Institution();
+		inst = new Institution();
 		inst.setInstAcademicserverurl("url2");
 		inst.setInstAcadprogrammedcoursesurl("url2");
 		String instName = "inst2";

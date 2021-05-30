@@ -47,8 +47,9 @@ public class PreconditionDao implements Dao<Precondition> {
 
 	@Override
 	@Transactional
-	public void delete(Precondition t) {
-		executeInsideTransaction(entityManager -> entityManager.remove(t));
+	public void deleteById(Long preId) {
+		Precondition pre = get(preId).orElse(null);
+		executeInsideTransaction(entityManager -> entityManager.remove(pre));
 	}
 
 	private void executeInsideTransaction(Consumer<EntityManager> action) {
@@ -71,9 +72,9 @@ public class PreconditionDao implements Dao<Precondition> {
 	}
 	
 	public List<Precondition> findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne() {
-		String q = "SELECT COUNT(*) FROM (SELECT t FROM Threshold t WHERE t.thresValue > 1 GROUP BY localconditions)";
-		//Query query = entityManager.createQuery("SELECT p FROM Precondition p WHERE p.localconditions.threshold.thresValue > 1");
-		Query query = entityManager.createQuery(q);
+		//String q = "SELECT COUNT(*) FROM (SELECT t FROM Threshold t WHERE t.thresValue > 1 GROUP BY localconditions)"; // FIXME repasa bases y haz esto, o te jodes
+		Query query = entityManager.createQuery("SELECT p FROM Precondition p");
+		//Query query = entityManager.createQuery(q); // FIXME
 		return query.getResultList();
 	}
 }

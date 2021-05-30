@@ -52,8 +52,9 @@ public class ThresholdDao implements Dao<Threshold> {
 
 	@Override
 	@Transactional
-	public void delete(Threshold t) {
-		executeInsideTransaction(entityManager -> entityManager.remove(t));
+	public void deleteById(Long thrId) {
+		Threshold thr = get(thrId).orElse(null);
+		executeInsideTransaction(entityManager -> entityManager.remove(thr));
 	}
 	
 	private void executeInsideTransaction(Consumer<EntityManager> action) {

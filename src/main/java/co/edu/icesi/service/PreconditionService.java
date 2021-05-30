@@ -74,14 +74,14 @@ public class PreconditionService implements PreconditionServiceI {
 	@Override
 	public void deleteById(Long id) {
 		//preconditionRepository.deleteById(id); //Workshop2
-		preconditionDao.delete(preconditionDao.get(id).orElse(null)); //Workshop3
+		preconditionDao.deleteById(id); //Workshop3
 	}
 
 	
 	@Override
-	public void delete(Precondition preotransition) {
+	public void delete(Precondition precondition) {
 		//preconditionRepository.delete(preotransition); // Workshop2
-		preconditionDao.delete(preotransition); // Workshop3
+		deleteById(precondition.getPreconId()); // Workshop3
 	}
 
 	
@@ -90,7 +90,7 @@ public class PreconditionService implements PreconditionServiceI {
 		//preconditionRepository.deleteAll(pres); //Workshop2
 		//Workshop3
 		for(Precondition p : pres) {
-			preconditionDao.delete(p);
+			delete(p);
 		}
 	}
 

@@ -69,13 +69,13 @@ public class AutotransitionService implements AutotransitionServiceI {
 	@Override
 	public void deleteById(Long id) {
 		//autotransitionRepository.deleteById(id); // Workshop2
-		autotransitionDao.delete(autotransitionDao.get(id).orElse(null)); // Workshop3
+		autotransitionDao.deleteById(id); // Workshop3
 	}
 
 	@Override
 	public void delete(Autotransition autotransition) {
 		//autotransitionRepository.delete(autotransition); // Workshop2
-		autotransitionDao.delete(autotransition); // Workshop3
+		deleteById(autotransition.getAutotranId());// Workshop3
 	}
 
 	@Override

@@ -74,14 +74,14 @@ public class ThresholdService implements ThresholdServiceI {
 	@Override
 	public void deleteById(Long id) {
 		//thresholdRepository.deleteById(id); // Workshop2
-		thresholdDao.delete(findById(id).orElse(null)); // Workshop3
+		thresholdDao.deleteById(id); // Workshop3
 	}
 
 	
 	@Override
 	public void delete(Threshold threshold) {
 		//thresholdRepository.delete(threshold); // Workshop2
-		thresholdDao.delete(threshold); // Workshop3
+		deleteById(threshold.getThresId()); // Workshop3
 	}
 
 	

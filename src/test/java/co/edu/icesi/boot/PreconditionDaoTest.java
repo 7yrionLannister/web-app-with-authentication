@@ -19,10 +19,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.TransactionSystemException;
 
 import co.edu.icesi.FernandezDanielTaller1Application;
-import co.edu.icesi.daos.AutotransitionDao;
+import co.edu.icesi.daos.PreconditionDao;
+import co.edu.icesi.model.Precondition;
+import co.edu.icesi.repository.InstitutionRepositoryI;
 import co.edu.icesi.model.Autotransition;
 import co.edu.icesi.model.Institution;
-import co.edu.icesi.repository.InstitutionRepositoryI;
+import co.edu.icesi.daos.AutotransitionDao;
 
 
 @SpringBootTest
@@ -31,164 +33,134 @@ import co.edu.icesi.repository.InstitutionRepositoryI;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {FernandezDanielTaller1Application.class})
 public class PreconditionDaoTest {
+	private PreconditionDao preDao;
 	private AutotransitionDao autDao;
 	private InstitutionRepositoryI instRepo;
+	private Institution inst;
+	private Precondition pre;
 	private Autotransition aut;
-	
+
 	@Autowired
-	public PreconditionDaoTest(AutotransitionDao autDao, InstitutionRepositoryI instRepo) {
+	public PreconditionDaoTest(PreconditionDao preDao, AutotransitionDao autDao, InstitutionRepositoryI instRepo) {
+		this.preDao = preDao;
 		this.autDao = autDao;
 		this.instRepo = instRepo;
 	}
-	
+
 	@Test
 	@Order(1)
 	public void saveTest() {
-		aut = new Autotransition();
-		Institution inst = new Institution();
+		pre = new Precondition();
+		
+		inst = new Institution();
 		inst.setInstAcademicserverurl("url");
 		inst.setInstAcadprogrammedcoursesurl("url");
 		String instName = "inst1";
 		inst.setInstName(instName);
 		inst = instRepo.save(inst);
+		aut = new Autotransition();
+		aut.setAutotranName("aut");
+		aut.setAutotranIsactive("Y");
+		aut.setAutotranLogicaloperand("AND");
 		aut.setInstitution(inst);
-		aut.setAutotranName(""); // illegal
-		String logicalOperand = "AND";
-		aut.setAutotranLogicaloperand(logicalOperand);
-		String isActive = "Y";
-		aut.setAutotranIsactive(isActive);
-		assertThrows(TransactionSystemException.class, () -> autDao.save(aut), "The autotransition has illegal attributes, commiting should not be succesfull");
-
-		aut.setAutotranId(0); // no regresa a cero despues de la excepcion, entonces lo pongo manualmente
-		String nonEmptyNameAut = "non_empty_name_aut";
-		aut.setAutotranName(nonEmptyNameAut);
 		autDao.save(aut);
-		
-		List<Autotransition> auts = autDao.getAll();
-		
-		assertTrue(auts.size() == 1);
-		assertTrue(autDao.findAllByActive(isActive).size() == 1);
-		assertTrue(autDao.findAllByInstitutionInstId(inst.getInstId()).size() == 1);
-		
-		Autotransition foundAut = autDao.findAllByName(nonEmptyNameAut).get(0);
-		Autotransition expectedAut = auts.get(0);
-		
-		assertEquals(expectedAut.getAutotranId(), foundAut.getAutotranId());
-		
-		assertEquals(expectedAut.getAutotranName(), foundAut.getAutotranName());
-		assertEquals(expectedAut.getAutotranName(), nonEmptyNameAut);
-		
-		assertEquals(expectedAut.getAutotranIsactive(), foundAut.getAutotranIsactive());
-		assertEquals(expectedAut.getAutotranIsactive(), isActive);
-		
-		assertEquals(expectedAut.getAutotranLogicaloperand(), foundAut.getAutotranLogicaloperand());
-		assertEquals(expectedAut.getAutotranLogicaloperand(), logicalOperand);
-		
-		assertEquals(expectedAut.getInstitution().getInstName(), foundAut.getInstitution().getInstName());
-		assertEquals(expectedAut.getInstitution().getInstName(), inst.getInstName());
-		assertEquals(expectedAut.getInstitution().getInstName(), instName);
-		
-		assertThrows(InvalidDataAccessApiUsageException.class, () -> autDao.save(expectedAut), "Bad api usage: you cannot update through save(Autotransition) method, use update(Autotransition) instead");
-		aut = expectedAut;
+
+		pre.setAutotransition(aut);
+		pre.setPreconLogicaloperand(""); // illegal
+		pre.setAutotransition(aut);
+		assertThrows(TransactionSystemException.class, () -> preDao.save(pre), "The preocondition has illegal attributes, commiting should not be succesfull");
+
+		pre.setPreconId(0); // no regresa a cero despues de la excepcion, entonces lo pongo manualmente
+		String logicalOperand = "AND";
+		pre.setPreconLogicaloperand(logicalOperand);
+		preDao.save(pre);
+
+		List<Precondition> pres = preDao.getAll();
+
+		assertEquals(1, pres.size());
+		assertEquals(1, preDao.findAllByAutotransition(aut.getAutotranId()).size());
+		//assertTrue(preDao.findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne().isEmpty()); // TODO mejorar prueba
+
+		Precondition foundPre = preDao.get(pre.getPreconId()).get();
+		Precondition expectedPre = pres.get(0);
+
+		assertEquals(expectedPre.getPreconId(), foundPre.getPreconId());
+
+		assertEquals(expectedPre.getPreconLogicaloperand(), foundPre.getPreconLogicaloperand());
+		assertEquals(expectedPre.getPreconLogicaloperand(), logicalOperand);
+
+		assertEquals(expectedPre.getAutotransition().getAutotranId(), foundPre.getAutotransition().getAutotranId());
+		assertEquals(expectedPre.getAutotransition().getAutotranId(), aut.getAutotranId());
+
+		assertEquals(expectedPre.getAutotransition().getAutotranName(), foundPre.getAutotransition().getAutotranName());
+		assertEquals(expectedPre.getAutotransition().getAutotranName(), aut.getAutotranName());
+
+		assertThrows(InvalidDataAccessApiUsageException.class, () -> preDao.save(expectedPre), "Bad api usage: you cannot update through save(Precondition) method, use update(Precondition) instead");
+		pre = expectedPre;
 	}
 
 	@Test
 	@Order(2)
 	public void updateTest() {
-		aut.setAutotranName(""); // illegal
+		pre.setPreconLogicaloperand(""); // illegal
+		assertThrows(TransactionSystemException.class, () -> preDao.update(pre), "The modified precondition has illegal attributes, commiting should not be succesfull");
+
 		String logicalOperand = "OR";
-		aut.setAutotranLogicaloperand(logicalOperand);
-		String isActive = "N";
-		aut.setAutotranIsactive(isActive);
-		assertThrows(TransactionSystemException.class, () -> autDao.update(aut), "The modified autotransition has illegal attributes, commiting should not be succesfull");
-		
-		String nonEmptyNameAut = "non_empty_name_aut_MODIFIED";
-		aut.setAutotranName(nonEmptyNameAut);
-		autDao.update(aut);
-		
-		List<Autotransition> auts = autDao.getAll();
-		
-		assertTrue(auts.size() == 1);
-		assertTrue(autDao.findAllByActive(isActive).size() == 1);
-		
-		Autotransition foundAut = autDao.findAllByName(nonEmptyNameAut).get(0);
-		Autotransition expectedAut = auts.get(0);
-		
-		assertEquals(expectedAut.getAutotranId(), foundAut.getAutotranId());
-		
-		assertEquals(expectedAut.getAutotranName(), foundAut.getAutotranName());
-		assertEquals(expectedAut.getAutotranName(), nonEmptyNameAut);
-		
-		assertEquals(expectedAut.getAutotranIsactive(), foundAut.getAutotranIsactive());
-		assertEquals(expectedAut.getAutotranIsactive(), isActive);
-		
-		assertEquals(expectedAut.getAutotranLogicaloperand(), foundAut.getAutotranLogicaloperand());
-		assertEquals(expectedAut.getAutotranLogicaloperand(), logicalOperand);
-		
-		aut = expectedAut;
+		pre.setPreconLogicaloperand(logicalOperand);
+		preDao.update(pre);
+
+		List<Precondition> pres = preDao.getAll();
+
+		assertEquals(1, pres.size());
+		//assertTrue(preDao.findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne().isEmpty()); // TODO mejorar prueba
+
+		Precondition foundPre = preDao.get(pre.getPreconId()).get();
+		Precondition expectedPre = pres.get(0);
+
+		assertEquals(expectedPre.getPreconId(), foundPre.getPreconId());
+
+		assertEquals(expectedPre.getPreconLogicaloperand(), foundPre.getPreconLogicaloperand());
+		assertEquals(expectedPre.getPreconLogicaloperand(), logicalOperand);
+
+		pre = expectedPre;
 	}
-	
+
 	@Test
 	@Order(3)
 	public void queryTest() {
-		// TODO
 		insertStuffForTesting();
-		List<Autotransition> auts = autDao.getAll();
-		assertEquals(auts.size(), 5);
-		List<Autotransition> active = autDao.findAllByActive("Y");
-		assertEquals(active.size(), 2);
-		List<Autotransition> inactive = autDao.findAllByActive("N");
-		assertEquals(inactive.size(), 3);
-		List<Autotransition> ands = autDao.findAllByLogicalOperand("AND");
-		assertEquals(ands.size(), 2);
-		List<Autotransition> ors = autDao.findAllByLogicalOperand("OR");
-		assertEquals(ors.size(), 3);
-		List<Autotransition> nms = autDao.findAllByName("AUT");
-		assertEquals(nms.size(), 2);
+		List<Precondition> pres = preDao.getAll();
+		assertEquals(3, pres.size());
+		List<Precondition> byAut = preDao.findAllByAutotransition(aut.getAutotranId());
+		assertEquals(byAut.size(), 1);
 	}
-	
+
 	@Test
 	@Order(4)
 	public void deleteTest() {
-		assertTrue(autDao.findById(aut.getAutotranId()).isPresent());
-		autDao.delete(autDao.get(aut.getAutotranId()).get());
-		assertFalse(autDao.findById(aut.getAutotranId()).isPresent());
+		assertTrue(preDao.get(pre.getPreconId()).isPresent());
+		preDao.deleteById(pre.getPreconId());
+		assertFalse(preDao.get(pre.getPreconId()).isPresent());
 	}
-	
+
 	private void insertStuffForTesting() {
-		Institution inst = new Institution();
-		inst.setInstAcademicserverurl("url2");
-		inst.setInstAcadprogrammedcoursesurl("url2");
-		String instName = "inst2";
-		inst.setInstName(instName);
-		inst = instRepo.save(inst);
-		
-		Autotransition a = new Autotransition();
-		a.setInstitution(inst);
-		a.setAutotranName("2");
-		a.setAutotranLogicaloperand("AND");
-		a.setAutotranIsactive("Y");
-		autDao.save(a);
-		
-		a = new Autotransition();
-		a.setInstitution(inst);
-		a.setAutotranName("3");
-		a.setAutotranLogicaloperand("OR");
-		a.setAutotranIsactive("N");
-		autDao.save(a);
-		
-		a = new Autotransition();
-		a.setInstitution(inst);
-		a.setAutotranName("AUT");
-		a.setAutotranLogicaloperand("OR");
-		a.setAutotranIsactive("Y");
-		autDao.save(a);
-		
-		a = new Autotransition();
-		a.setInstitution(inst);
-		a.setAutotranName("AUT");
-		a.setAutotranLogicaloperand("AND");
-		a.setAutotranIsactive("N");
-		autDao.save(a);
+		Autotransition at = new Autotransition();
+		at.setAutotranName("Aut2");
+		at.setAutotranIsactive("Y");
+		at.setAutotranLogicaloperand("AND");
+		at.setInstitution(inst);
+		autDao.save(at);
+
+		Precondition a = new Precondition();
+		a.setAutotransition(at);
+		a.setPreconLogicaloperand("AND");
+		preDao.save(a);
+
+		a = new Precondition();
+		a.setAutotransition(at);
+		a.setPreconLogicaloperand("OR");
+		preDao.save(a);
+
+		pre = a;
 	}
 }
