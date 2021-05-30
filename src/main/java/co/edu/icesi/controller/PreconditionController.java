@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import co.edu.icesi.model.Autotransition;
 import co.edu.icesi.model.Precondition;
 //import co.edu.icesi.repository.PreconditionRepositoryI; // Workshop2
 import co.edu.icesi.daos.PreconditionDao; // Workshop3
@@ -50,6 +49,7 @@ public class PreconditionController implements PreconditionControllerI {
 	@GetMapping
 	public String index(@RequestParam(required = false, value = "id") Long id, 
 			@RequestParam(required = false, value = "autotransition") Long autotransition,
+			@RequestParam(required = false, value = "complicated-query") String complicatedQuery,
 			Model model) {
 		if(id != null) {
 			ArrayList<Precondition> pres = new ArrayList<>();
@@ -59,6 +59,8 @@ public class PreconditionController implements PreconditionControllerI {
 		} else if(autotransition != null) {
 			//model.addAttribute("pres", preconditionRepository.findAllByAutotransition(autotransitionService.findById(autotransition).get().getAutotranId())); // Workshop2
 			model.addAttribute("pres", preconditionDao.findAllByAutotransition(autotransition)); // Workshop3
+		} if(complicatedQuery != null) {
+			model.addAttribute("pres", preconditionDao.findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne());
 		} else {
 			model.addAttribute("pres", preconditionService.findAll());
 		}
@@ -75,7 +77,8 @@ public class PreconditionController implements PreconditionControllerI {
 
 	@Override
 	@PostMapping("/add")
-	public String savePrecondition(@ModelAttribute("pre") @Validated Precondition pre, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action) {
+	public String savePrecondition(@ModelAttribute("pre") @Validated Precondition pre, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action, @RequestParam(value="autotransition" , required = true) Long autId) {
+		System.out.println("ME CAGO EN TODo");
 		if (!action.equals("Cancel")) {
 			if (result.hasErrors()) {
 				model.addAttribute("pre", pre);

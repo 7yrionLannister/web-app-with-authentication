@@ -17,6 +17,7 @@ public interface AutotransitionControllerI {
 			@RequestParam(required = false, value = "id") Long id,
 			@RequestParam(required = false, value = "name") String name,
 			@RequestParam(required = false, value = "active") String active,
+			@RequestParam(required = false, value = "logop") String logop,
 			Model model);
 	public String saveAutotransition1(@ModelAttribute("aut") @Validated Autotransition aut, BindingResult result, Model model, @RequestParam(value = "action", required = true) String action);
 	public String showUpdateForm(@PathVariable("id") long id, Model model);

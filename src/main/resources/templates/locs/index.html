@@ -45,7 +45,7 @@
 							<tr th:each="loc : ${locs}" th:value="${loc}">
 								<td th:text="${loc.loconId}"></td>
 								<td th:text="${loc.loconOperator}"></td>
-								<td><a th:text="${loc.loconValuetype}" th:href="@{/locs?type='{type}'(type=${loc.loconValuetype})}"></a></td>
+								<td><a th:text="${loc.loconValuetype}" th:href="@{/locs?type={type}(type=${loc.loconValuetype})}"></a></td>
 								<td><a th:text="${loc.threshold.thresName}" th:href="@{/thrs?id={id}(id=${loc.threshold.thresId})}"></a></td>
 								<td><a th:text="${loc.precondition.preconId}" th:href="@{/pres?id={id}(id=${loc.precondition.preconId})}"></a></td>
 								<td><a th:href="@{/locs/edit/{id}(id=${loc.loconId})}"

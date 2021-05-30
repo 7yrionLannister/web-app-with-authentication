@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.icesi.model.Precondition;
+
 
 @Repository
 @Scope("singleton")
@@ -67,6 +67,13 @@ public class PreconditionDao implements Dao<Precondition> {
 	public List<Precondition> findAllByAutotransition(Long autotranId) {
 		Query query = entityManager.createQuery("SELECT p FROM Precondition p WHERE p.autotransition.autotranId = :autotranId");
 		query.setParameter("autotranId", autotranId);
+		return query.getResultList();
+	}
+	
+	public List<Precondition> findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne() {
+		String q = "SELECT COUNT(*) FROM (SELECT t FROM Threshold t WHERE t.thresValue > 1 GROUP BY localconditions)";
+		//Query query = entityManager.createQuery("SELECT p FROM Precondition p WHERE p.localconditions.threshold.thresValue > 1");
+		Query query = entityManager.createQuery(q);
 		return query.getResultList();
 	}
 }

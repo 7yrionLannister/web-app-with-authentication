@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import javax.persistence.Convert;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.icesi.model.Autotransition;
-import co.edu.icesi.model.Institution;
+
 
 @Repository
 @Scope("singleton")
@@ -87,6 +88,12 @@ public class AutotransitionDao implements Dao<Autotransition> {
 	public List<Autotransition> findAllByActive(String active) {
 		Query query = entityManager.createQuery("SELECT a FROM Autotransition a WHERE a.autotranIsactive = :active");
 		query.setParameter("active", active);
+		return query.getResultList();
+	}
+	
+	public List<Autotransition> findAllByLogicalOperand(String operand) {
+		Query query = entityManager.createQuery("SELECT a FROM Autotransition a WHERE a.autotranLogicaloperand = :operand");
+		query.setParameter("operand", operand);
 		return query.getResultList();
 	}
 }

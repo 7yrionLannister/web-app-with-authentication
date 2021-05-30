@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/auts")
@@ -64,6 +65,7 @@ public class AutotransitionController implements AutotransitionControllerI {
 			@RequestParam(required = false, value = "id") Long id,
 			@RequestParam(required = false, value = "name") String name,
 			@RequestParam(required = false, value = "active") String active,
+			@RequestParam(required = false, value = "logop") String logop,
 			Model model) {
 		if(id != null) {
 			ArrayList<Autotransition> auts = new ArrayList<>();
@@ -76,6 +78,8 @@ public class AutotransitionController implements AutotransitionControllerI {
 			model.addAttribute("auts", autotransitionDao.findAllByName(name)); // Workshop3
 		} else if(active != null) {
 			model.addAttribute("auts", autotransitionDao.findAllByActive(active));
+		} else if(logop != null) {
+			model.addAttribute("auts", autotransitionDao.findAllByLogicalOperand(logop));
 		} else {
 			model.addAttribute("auts", autService.findAll());
 		}

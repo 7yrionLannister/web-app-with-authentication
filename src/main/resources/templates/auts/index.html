@@ -41,12 +41,12 @@
 						<tbody>
 							<tr th:each="aut : ${auts}" th:value="${aut}">
 								<td th:text="${aut.autotranId}"></td>
-								<td><a th:text="${aut.autotranIsactive}" th:href="@{/auts?active='{active}'(active=${aut.autotranIsactive})}"></a></td>
-								<td th:text="${aut.autotranLogicaloperand}"></td>
-								<td><a th:text="${aut.autotranName}" th:href="@{/auts?name='{name}'(name=${aut.autotranName})}"></a></td>
+								<td><a th:text="${aut.autotranIsactive}" th:href="@{/auts?active={active}(active=${aut.autotranIsactive})}"></a></td>
+								<td><a th:text="${aut.autotranLogicaloperand}" th:href="@{/auts?logop={logop}(logop=${aut.autotranLogicaloperand})}"></a></td>
+								<td><a th:text="${aut.autotranName}" th:href="@{/auts?name={name}(name=${aut.autotranName})}"></a></td>
 								<!-- <td th:text="${aut.instInstId}"></td> -->
 								<td><a th:text="${aut.institution.instName}" th:href="@{/insts?id={id}(id=${aut.institution.instId})}"></a></td>
-								<td><a th:href="@{/pres?autotransition={id}(id=${aut.autotranId})}">Go to preconditions</a></td>
+								<td><a th:href="@{/pres?autotransition={id}(id=${aut.autotranId})}">Go to preconditions</a><span>. Number of preconditions is </span><span th:text="${aut.preconditions.size()}"></span></td>
 								<td><a th:href="@{/auts/edit/{id}(id=${aut.autotranId})}"
 									class="btn btn-primary"> <i class="fas fa-edit"></i>
 								</a></td>

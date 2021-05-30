@@ -233,8 +233,8 @@ public class FernandezDanielTaller1ApplicationIntegrationTests {
 	public void editThresholdTest() {
 		String aStringToTest = "AStringToTest";
 		thresholdId.setThresName(aStringToTest);
-		thresholdId.setThresValue("");
-		thresholdId.setThresValue("");
+		thresholdId.setThresValue(""); // illegal
+		thresholdId.setThresValue(""); // illegal
 		assertThrows(TransactionSystemException.class, () -> thresholdService.editThreshold(thresholdId));
 		thresholdId.setThresName(aStringToTest);
 		thresholdId.setThresValue(aStringToTest);

@@ -48,6 +48,7 @@
               th:attrappend="selected=${pre.autotransition != null and pre.autotransition.autotranId == aut.autotranId}?'selected'"
       ></option>
   </select>
+  <br>
   <span th:if="${#fields.hasErrors('autotransition')}" th:errors="*{autotransition}" class="text-danger"></span>
   <div class="row">
     <div class="col-md-4 mt-3">
