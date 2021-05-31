@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.TransactionSystemException;
@@ -30,6 +31,7 @@ import co.edu.icesi.repository.InstitutionRepositoryI;
 @TestMethodOrder(OrderAnnotation.class)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {FernandezDanielTaller1Application.class})
+@DirtiesContext // Hace que el contexto no se cachee y las otras pruebas usen su propio contexto
 public class AutotransitionDaoTest {
 	private AutotransitionDao autDao;
 	private InstitutionRepositoryI instRepo;

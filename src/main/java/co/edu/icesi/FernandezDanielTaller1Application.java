@@ -4,8 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Scope;
-
 import co.edu.icesi.model.Autotransition;
 import co.edu.icesi.model.Institution;
 import co.edu.icesi.model.Localcondition;
@@ -124,13 +122,13 @@ public class FernandezDanielTaller1Application {
 		Threshold th = new Threshold();
 		th.setInstitution(is.findById(i1).get());
 		th.setThresName("th1");
-		th.setThresValue("thv1");
+		th.setThresValue("1");
 		th.setThresValuetype("thvt1");
 		t1 = ts.save(th).getThresId();
 		th = new Threshold();
 		th.setInstitution(is.findById(i2).get());
 		th.setThresName("th2");
-		th.setThresValue("thv2");
+		th.setThresValue("2");
 		th.setThresValuetype("thvt2");
 		t2 = ts.save(th).getThresId();
 	}
@@ -141,6 +139,12 @@ public class FernandezDanielTaller1Application {
 		lc.setThreshold(ts.findById(t1).get());
 		lc.setLoconOperator("<");
 		lc.setLoconValuetype("lcvt1");
+		ls.save(lc);
+		lc = new Localcondition();
+		lc.setPrecondition(ps.findById(p2).get());
+		lc.setThreshold(ts.findById(t2).get());
+		lc.setLoconOperator(">");
+		lc.setLoconValuetype("lcvt2");
 		ls.save(lc);
 		lc = new Localcondition();
 		lc.setPrecondition(ps.findById(p2).get());

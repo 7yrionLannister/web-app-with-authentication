@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import co.edu.icesi.model.Localcondition;
-import co.edu.icesi.model.Precondition;
-import co.edu.icesi.model.Threshold;
 
 public interface LocalconditionControllerI {
 	public String index(@RequestParam(required = false, value = "threshold") Long threshold,

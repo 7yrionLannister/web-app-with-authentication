@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import co.edu.icesi.model.Localcondition;
-import co.edu.icesi.model.Precondition;
-import co.edu.icesi.model.Threshold;
 //import co.edu.icesi.repository.LocalconditionRepositoryI; // Workshop2
 import co.edu.icesi.daos.LocalconditionDao; // Workshop3
 import co.edu.icesi.service.LocalconditionService;

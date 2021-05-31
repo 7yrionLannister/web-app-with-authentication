@@ -72,9 +72,9 @@ public class PreconditionDao implements Dao<Precondition> {
 	}
 	
 	public List<Precondition> findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne() {
-		//String q = "SELECT COUNT(*) FROM (SELECT t FROM Threshold t WHERE t.thresValue > 1 GROUP BY localconditions)"; // FIXME repasa bases y haz esto, o te jodes
-		Query query = entityManager.createQuery("SELECT p FROM Precondition p");
-		//Query query = entityManager.createQuery(q); // FIXME
+		//String q = "SELECT p FROM Precondition p WHERE p.preconId <> (SELECT l.precondition FROM Localcondition l WHERE l.threshold.thresValue > 1 GROUP BY l.precondition HAVING count(*) >= 2).precondition.preconId";
+		String q = "SELECT l.precondition FROM Localcondition l WHERE l.threshold.thresValue > 1 GROUP BY l.precondition HAVING count(*) >= 2";
+		Query query = entityManager.createQuery(q);
 		return query.getResultList();
 	}
 }

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import co.edu.icesi.model.Autotransition;
 import co.edu.icesi.model.Precondition;
 
 public interface PreconditionControllerI {

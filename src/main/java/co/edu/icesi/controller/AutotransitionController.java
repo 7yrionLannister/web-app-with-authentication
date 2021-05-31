@@ -1,7 +1,6 @@
 package co.edu.icesi.controller;
 
 import co.edu.icesi.model.Autotransition;
-import co.edu.icesi.model.Institution;
 //import co.edu.icesi.repository.AutotransitionRepositoryI; // Workshop2
 import co.edu.icesi.daos.AutotransitionDao; // Workshop3
 import co.edu.icesi.service.AutotransitionService;
@@ -15,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/auts")

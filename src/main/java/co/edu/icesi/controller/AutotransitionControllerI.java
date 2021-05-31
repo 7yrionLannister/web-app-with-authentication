@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import co.edu.icesi.model.Autotransition;
-import co.edu.icesi.model.Institution;
 
 public interface AutotransitionControllerI {
 	public String addAutotransition(Model model, @ModelAttribute("aut") Autotransition aut);
