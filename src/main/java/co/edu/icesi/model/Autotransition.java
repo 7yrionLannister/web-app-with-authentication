@@ -4,6 +4,9 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +85,7 @@ public class Autotransition implements Serializable {
 
 	//bi-directional many-to-one association to Precondition
 	@OneToMany(mappedBy="autotransition")
+	@JsonIgnore
 	private List<Precondition> preconditions;
 
 	public Autotransition() {

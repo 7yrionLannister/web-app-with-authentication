@@ -4,6 +4,8 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 /**
@@ -27,6 +29,7 @@ public class Institution implements Serializable {
 	 * a nivel de base de datos relacional.
 	 * */
 	@OneToMany(mappedBy="institution")
+	@JsonIgnore
 	private List<Autotransition> autotransitions;
 	
 	public List<Autotransition> getAutotransitions() {
@@ -38,6 +41,7 @@ public class Institution implements Serializable {
 	}
 	
 	@OneToMany(mappedBy="institution")
+	@JsonIgnore
 	private List<Userr> userrs;
 	
 	public List<Userr> getUserrs() {
@@ -49,6 +53,7 @@ public class Institution implements Serializable {
 	}
 	
 	@OneToMany(mappedBy="institution")
+	@JsonIgnore
 	private List<Threshold> thresholds;
 	
 	public List<Threshold> getThresholds() {

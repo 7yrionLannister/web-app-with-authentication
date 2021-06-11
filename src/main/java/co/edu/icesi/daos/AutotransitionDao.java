@@ -9,11 +9,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.icesi.model.Autotransition;
-
 
 @Repository
 @Scope("singleton")
