@@ -2,6 +2,7 @@ package co.edu.icesi.front.controller;
 
 import java.util.ArrayList;
 
+import co.edu.icesi.front.businessdelegate.BusinessDelgateI;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,29 +14,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import co.edu.icesi.back.model.Precondition;
-//import co.edu.icesi.back.repository.PreconditionRepositoryI; // Workshop2
-import co.edu.icesi.back.daos.PreconditionDao; // Workshop3
-import co.edu.icesi.back.service.AutotransitionService;
-import co.edu.icesi.back.service.PreconditionService;
-
+import co.edu.icesi.front.model.Precondition;
 
 @Controller
 @RequestMapping("pres")
 public class PreconditionController implements PreconditionControllerI {
 
-	private PreconditionService preconditionService;
-	//private PreconditionRepositoryI preconditionRepository; // Workshop2
-	private PreconditionDao preconditionDao; // Workshop3
-	private AutotransitionService autotransitionService;
+	private BusinessDelgateI bd;
+
 	private ArrayList<String> logicalOperands;
 
 	// @Autowired solo se necesita cuando hay varios constructores, ponerlo solo es costumbre
-	//public PreconditionController(PreconditionService preconditionService, PreconditionRepositoryI preconditionRepository, AutotransitionService autotransitionService) { // Workshop2
-	public PreconditionController(PreconditionService preconditionService, PreconditionDao preconditionDao, AutotransitionService autotransitionService) { // Workshop3
-		this.preconditionService = preconditionService;
-		this.autotransitionService = autotransitionService;
-		this.preconditionDao = preconditionDao;
+
+	public PreconditionController(BusinessDelgateI bd) { // Workshop3
+		this.bd = bd;
 		logicalOperands = new ArrayList<>();
 		logicalOperands.add("AND");
 		logicalOperands.add("OR");
@@ -54,15 +46,15 @@ public class PreconditionController implements PreconditionControllerI {
 		if(id != null) {
 			ArrayList<Precondition> pres = new ArrayList<>();
 			//pres.add(preconditionRepository.findById(id).get()); // Workshop2
-			pres.add(preconditionDao.get(id).get()); // Workshop3
+			pres.add(bd.precondition_get(id)); // Workshop3
 			model.addAttribute("pres", pres);
 		} else if(autotransition != null) {
 			//model.addAttribute("pres", preconditionRepository.findAllByAutotransition(autotransitionService.findById(autotransition).get().getAutotranId())); // Workshop2
-			model.addAttribute("pres", preconditionDao.findAllByAutotransition(autotransition)); // Workshop3
+			model.addAttribute("pres", bd.precondition_findAllByAutotransition(autotransition)); // Workshop3
 		} if(complicatedQuery != null) {
-			model.addAttribute("pres", preconditionDao.findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne());
+			model.addAttribute("pres", bd.precondition_findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne());
 		} else {
-			model.addAttribute("pres", preconditionService.findAll());
+			model.addAttribute("pres", bd.precondition_findAll());
 		}
 		return "pres/index";
 	}
@@ -70,7 +62,7 @@ public class PreconditionController implements PreconditionControllerI {
 	@Override
 	@GetMapping("/add")
 	public String addPreconditionForm(Model model, @ModelAttribute("pre") Precondition pre) {
-		model.addAttribute("auts", autotransitionService.findAll());
+		model.addAttribute("auts", bd.autotransition_findAll());
 		model.addAttribute("logicalOperands", logicalOperands);
 		return "pres/add-pre";
 	}
@@ -81,11 +73,11 @@ public class PreconditionController implements PreconditionControllerI {
 		if (!action.equals("Cancel")) {
 			if (result.hasErrors()) {
 				model.addAttribute("pre", pre);
-				model.addAttribute("auts", autotransitionService.findAll());
+				model.addAttribute("auts", bd.autotransition_findAll());
 				model.addAttribute("logicalOperands", logicalOperands);
 				return "pres/add-pre";
 			}
-			preconditionService.save(pre);
+			bd.precondition_save(pre);
 		}
 		return "redirect:/pres/";
 	}
@@ -93,17 +85,17 @@ public class PreconditionController implements PreconditionControllerI {
 	@Override
 	@GetMapping("/del/{id}")
 	public String deletePrecondition(@PathVariable("id") long id, Model model) {
-		Precondition pre = preconditionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid pre Id:" + id));
-		preconditionService.delete(pre);
+		Precondition pre = bd.precondition_findById(id);
+		bd.precondition_delete(pre);
 		return "redirect:/pres/";
 	}
 
 	@Override
 	@GetMapping("/edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
-		Precondition pre = preconditionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid pre Id:" + id));
+		Precondition pre = bd.precondition_findById(id);
 		model.addAttribute("pre", pre);
-		model.addAttribute("auts", autotransitionService.findAll());
+		model.addAttribute("auts", bd.autotransition_findAll());
 		model.addAttribute("logicalOperands", logicalOperands);
 		return "pres/update-pre";
 	}
@@ -114,11 +106,11 @@ public class PreconditionController implements PreconditionControllerI {
 			@ModelAttribute("pre") @Validated Precondition pre, BindingResult bindingResult, Model model) {
 		if (action != null && !action.equals("Cancel")) {
 			if (bindingResult.hasErrors()) {
-				model.addAttribute("auts", autotransitionService.findAll());
+				model.addAttribute("auts", bd.autotransition_findAll());
 				model.addAttribute("logicalOperands", logicalOperands);
 				return "pres/update-pre";
 			}
-			preconditionService.save(pre);
+			bd.precondition_save(pre);
 		}
 		return "redirect:/pres/";
 	}
