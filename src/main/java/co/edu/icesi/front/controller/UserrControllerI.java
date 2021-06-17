@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import co.edu.icesi.back.model.Institution;
-import co.edu.icesi.back.model.Userr;
+import co.edu.icesi.front.model.Institution;
+import co.edu.icesi.front.model.Userr;
 
 public interface UserrControllerI {
 	public String addUser(Model model);

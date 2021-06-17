@@ -2,6 +2,7 @@ package co.edu.icesi.front.controller;
 
 import java.util.ArrayList;
 
+import co.edu.icesi.front.businessdelegate.BusinessDelgateI;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,29 +14,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import co.edu.icesi.back.model.Institution;
-import co.edu.icesi.back.model.Threshold;
-//import co.edu.icesi.back.repository.ThresholdRepositoryI; // Workshop2
-import co.edu.icesi.back.daos.ThresholdDao; // Workshop3
-import co.edu.icesi.back.service.InstitutionService;
-import co.edu.icesi.back.service.ThresholdService;
+import co.edu.icesi.front.model.Institution;
+import co.edu.icesi.front.model.Threshold;
 
 
 @Controller
 @RequestMapping("thrs")
 public class ThresholdController implements ThresholdControllerI {
 
-	private ThresholdService thresholdService;
-	//private ThresholdRepositoryI thresholdRepository; // Workshop2
-	private ThresholdDao thresholdDao; // Workshop3
-	private InstitutionService institutionService;
+	private BusinessDelgateI bd;
 
 	// @Autowired solo se necesita cuando hay varios constructores, ponerlo solo es costumbre
-	//public ThresholdController(ThresholdService thresholdService, ThresholdRepositoryI thresholdRepository, InstitutionService institutionService) { // Workshop2
-	public ThresholdController(ThresholdService thresholdService, ThresholdDao thresholdDao, InstitutionService institutionService) { // Workshop3
-		this.thresholdService = thresholdService;
-		this.institutionService = institutionService;
-		this.thresholdDao = thresholdDao;
+
+	public ThresholdController(BusinessDelgateI bd) {
+		this.bd	= bd;
 	}
 
 	@Override
@@ -48,20 +40,19 @@ public class ThresholdController implements ThresholdControllerI {
 			Model model) {
 		if(id != null) {
 			ArrayList<Threshold> thrs = new ArrayList<>();
-			//thrs.add(thresholdRepository.findById(id).get()); // Workshop2
-			thrs.add(thresholdDao.get(id).get()); // Workshop3
+			thrs.add(bd.getThreshold(id));
 			model.addAttribute("thrs", thrs);
 		} else if(institution != null) {
-			//model.addAttribute("thrs", thresholdRepository.findAllByInstitution(institution)); // Workshop2
-			model.addAttribute("thrs", thresholdDao.findAllByInstitution(institution.getInstId())); // Workshop3
+
+			model.addAttribute("thrs", bd.threshold_findAllByInstitution(institution.getInstId())); // Workshop3
 		} else if(name != null) {
-			model.addAttribute("thrs", thresholdDao.findAllByName(name));
+			model.addAttribute("thrs", bd.threshold_findAllByName(name));
 		} else if(value != null) {
-			model.addAttribute("thrs", thresholdDao.findAllByValue(value));
+			model.addAttribute("thrs", bd.threshold_findAllByValue(value));
 		} else if(type != null) {
-			model.addAttribute("thrs", thresholdDao.findAllByType(type));
+			model.addAttribute("thrs", bd.threshold_findAllByType(type));
 		} else {
-			model.addAttribute("thrs", thresholdService.findAll());
+			model.addAttribute("thrs", bd.threshold_findAll());
 		}
 		return "thrs/index";
 	}
@@ -69,7 +60,7 @@ public class ThresholdController implements ThresholdControllerI {
 	@Override
 	@GetMapping("/add")
 	public String addThresholdForm(Model model, @ModelAttribute("thr") Threshold thr) {
-		model.addAttribute("insts", institutionService.findAll());
+		model.addAttribute("insts", bd.institution_findAll());
 		return "thrs/add-thr";
 	}
 
@@ -79,10 +70,10 @@ public class ThresholdController implements ThresholdControllerI {
 		if (!action.equals("Cancel")) {
 			if (result.hasErrors()) {
 				model.addAttribute("thr", thr);
-				model.addAttribute("insts", institutionService.findAll());
+				model.addAttribute("insts", bd.institution_findAll());
 				return "thrs/add-thr";
 			}
-			thresholdService.save(thr);
+			bd.threshold_save(thr);
 		}
 		return "redirect:/thrs/";
 	}
@@ -90,17 +81,17 @@ public class ThresholdController implements ThresholdControllerI {
 	@Override
 	@GetMapping("/del/{id}")
 	public String deleteThreshold(@PathVariable("id") long id, Model model) {
-		Threshold thr = thresholdService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid thr Id:" + id));
-		thresholdService.delete(thr);
+		Threshold thr = bd.threshold_findById(id);
+		bd.threshold_delete(thr);
 		return "redirect:/thrs/";
 	}
 
 	@Override
 	@GetMapping("/edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
-		Threshold thr = thresholdService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid thr Id:" + id));
+		Threshold thr = bd.threshold_findById(id);
 		model.addAttribute("thr", thr);
-		model.addAttribute("insts", institutionService.findAll());
+		model.addAttribute("insts", bd.institution_findAll());
 		return "thrs/update-thr";
 	}
 
@@ -110,10 +101,10 @@ public class ThresholdController implements ThresholdControllerI {
 			@ModelAttribute("thr") @Validated Threshold thr, BindingResult bindingResult, Model model) {
 		if (action != null && !action.equals("Cancel")) {
 			if (bindingResult.hasErrors()) {
-				model.addAttribute("insts", institutionService.findAll());
+				model.addAttribute("insts", bd.institution_findAll());
 				return "thrs/update-thr";
 			}
-			thresholdService.save(thr);
+			bd.threshold_save(thr);
 		}
 		return "redirect:/thrs/";
 	}
