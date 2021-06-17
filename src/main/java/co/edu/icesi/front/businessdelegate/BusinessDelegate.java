@@ -31,7 +31,7 @@ public class BusinessDelegate implements BusinessDelgateI {
         this.restTemplate = new RestTemplate();
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_JSON));
         messageConverters.add(converter);
         this.restTemplate.setMessageConverters(messageConverters);
     }
@@ -80,6 +80,11 @@ public class BusinessDelegate implements BusinessDelgateI {
     public Localcondition saveLocalcondition(Localcondition loc) {
         HttpEntity<Localcondition> request = new HttpEntity<>(loc);
         return restTemplate.postForObject(LOC_URL, request, Localcondition.class);
+    }
+
+    @Override
+    public void editLocalCondition(Localcondition loc){
+        restTemplate.put(LOC_URL+loc.getLoconId(), loc, Localcondition.class);
     }
 
     // THRESHOLD -------------------------------------------------------------------------------------------------------
@@ -131,6 +136,10 @@ public class BusinessDelegate implements BusinessDelgateI {
         restTemplate.delete(LOC_URL+thr.getThresId());
     }
 
+    @Override
+    public void editThreshold(Threshold loc){
+        restTemplate.put(THR_URL+loc.getThresId(), loc, Threshold.class);
+    }
 
     // INSTITUTION -----------------------------------------------------------------------------------------------------
 
@@ -162,6 +171,10 @@ public class BusinessDelegate implements BusinessDelgateI {
         restTemplate.delete(INST_URL+inst.getInstId());
     }
 
+    @Override
+    public void editInstitution(Institution loc){
+        restTemplate.put(INST_URL+loc.getInstId(), loc, Institution.class);
+    }
 
     //PRECONDITION -----------------------------------------------------------------------------------------------------
 
@@ -201,6 +214,11 @@ public class BusinessDelegate implements BusinessDelgateI {
     @Override
     public Precondition precondition_findById(long id) {
         return restTemplate.getForObject(PRE_URL+id, Precondition.class);
+    }
+
+    @Override
+    public void editPrecondition(Precondition loc){
+        restTemplate.put(PRE_URL+loc.getPreconId(), loc, Precondition.class);
     }
 
 
@@ -249,6 +267,11 @@ public class BusinessDelegate implements BusinessDelgateI {
         return restTemplate.postForObject(AUT_URL, request, Autotransition.class);
     }
 
+    @Override
+    public void editAutotransition(Autotransition loc){
+        restTemplate.put(AUT_URL+loc.getAutotranId(), loc, Autotransition.class);
+    }
+
 
     //USER -------------------------------------------------------------------------------------------------------------
 
@@ -278,5 +301,10 @@ public class BusinessDelegate implements BusinessDelgateI {
     @Override
     public List<Institution> user_findAllByInstitution(Institution institution) {
         return null;
+    }
+
+    @Override
+    public void editUser(Userr loc){
+        restTemplate.put(USER_URL+loc.getUserId(), loc, Userr.class);
     }
 }

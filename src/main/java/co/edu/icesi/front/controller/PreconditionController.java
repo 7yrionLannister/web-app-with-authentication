@@ -110,7 +110,7 @@ public class PreconditionController implements PreconditionControllerI {
 				model.addAttribute("logicalOperands", logicalOperands);
 				return "pres/update-pre";
 			}
-			bd.precondition_save(pre);
+			bd.editPrecondition(pre);
 		}
 		return "redirect:/pres/";
 	}

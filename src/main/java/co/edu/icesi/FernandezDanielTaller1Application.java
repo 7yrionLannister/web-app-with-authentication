@@ -17,6 +17,10 @@ import co.edu.icesi.back.service.LocalconditionService;
 import co.edu.icesi.back.service.PreconditionService;
 import co.edu.icesi.back.service.ThresholdService;
 import co.edu.icesi.back.service.UserrService;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+
+import java.util.List;
 
 
 @SpringBootApplication//(exclude = {SecurityAutoConfiguration.class})
@@ -153,4 +157,5 @@ public class FernandezDanielTaller1Application {
 		lc.setLoconValuetype("lcvt2");
 		ls.save(lc);
 	}
+
 }

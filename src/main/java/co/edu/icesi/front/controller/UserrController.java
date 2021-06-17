@@ -94,7 +94,7 @@ public class UserrController implements UserrControllerI {
             if(user.getUserPassword().isEmpty()){ // si la contrasenia fue dejada vacia se pone lo que hay en la base de datos
                 user.setUserPassword(bd.user_findById(id).getUserPassword());
             }
-            bd.user_save(user);
+            bd.editUser(user);
         }
         return "redirect:/users/";
     }

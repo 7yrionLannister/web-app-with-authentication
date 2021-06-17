@@ -111,7 +111,7 @@ public class AutotransitionController implements AutotransitionControllerI {
 				model.addAttribute("insts", businessDelegate.findAllInstitutions());
 				return "auts/update-aut";
 			}
-			businessDelegate.saveAutotransition(aut);
+			businessDelegate.editAutotransition(aut);
 		}
 		return "redirect:/auts/";
 	}

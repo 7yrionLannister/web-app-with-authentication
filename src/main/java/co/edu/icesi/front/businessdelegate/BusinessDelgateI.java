@@ -16,6 +16,7 @@ public interface BusinessDelgateI {
     Localcondition findLocalconditionById(long id);
     void deleteLocalcondition(Localcondition loc);
     Localcondition saveLocalcondition(Localcondition loc);
+    void editLocalCondition(Localcondition loc);
 
     //THRESHOLD
 
@@ -28,7 +29,7 @@ public interface BusinessDelgateI {
     Threshold threshold_save(Threshold threshold);
     Threshold threshold_findById(long id);
     void threshold_delete(Threshold thr);
-
+    void editThreshold(Threshold loc);
 
 
     // INSTITUTION
@@ -38,6 +39,7 @@ public interface BusinessDelgateI {
     Institution findInstitutionById(Long id);
     Institution saveInstitution(Institution inst);
     void deleteInstitution(Institution inst);
+    void editInstitution(Institution loc);
 
 
     //PRECONDITION
@@ -49,6 +51,7 @@ public interface BusinessDelgateI {
     Precondition precondition_save(Precondition pre);
     void precondition_delete(Precondition pre);
     Precondition precondition_findById(long id);
+    void editPrecondition(Precondition loc);
 
 
     // AUTOTRANSITION
@@ -61,6 +64,7 @@ public interface BusinessDelgateI {
     List<Autotransition> findAllAutotransitionsByLogicalOperand(String logop);
     List<Autotransition> findAllAutotransitions();
     Autotransition saveAutotransition(Autotransition aut);
+    void editAutotransition(Autotransition loc);
 
     // USER
 
@@ -69,4 +73,5 @@ public interface BusinessDelgateI {
     Userr user_save(Userr user);
     List<Userr> user_findAll();
     List<Institution> user_findAllByInstitution(Institution institution);
+    void editUser(Userr loc);
 }

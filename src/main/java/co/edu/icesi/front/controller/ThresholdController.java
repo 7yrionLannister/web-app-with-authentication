@@ -104,7 +104,7 @@ public class ThresholdController implements ThresholdControllerI {
 				model.addAttribute("insts", bd.institution_findAll());
 				return "thrs/update-thr";
 			}
-			bd.threshold_save(thr);
+			bd.editThreshold(thr);
 		}
 		return "redirect:/thrs/";
 	}

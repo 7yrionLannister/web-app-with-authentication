@@ -85,7 +85,7 @@ public class InstitutionController implements InstitutionControllerI {
 			if (bindingResult.hasErrors()) {
 				return "insts/update-inst";
 			}
-			businessDelegate.saveInstitution(inst);
+			businessDelegate.editInstitution(inst);
 		}
 		return "redirect:/insts/";
 	}

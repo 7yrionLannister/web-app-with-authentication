@@ -115,7 +115,7 @@ public class LocalconditionController implements LocalconditionControllerI {
 				model.addAttribute("ops", operators);
 				return "locs/update-loc";
 			}
-			businessDelegate.saveLocalcondition(loc);
+			businessDelegate.editLocalCondition(loc);
 		}
 		return "redirect:/locs/";
 	}
