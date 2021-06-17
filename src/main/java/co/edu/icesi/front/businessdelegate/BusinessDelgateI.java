@@ -15,7 +15,7 @@ public interface BusinessDelgateI {
     List<Localcondition> findAllLocalconditions();
     Localcondition findLocalconditionById(long id);
     void deleteLocalcondition(Localcondition loc);
-    void saveLocalcondition(Localcondition loc);
+    Localcondition saveLocalcondition(Localcondition loc);
 
     //THRESHOLD
 
@@ -36,7 +36,7 @@ public interface BusinessDelgateI {
     List<Institution> institution_findAll();
     List<Institution> findAllInstitutions();
     Institution findInstitutionById(Long id);
-    void saveInstitution(Institution inst);
+    Institution saveInstitution(Institution inst);
     void deleteInstitution(Institution inst);
 
 
@@ -60,7 +60,7 @@ public interface BusinessDelgateI {
     List<Autotransition> findAllAutotransitionsByActive(String active);
     List<Autotransition> findAllAutotransitionsByLogicalOperand(String logop);
     List<Autotransition> findAllAutotransitions();
-    void saveAutotransition(Autotransition aut);
+    Autotransition saveAutotransition(Autotransition aut);
 
     // USER
 
