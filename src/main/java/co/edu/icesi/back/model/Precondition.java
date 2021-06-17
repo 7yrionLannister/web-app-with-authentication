@@ -1,5 +1,7 @@
 package co.edu.icesi.back.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -28,6 +30,7 @@ public class Precondition implements Serializable {
 	private String preconLogicaloperand;
 
 	//bi-directional many-to-one association to Localcondition
+	@JsonIgnore
 	@OneToMany(mappedBy="precondition")
 	private List<Localcondition> localconditions;
 
@@ -38,6 +41,7 @@ public class Precondition implements Serializable {
 	private Autotransition autotransition;
 
 	//bi-directional many-to-one association to Remotecondition
+	@JsonIgnore
 	@OneToMany(mappedBy="precondition")
 	private List<Remotecondition> remoteconditions;
 

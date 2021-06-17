@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 public class BusinessDelegate implements BusinessDelgateI {
 
-    private final static String URL = "https://localhost:8080/api";
+    private final static String URL = "http://localhost:8080/api";
     private final static String AUT_URL = URL + "/autotransitions/";
     private final static String INST_URL = URL + "/institutions/";
     private final static String USER_URL = URL + "/userrs/";
