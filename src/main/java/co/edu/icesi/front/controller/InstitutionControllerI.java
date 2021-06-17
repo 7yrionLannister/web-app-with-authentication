@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import co.edu.icesi.back.model.Institution;
+import co.edu.icesi.front.model.Institution;
 
 public interface InstitutionControllerI {
 	public String index(@RequestParam(required = false, value = "id") Long id, Model model);

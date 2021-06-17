@@ -1,10 +1,7 @@
 package co.edu.icesi.front.controller;
 
-import co.edu.icesi.back.model.Autotransition;
-//import co.edu.icesi.back.repository.AutotransitionRepositoryI; // Workshop2
-import co.edu.icesi.back.daos.AutotransitionDao; // Workshop3
-import co.edu.icesi.back.service.AutotransitionService;
-import co.edu.icesi.back.service.InstitutionService;
+import co.edu.icesi.front.businessdelegate.BusinessDelegate;
+import co.edu.icesi.front.model.Autotransition;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,19 +16,13 @@ import java.util.ArrayList;
 @RequestMapping("/auts")
 public class AutotransitionController implements AutotransitionControllerI {
 
-	private AutotransitionService autService;
-	//private AutotransitionRepositoryI autotransitionRepository; // Workshop2
-	private AutotransitionDao autotransitionDao; // Workshop3
-	private InstitutionService institutionService;
 	private ArrayList<String> logicalOperands;
 
 	@Autowired
+	private BusinessDelegate businessDelegate;
+
 	//public AutotransitionController(AutotransitionService autService, AutotransitionRepositoryI autotransitionRepository, InstitutionService institutionService) { // Workshop2
-	public AutotransitionController(AutotransitionService autService, AutotransitionDao autotransitionDao, InstitutionService institutionService) { // Workshop3
-		this.autService = autService;
-		this.institutionService = institutionService;
-		//this.autotransitionRepository = autotransitionRepository; // Workshop2
-		this.autotransitionDao = autotransitionDao; // Workshop3
+	public AutotransitionController() { // Workshop3
 		logicalOperands = new ArrayList<>();
 		logicalOperands.add("AND");
 		logicalOperands.add("OR");
@@ -45,15 +36,15 @@ public class AutotransitionController implements AutotransitionControllerI {
 	@GetMapping("/add")
 	public String addAutotransition(Model model, @ModelAttribute("aut") Autotransition aut) {
 		model.addAttribute("logicalOperands", logicalOperands);
-		model.addAttribute("insts", institutionService.findAll());
+		model.addAttribute("insts", businessDelegate.findAllInstitutions());
 		return "/auts/add-aut";
 	}
 
 	@Override
 	@GetMapping("/del/{id}")
 	public String deleteAutotransition(@PathVariable("id") long id, Model model) {
-		Autotransition aut = autService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid aut Id:" + id));
-		autService.delete(aut);
+		Autotransition aut = businessDelegate.findAutotransitionById(id);
+		businessDelegate.deleteAutotransition(aut);
 		return "redirect:/auts/";
 	}
 
@@ -67,19 +58,19 @@ public class AutotransitionController implements AutotransitionControllerI {
 			Model model) {
 		if(id != null) {
 			ArrayList<Autotransition> auts = new ArrayList<>();
-			auts.add(autService.findById(id).get());
+			auts.add(businessDelegate.findAutotransitionById(id));
 			model.addAttribute("auts", auts);
 		} else if(institutionId != null) {
 			//model.addAttribute("auts", autotransitionRepository.findAllByInstitution(institution)); // Workshop2
-			model.addAttribute("auts", autotransitionDao.findAllByInstitutionInstId(institutionId)); // Workshop3
+			model.addAttribute("auts", businessDelegate.findAllAutotransitionsByInstitutionInstId(institutionId)); // Workshop3
 		} else if(name != null) {
-			model.addAttribute("auts", autotransitionDao.findAllByName(name)); // Workshop3
+			model.addAttribute("auts", businessDelegate.findAllAutotransitionsByName(name)); // Workshop3
 		} else if(active != null) {
-			model.addAttribute("auts", autotransitionDao.findAllByActive(active));
+			model.addAttribute("auts", businessDelegate.findAllAutotransitionsByActive(active));
 		} else if(logop != null) {
-			model.addAttribute("auts", autotransitionDao.findAllByLogicalOperand(logop));
+			model.addAttribute("auts", businessDelegate.findAllAutotransitionsByLogicalOperand(logop));
 		} else {
-			model.addAttribute("auts", autService.findAll());
+			model.addAttribute("auts", businessDelegate.findAllAutotransitions());
 		}
 		return "/auts/index";
 	}
@@ -91,10 +82,10 @@ public class AutotransitionController implements AutotransitionControllerI {
 			if (result.hasErrors()) {
 				model.addAttribute("aut", aut);
 				model.addAttribute("logicalOperands", logicalOperands);
-				model.addAttribute("insts", institutionService.findAll());
+				model.addAttribute("insts", businessDelegate.findAllInstitutions());
 				return "/auts/add-aut";
 			}
-			autService.save(aut);
+			businessDelegate.saveAutotransition(aut);
 		}
 		return "redirect:/auts/";
 	}
@@ -102,11 +93,11 @@ public class AutotransitionController implements AutotransitionControllerI {
 	@Override
 	@GetMapping("/edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
-		Autotransition aut = autService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid aut Id:" + id));
+		Autotransition aut = businessDelegate.findAutotransitionById(id);
 		//u.setPassword(null);
 		model.addAttribute("aut", aut);
 		model.addAttribute("logicalOperands", logicalOperands);
-		model.addAttribute("insts", institutionService.findAll());
+		model.addAttribute("insts", businessDelegate.findAllInstitutions());
 		return "/auts/update-aut";
 	}
 
@@ -117,10 +108,10 @@ public class AutotransitionController implements AutotransitionControllerI {
 		if (action != null && !action.equals("Cancel")) {
 			if (bindingResult.hasErrors()) {
 				model.addAttribute("logicalOperands", logicalOperands);
-				model.addAttribute("insts", institutionService.findAll());
+				model.addAttribute("insts", businessDelegate.findAllInstitutions());
 				return "auts/update-aut";
 			}
-			autService.save(aut);
+			businessDelegate.saveAutotransition(aut);
 		}
 		return "redirect:/auts/";
 	}

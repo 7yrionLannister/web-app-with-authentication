@@ -1,5 +1,9 @@
 package co.edu.icesi.front.businessdelegate;
 
+import org.springframework.stereotype.Component;
+
+
+@Component
 public class BusinessDelegate implements BusinessDelgateI {
     private final static String URL = "https://localhost:8080/api";
     private final static String AUT_URL = URL + "/autotransitions";

@@ -1,13 +1,14 @@
 package co.edu.icesi.front.controller;
 
+import co.edu.icesi.front.model.Userr;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import co.edu.icesi.back.model.Userr;
 
 @Controller
 public class LoginController implements LoginControllerI {
+
 	@Override
 	@GetMapping("/login")
 	public String customLogin(Model model) {

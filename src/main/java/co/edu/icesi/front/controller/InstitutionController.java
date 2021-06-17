@@ -1,6 +1,10 @@
 package co.edu.icesi.front.controller;
 
 import java.util.ArrayList;
+
+import co.edu.icesi.front.businessdelegate.BusinessDelegate;
+import co.edu.icesi.front.model.Institution;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,32 +16,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import co.edu.icesi.back.model.Institution;
-import co.edu.icesi.back.repository.InstitutionRepositoryI;
-import co.edu.icesi.back.service.InstitutionService;
-
 
 @Controller
 @RequestMapping("insts")
 public class InstitutionController implements InstitutionControllerI {
 
-	private InstitutionService institutionService;
-	private InstitutionRepositoryI institutionRepository;
+	@Autowired
+	private BusinessDelegate businessDelegate;
 
 	// @Autowired solo se necesita cuando hay varios constructores, ponerlo solo es costumbre
-	public InstitutionController(InstitutionService institutionService, InstitutionRepositoryI institutionRepository) {
-		this.institutionService = institutionService;
-		this.institutionRepository = institutionRepository;
+	public InstitutionController() {
 	}
 
 	@Override
 	@GetMapping
 	public String index(@RequestParam(required = false, value = "id") Long id, Model model) {
 		if(id == null) {
-			model.addAttribute("insts", institutionService.findAll());
+			model.addAttribute("insts", businessDelegate.findAllInstitutions());
 		} else {
 			ArrayList<Institution> insts = new ArrayList<>();
-			insts.add(institutionRepository.findById(id).get());
+			insts.add(businessDelegate.findInstitutionById(id));
 			model.addAttribute("insts", insts);
 		}
 		return "insts/index";
@@ -58,7 +56,7 @@ public class InstitutionController implements InstitutionControllerI {
 				model.addAttribute("inst", inst);
 				return "insts/add-inst";
 			}
-			institutionService.save(inst);
+			businessDelegate.saveInstitution(inst);
 		}
 		return "redirect:/insts/";
 	}
@@ -66,15 +64,15 @@ public class InstitutionController implements InstitutionControllerI {
 	@Override
 	@GetMapping("/del/{id}")
 	public String deleteInstitution(@PathVariable("id") long id, Model model) {
-		Institution inst = institutionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid inst Id:" + id));
-		institutionService.delete(inst);
+		Institution inst = businessDelegate.findInstitutionById(id);
+		businessDelegate.deleteInstitution(inst);
 		return "redirect:/insts/";
 	}
 
 	@Override
 	@GetMapping("/edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
-		Institution inst = institutionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid inst Id:" + id));
+		Institution inst = businessDelegate.findInstitutionById(id);
 		model.addAttribute("inst", inst);
 		return "insts/update-inst";
 	}
@@ -87,7 +85,7 @@ public class InstitutionController implements InstitutionControllerI {
 			if (bindingResult.hasErrors()) {
 				return "insts/update-inst";
 			}
-			institutionService.save(inst);
+			businessDelegate.saveInstitution(inst);
 		}
 		return "redirect:/insts/";
 	}

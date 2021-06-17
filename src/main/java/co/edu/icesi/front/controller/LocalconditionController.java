@@ -2,6 +2,9 @@ package co.edu.icesi.front.controller;
 
 import java.util.ArrayList;
 
+import co.edu.icesi.front.model.Localcondition;
+import co.edu.icesi.front.businessdelegate.BusinessDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,33 +16,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import co.edu.icesi.back.model.Localcondition;
-//import co.edu.icesi.back.repository.LocalconditionRepositoryI; // Workshop2
-import co.edu.icesi.back.daos.LocalconditionDao; // Workshop3
-import co.edu.icesi.back.service.LocalconditionService;
-import co.edu.icesi.back.service.PreconditionService;
-import co.edu.icesi.back.service.ThresholdService;
-
 
 @Controller
 @RequestMapping("locs")
 public class LocalconditionController implements LocalconditionControllerI {
 
-	private LocalconditionService localconditionService;
-	//private LocalconditionRepositoryI localconditionRepository; // Workshop2
-	private LocalconditionDao localconditionDao; // Workshop3
-	private PreconditionService preconditionService;
-	private ThresholdService thresholdService;
+	@Autowired
+	private BusinessDelegate businessDelegate;
+
 	private ArrayList<String> operators;
 
 	// @Autowired solo se necesita cuando hay varios constructores, ponerlo solo es costumbre
 	//public LocalconditionController(LocalconditionService localconditionService, LocalconditionRepositoryI localconditionRepository, PreconditionService preconditionService, ThresholdService thresholdService) { // Workshop2
-	public LocalconditionController(LocalconditionService localconditionService, LocalconditionDao localconditionDao, PreconditionService preconditionService, ThresholdService thresholdService) { // Workshop3
-		this.localconditionService = localconditionService;
-		//this.localconditionRepository = localconditionRepository; // Workshop2
-		this.localconditionDao = localconditionDao; // Workshop3
-		this.preconditionService = preconditionService;
-		this.thresholdService = thresholdService;
+	public LocalconditionController() { // Workshop3
 		operators = new ArrayList<>();
 		operators.add(">");
 		operators.add(">=");
@@ -57,16 +46,16 @@ public class LocalconditionController implements LocalconditionControllerI {
 			Model model) {
 		if(threshold != null) {
 			//model.addAttribute("locs", localconditionRepository.findAllByThreshold(thresholdService.findById(threshold).get().getThresId())); // Workshop2
-			model.addAttribute("locs", localconditionDao.findAllByThreshold(thresholdService.findById(threshold).get().getThresId())); // Workshop3
+			model.addAttribute("locs", businessDelegate.findAllLocalconditionsByThreshold(threshold)); // Workshop3
 		} else if(precondition != null) {
 			//model.addAttribute("locs", localconditionRepository.findAllByPrecondition(preconditionService.findById(precondition).get().getPreconId())); // Workshop2
-			model.addAttribute("locs", localconditionDao.findAllByPrecondition(preconditionService.findById(precondition).get().getPreconId())); // Workshop3
+			model.addAttribute("locs", businessDelegate.findAllLocalconditionsByPrecondition(precondition)); // Workshop3
 		} else if(name != null) {
-			model.addAttribute("locs", localconditionDao.findAllByName(name));
+			model.addAttribute("locs", businessDelegate.findAllLocalconditionsByName(name));
 		} else if(type != null) {
-			model.addAttribute("locs", localconditionDao.findAllByType(type));
+			model.addAttribute("locs", businessDelegate.findAllLocalconditionsByType(type));
 		} else {
-			model.addAttribute("locs", localconditionService.findAll());
+			model.addAttribute("locs", businessDelegate.findAllLocalconditions());
 		}
 		return "locs/index";
 	}
@@ -74,8 +63,8 @@ public class LocalconditionController implements LocalconditionControllerI {
 	@Override
 	@GetMapping("/add")
 	public String addLocalconditionForm(Model model, @ModelAttribute("loc") Localcondition loc) {
-		model.addAttribute("pres", preconditionService.findAll());
-		model.addAttribute("thrs", thresholdService.findAll());
+		model.addAttribute("pres", businessDelegate.findAllPreconditions());
+		model.addAttribute("thrs", businessDelegate.findAllThresholds());
 		model.addAttribute("ops", operators);
 		return "locs/add-loc";
 	}
@@ -86,12 +75,12 @@ public class LocalconditionController implements LocalconditionControllerI {
 		if (!action.equals("Cancel")) {
 			if (result.hasErrors()) {
 				model.addAttribute("loc", loc);
-				model.addAttribute("pres", preconditionService.findAll());
-				model.addAttribute("thrs", thresholdService.findAll());
+				model.addAttribute("pres", businessDelegate.findAllPreconditions());
+				model.addAttribute("thrs", businessDelegate.findAllThresholds());
 				model.addAttribute("ops", operators);
 				return "locs/add-loc";
 			}
-			localconditionService.save(loc);
+			businessDelegate.saveLocalcondition(loc);
 		}
 		return "redirect:/locs/";
 	}
@@ -99,18 +88,18 @@ public class LocalconditionController implements LocalconditionControllerI {
 	@Override
 	@GetMapping("/del/{id}")
 	public String deleteLocalcondition(@PathVariable("id") long id, Model model) {
-		Localcondition loc = localconditionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid loc Id:" + id));
-		localconditionService.delete(loc);
+		Localcondition loc = businessDelegate.findLocalconditionById(id);
+		businessDelegate.deleteLocalcondition(loc);
 		return "redirect:/locs/";
 	}
 
 	@Override
 	@GetMapping("/edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
-		Localcondition loc = localconditionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid loc Id:" + id));
+		Localcondition loc = businessDelegate.findLocalconditionById(id);
 		model.addAttribute("loc", loc);
-		model.addAttribute("pres", preconditionService.findAll());
-		model.addAttribute("thrs", thresholdService.findAll());
+		model.addAttribute("pres", businessDelegate.findAllPreconditions());
+		model.addAttribute("thrs", businessDelegate.findAllThresholds());
 		model.addAttribute("ops", operators);
 		return "locs/update-loc";
 	}
@@ -118,15 +107,15 @@ public class LocalconditionController implements LocalconditionControllerI {
 	@Override
 	@PostMapping("/edit/{id}")
 	public String updateLocalcondition(@PathVariable("id") long id, @RequestParam(value = "action", required = true) String action,
-			@Validated Localcondition loc, BindingResult bindingResult, Model model) {
+									   @Validated Localcondition loc, BindingResult bindingResult, Model model) {
 		if (action != null && !action.equals("Cancel")) {
 			if (bindingResult.hasErrors()) {
-				model.addAttribute("pres", preconditionService.findAll());
-				model.addAttribute("thrs", thresholdService.findAll());
+				model.addAttribute("pres", businessDelegate.findAllPreconditions());
+				model.addAttribute("thrs", businessDelegate.findAllThresholds());
 				model.addAttribute("ops", operators);
 				return "locs/update-loc";
 			}
-			localconditionService.save(loc);
+			businessDelegate.saveLocalcondition(loc);
 		}
 		return "redirect:/locs/";
 	}
