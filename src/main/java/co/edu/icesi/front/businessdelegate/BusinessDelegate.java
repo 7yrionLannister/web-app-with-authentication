@@ -1,8 +1,17 @@
 package co.edu.icesi.front.businessdelegate;
 
 import co.edu.icesi.front.model.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -10,12 +19,25 @@ import java.util.List;
 public class BusinessDelegate implements BusinessDelgateI {
 
     private final static String URL = "https://localhost:8080/api";
-    private final static String AUT_URL = URL + "/autotransitions";
-    private final static String INST_URL = URL + "/institutions";
-    private final static String USER_URL = URL + "/userrs";
-    private final static String THR_URL = URL + "/thresholds";
-    private final static String PRE_URL = URL + "/preconditions";
-    private final static String LOC_URL = URL + "/localconditions";
+    private final static String AUT_URL = URL + "/autotransitions/";
+    private final static String INST_URL = URL + "/institutions/";
+    private final static String USER_URL = URL + "/userrs/";
+    private final static String THR_URL = URL + "/thresholds/";
+    private final static String PRE_URL = URL + "/preconditions/";
+    private final static String LOC_URL = URL + "/localconditions/";
+
+    private RestTemplate restTemplate;
+
+    public BusinessDelegate(){
+        this.restTemplate = new RestTemplate();
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        messageConverters.add(converter);
+        this.restTemplate.setMessageConverters(messageConverters);
+    }
+
+    // Localcondition --------------------------------------------------------------------------------------------------
 
     @Override
     public List<Localcondition> findAllLocalconditionsByThreshold(Long threshold) {
@@ -39,12 +61,16 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public List<Localcondition> findAllLocalconditions() {
-        return null;
+
+        Localcondition[] array = restTemplate.getForObject(LOC_URL, Localcondition[].class);
+
+        return Arrays.asList(array);
     }
 
     @Override
     public Localcondition findLocalconditionById(long id) {
-        return null;
+
+        return restTemplate.getForObject(LOC_URL+id, Localcondition.class);
     }
 
     @Override
@@ -55,7 +81,12 @@ public class BusinessDelegate implements BusinessDelgateI {
     @Override
     public void saveLocalcondition(Localcondition loc) {
 
+        HttpEntity<Localcondition> request = new HttpEntity<>(loc);
+        //return restTemplate.postForObject(LOC_URL, request, Localcondition.class);;
+
     }
+
+    // THRESHOLD -------------------------------------------------------------------------------------------------------
 
     @Override
     public Threshold getThreshold(long id) {
@@ -84,7 +115,9 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public List<Threshold> threshold_findAll() {
-        return null;
+        Threshold[] array = restTemplate.getForObject(THR_URL, Threshold[].class);
+
+        return Arrays.asList(array);
     }
 
     @Override
@@ -94,7 +127,7 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public Threshold threshold_findById(long id) {
-        return null;
+        return restTemplate.getForObject(THR_URL+id, Threshold.class);
     }
 
     @Override
@@ -102,9 +135,14 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     }
 
+
+    // INSTITUTION -----------------------------------------------------------------------------------------------------
+
     @Override
     public List<Institution> institution_findAll() {
-        return null;
+        Institution[] array = restTemplate.getForObject(INST_URL, Institution[].class);
+
+        return Arrays.asList(array);
     }
 
     @Override
@@ -114,7 +152,7 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public Institution findInstitutionById(Long id) {
-        return null;
+        return restTemplate.getForObject(INST_URL+id, Institution.class);
     }
 
     @Override
@@ -127,9 +165,12 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     }
 
+
+    //PRECONDITION -----------------------------------------------------------------------------------------------------
+
     @Override
     public Precondition precondition_get(long id) {
-        return null;
+        return restTemplate.getForObject(PRE_URL+id, Precondition.class);
     }
 
     @Override
@@ -144,7 +185,9 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public List<Precondition> precondition_findAll() {
-        return null;
+        Precondition[] array = restTemplate.getForObject(PRE_URL, Precondition[].class);
+
+        return Arrays.asList(array);
     }
 
     @Override
@@ -159,8 +202,11 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public Precondition precondition_findById(long id) {
-        return null;
+        return restTemplate.getForObject(PRE_URL+id, Precondition.class);
     }
+
+
+    //AUTOTRANSITION ---------------------------------------------------------------------------------------------------
 
     @Override
     public void deleteAutotransition(Autotransition aut) {
@@ -169,7 +215,7 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public Autotransition findAutotransitionById(long id) {
-        return null;
+        return restTemplate.getForObject(AUT_URL+id, Autotransition.class);
     }
 
     @Override
@@ -194,7 +240,9 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public List<Autotransition> findAllAutotransitions() {
-        return null;
+        Autotransition[] array = restTemplate.getForObject(AUT_URL, Autotransition[].class);
+
+        return Arrays.asList(array);
     }
 
     @Override
@@ -202,9 +250,12 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     }
 
+
+    //USER -------------------------------------------------------------------------------------------------------------
+
     @Override
     public Userr user_findById(long id) {
-        return null;
+        return restTemplate.getForObject(USER_URL+id, Userr.class);
     }
 
     @Override
@@ -219,7 +270,9 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public List<Userr> user_findAll() {
-        return null;
+        Userr[] array = restTemplate.getForObject(USER_URL, Userr[].class);
+
+        return Arrays.asList(array);
     }
 
     @Override
