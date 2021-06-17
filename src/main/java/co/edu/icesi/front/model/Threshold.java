@@ -1,7 +1,6 @@
 package co.edu.icesi.front.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -12,8 +11,6 @@ import java.util.List;
  * The persistent class for the THRESHOLD database table.
  * 
  */
-@Entity
-@NamedQuery(name="Threshold.findAll", query="SELECT t FROM Threshold t")
 public class Threshold implements Serializable {
 	private static final long serialVersionUID = 1L;
 
