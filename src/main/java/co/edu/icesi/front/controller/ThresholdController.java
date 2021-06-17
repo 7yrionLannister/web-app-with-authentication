@@ -60,7 +60,7 @@ public class ThresholdController implements ThresholdControllerI {
 	@Override
 	@GetMapping("/add")
 	public String addThresholdForm(Model model, @ModelAttribute("thr") Threshold thr) {
-		model.addAttribute("insts", bd.institution_findAll());
+		model.addAttribute("insts", bd.findAllInstitutions());
 		return "thrs/add-thr";
 	}
 
@@ -70,7 +70,7 @@ public class ThresholdController implements ThresholdControllerI {
 		if (!action.equals("Cancel")) {
 			if (result.hasErrors()) {
 				model.addAttribute("thr", thr);
-				model.addAttribute("insts", bd.institution_findAll());
+				model.addAttribute("insts", bd.findAllInstitutions());
 				return "thrs/add-thr";
 			}
 			bd.threshold_save(thr);
@@ -91,7 +91,7 @@ public class ThresholdController implements ThresholdControllerI {
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
 		Threshold thr = bd.threshold_findById(id);
 		model.addAttribute("thr", thr);
-		model.addAttribute("insts", bd.institution_findAll());
+		model.addAttribute("insts", bd.findAllInstitutions());
 		return "thrs/update-thr";
 	}
 
@@ -101,7 +101,7 @@ public class ThresholdController implements ThresholdControllerI {
 			@ModelAttribute("thr") @Validated Threshold thr, BindingResult bindingResult, Model model) {
 		if (action != null && !action.equals("Cancel")) {
 			if (bindingResult.hasErrors()) {
-				model.addAttribute("insts", bd.institution_findAll());
+				model.addAttribute("insts", bd.findAllInstitutions());
 				return "thrs/update-thr";
 			}
 			bd.editThreshold(thr);

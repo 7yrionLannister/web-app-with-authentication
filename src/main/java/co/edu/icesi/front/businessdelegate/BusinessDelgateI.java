@@ -33,8 +33,7 @@ public interface BusinessDelgateI {
 
 
     // INSTITUTION
-
-    List<Institution> institution_findAll();
+    
     List<Institution> findAllInstitutions();
     Institution findInstitutionById(Long id);
     Institution saveInstitution(Institution inst);

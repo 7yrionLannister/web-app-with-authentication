@@ -28,7 +28,7 @@ public class UserrController implements UserrControllerI {
     @GetMapping("/add")
     public String addUser(Model model) {
     	model.addAttribute("user", new Userr());
-        model.addAttribute("insts", bd.institution_findAll());
+        model.addAttribute("insts", bd.findAllInstitutions());
         model.addAttribute("types", UserType.values());
         return "users/add-user";
     }
@@ -58,7 +58,7 @@ public class UserrController implements UserrControllerI {
         if (!action.equals("Cancel")) {
             if (result.hasErrors()) {
             	model.addAttribute("user", user);
-            	model.addAttribute("insts", bd.institution_findAll());
+            	model.addAttribute("insts", bd.findAllInstitutions());
             	model.addAttribute("types", UserType.values());
                 return "users/add-user";
             }
@@ -76,7 +76,7 @@ public class UserrController implements UserrControllerI {
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
         Userr user = bd.user_findById(id);
         model.addAttribute("user", user);
-        model.addAttribute("insts", bd.institution_findAll());
+        model.addAttribute("insts", bd.findAllInstitutions());
         model.addAttribute("types", UserType.values());
         return "users/update-user";
     }
@@ -87,7 +87,7 @@ public class UserrController implements UserrControllerI {
                              @ModelAttribute("user") @Validated Userr user, BindingResult bindingResult, Model model) {
         if (action != null && !action.equals("Cancel")) {
             if (bindingResult.hasErrors()) {
-            	model.addAttribute("insts", bd.institution_findAll());
+            	model.addAttribute("insts", bd.findAllInstitutions());
             	model.addAttribute("types", UserType.values());
                 return "users/update-user";
             }

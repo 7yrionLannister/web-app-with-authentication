@@ -84,7 +84,7 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public void editLocalCondition(Localcondition loc){
-        restTemplate.put(LOC_URL+loc.getLoconId(), loc, Localcondition.class);
+        restTemplate.put(LOC_URL, loc, Localcondition.class);
     }
 
     // THRESHOLD -------------------------------------------------------------------------------------------------------
@@ -138,16 +138,11 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public void editThreshold(Threshold loc){
-        restTemplate.put(THR_URL+loc.getThresId(), loc, Threshold.class);
+        restTemplate.put(THR_URL, loc, Threshold.class);
     }
 
     // INSTITUTION -----------------------------------------------------------------------------------------------------
 
-    @Override
-    public List<Institution> institution_findAll() {
-        Institution[] array = restTemplate.getForObject(INST_URL, Institution[].class);
-        return Arrays.asList(array);
-    }
 
     @Override
     public List<Institution> findAllInstitutions() {
@@ -173,7 +168,7 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public void editInstitution(Institution loc){
-        restTemplate.put(INST_URL+loc.getInstId(), loc, Institution.class);
+        restTemplate.put(INST_URL, loc, Institution.class);
     }
 
     //PRECONDITION -----------------------------------------------------------------------------------------------------
@@ -218,7 +213,7 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public void editPrecondition(Precondition loc){
-        restTemplate.put(PRE_URL+loc.getPreconId(), loc, Precondition.class);
+        restTemplate.put(PRE_URL, loc, Precondition.class);
     }
 
 
@@ -269,7 +264,7 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public void editAutotransition(Autotransition loc){
-        restTemplate.put(AUT_URL+loc.getAutotranId(), loc, Autotransition.class);
+        restTemplate.put(AUT_URL, loc, Autotransition.class);
     }
 
 
@@ -305,6 +300,6 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public void editUser(Userr loc){
-        restTemplate.put(USER_URL+loc.getUserId(), loc, Userr.class);
+        restTemplate.put(USER_URL, loc, Userr.class);
     }
 }
