@@ -29,17 +29,16 @@ public interface BusinessDelgateI {
     Threshold threshold_findById(long id);
     void threshold_delete(Threshold thr);
 
-    List<Threshold> findAllThresholds();
 
 
     // INSTITUTION
 
     List<Institution> institution_findAll();
-
     List<Institution> findAllInstitutions();
     Institution findInstitutionById(Long id);
     void saveInstitution(Institution inst);
     void deleteInstitution(Institution inst);
+
 
     //PRECONDITION
 
@@ -51,11 +50,8 @@ public interface BusinessDelgateI {
     void precondition_delete(Precondition pre);
     Precondition precondition_findById(long id);
 
-    List<Precondition> findAllPreconditions();
 
     // AUTOTRANSITION
-
-    List<Autotransition> autotransition_findAll();
 
     void deleteAutotransition(Autotransition aut);
     Autotransition findAutotransitionById(long id);

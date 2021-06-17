@@ -62,7 +62,7 @@ public class PreconditionController implements PreconditionControllerI {
 	@Override
 	@GetMapping("/add")
 	public String addPreconditionForm(Model model, @ModelAttribute("pre") Precondition pre) {
-		model.addAttribute("auts", bd.autotransition_findAll());
+		model.addAttribute("auts", bd.findAllAutotransitions());
 		model.addAttribute("logicalOperands", logicalOperands);
 		return "pres/add-pre";
 	}
@@ -73,7 +73,7 @@ public class PreconditionController implements PreconditionControllerI {
 		if (!action.equals("Cancel")) {
 			if (result.hasErrors()) {
 				model.addAttribute("pre", pre);
-				model.addAttribute("auts", bd.autotransition_findAll());
+				model.addAttribute("auts", bd.findAllAutotransitions());
 				model.addAttribute("logicalOperands", logicalOperands);
 				return "pres/add-pre";
 			}
@@ -95,7 +95,7 @@ public class PreconditionController implements PreconditionControllerI {
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
 		Precondition pre = bd.precondition_findById(id);
 		model.addAttribute("pre", pre);
-		model.addAttribute("auts", bd.autotransition_findAll());
+		model.addAttribute("auts", bd.findAllAutotransitions());
 		model.addAttribute("logicalOperands", logicalOperands);
 		return "pres/update-pre";
 	}
@@ -106,7 +106,7 @@ public class PreconditionController implements PreconditionControllerI {
 			@ModelAttribute("pre") @Validated Precondition pre, BindingResult bindingResult, Model model) {
 		if (action != null && !action.equals("Cancel")) {
 			if (bindingResult.hasErrors()) {
-				model.addAttribute("auts", bd.autotransition_findAll());
+				model.addAttribute("auts", bd.findAllAutotransitions());
 				model.addAttribute("logicalOperands", logicalOperands);
 				return "pres/update-pre";
 			}
