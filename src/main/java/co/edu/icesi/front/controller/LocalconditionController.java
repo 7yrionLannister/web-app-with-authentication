@@ -63,8 +63,8 @@ public class LocalconditionController implements LocalconditionControllerI {
 	@Override
 	@GetMapping("/add")
 	public String addLocalconditionForm(Model model, @ModelAttribute("loc") Localcondition loc) {
-		model.addAttribute("pres", businessDelegate.findAllPreconditions());
-		model.addAttribute("thrs", businessDelegate.findAllThresholds());
+		model.addAttribute("pres", businessDelegate.precondition_findAll());
+		model.addAttribute("thrs", businessDelegate.threshold_findAll());
 		model.addAttribute("ops", operators);
 		return "locs/add-loc";
 	}
@@ -75,8 +75,8 @@ public class LocalconditionController implements LocalconditionControllerI {
 		if (!action.equals("Cancel")) {
 			if (result.hasErrors()) {
 				model.addAttribute("loc", loc);
-				model.addAttribute("pres", businessDelegate.findAllPreconditions());
-				model.addAttribute("thrs", businessDelegate.findAllThresholds());
+				model.addAttribute("pres", businessDelegate.precondition_findAll());
+				model.addAttribute("thrs", businessDelegate.threshold_findAll());
 				model.addAttribute("ops", operators);
 				return "locs/add-loc";
 			}
@@ -98,8 +98,8 @@ public class LocalconditionController implements LocalconditionControllerI {
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
 		Localcondition loc = businessDelegate.findLocalconditionById(id);
 		model.addAttribute("loc", loc);
-		model.addAttribute("pres", businessDelegate.findAllPreconditions());
-		model.addAttribute("thrs", businessDelegate.findAllThresholds());
+		model.addAttribute("pres", businessDelegate.precondition_findAll());
+		model.addAttribute("thrs", businessDelegate.threshold_findAll());
 		model.addAttribute("ops", operators);
 		return "locs/update-loc";
 	}
@@ -110,8 +110,8 @@ public class LocalconditionController implements LocalconditionControllerI {
 									   @Validated Localcondition loc, BindingResult bindingResult, Model model) {
 		if (action != null && !action.equals("Cancel")) {
 			if (bindingResult.hasErrors()) {
-				model.addAttribute("pres", businessDelegate.findAllPreconditions());
-				model.addAttribute("thrs", businessDelegate.findAllThresholds());
+				model.addAttribute("pres", businessDelegate.precondition_findAll());
+				model.addAttribute("thrs", businessDelegate.threshold_findAll());
 				model.addAttribute("ops", operators);
 				return "locs/update-loc";
 			}
