@@ -4,19 +4,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import co.edu.icesi.model.Autotransition;
-import co.edu.icesi.model.Institution;
-import co.edu.icesi.model.Localcondition;
-import co.edu.icesi.model.Precondition;
-import co.edu.icesi.model.Threshold;
-import co.edu.icesi.model.UserType;
-import co.edu.icesi.model.Userr;
-import co.edu.icesi.service.AutotransitionService;
-import co.edu.icesi.service.InstitutionService;
-import co.edu.icesi.service.LocalconditionService;
-import co.edu.icesi.service.PreconditionService;
-import co.edu.icesi.service.ThresholdService;
-import co.edu.icesi.service.UserrService;
+import co.edu.icesi.back.model.Autotransition;
+import co.edu.icesi.back.model.Institution;
+import co.edu.icesi.back.model.Localcondition;
+import co.edu.icesi.back.model.Precondition;
+import co.edu.icesi.back.model.Threshold;
+import co.edu.icesi.back.model.UserType;
+import co.edu.icesi.back.model.Userr;
+import co.edu.icesi.back.service.AutotransitionService;
+import co.edu.icesi.back.service.InstitutionService;
+import co.edu.icesi.back.service.LocalconditionService;
+import co.edu.icesi.back.service.PreconditionService;
+import co.edu.icesi.back.service.ThresholdService;
+import co.edu.icesi.back.service.UserrService;
 
 
 @SpringBootApplication//(exclude = {SecurityAutoConfiguration.class})

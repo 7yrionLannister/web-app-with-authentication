@@ -20,10 +20,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.TransactionSystemException;
 
 import co.edu.icesi.FernandezDanielTaller1Application;
-import co.edu.icesi.daos.ThresholdDao;
-import co.edu.icesi.model.Threshold;
-import co.edu.icesi.model.Institution;
-import co.edu.icesi.repository.InstitutionRepositoryI;
+import co.edu.icesi.back.daos.ThresholdDao;
+import co.edu.icesi.back.model.Threshold;
+import co.edu.icesi.back.model.Institution;
+import co.edu.icesi.back.repository.InstitutionRepositoryI;
 
 
 @SpringBootTest

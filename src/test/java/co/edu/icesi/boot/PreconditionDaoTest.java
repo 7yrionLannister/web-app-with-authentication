@@ -21,16 +21,16 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.TransactionSystemException;
 
 import co.edu.icesi.FernandezDanielTaller1Application;
-import co.edu.icesi.daos.PreconditionDao;
-import co.edu.icesi.daos.ThresholdDao;
-import co.edu.icesi.model.Precondition;
-import co.edu.icesi.model.Threshold;
-import co.edu.icesi.repository.InstitutionRepositoryI;
-import co.edu.icesi.model.Autotransition;
-import co.edu.icesi.model.Institution;
-import co.edu.icesi.model.Localcondition;
-import co.edu.icesi.daos.AutotransitionDao;
-import co.edu.icesi.daos.LocalconditionDao;
+import co.edu.icesi.back.daos.PreconditionDao;
+import co.edu.icesi.back.daos.ThresholdDao;
+import co.edu.icesi.back.model.Precondition;
+import co.edu.icesi.back.model.Threshold;
+import co.edu.icesi.back.repository.InstitutionRepositoryI;
+import co.edu.icesi.back.model.Autotransition;
+import co.edu.icesi.back.model.Institution;
+import co.edu.icesi.back.model.Localcondition;
+import co.edu.icesi.back.daos.AutotransitionDao;
+import co.edu.icesi.back.daos.LocalconditionDao;
 
 
 @SpringBootTest

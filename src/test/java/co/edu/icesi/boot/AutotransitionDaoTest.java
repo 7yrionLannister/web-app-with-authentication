@@ -20,10 +20,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.TransactionSystemException;
 
 import co.edu.icesi.FernandezDanielTaller1Application;
-import co.edu.icesi.daos.AutotransitionDao;
-import co.edu.icesi.model.Autotransition;
-import co.edu.icesi.model.Institution;
-import co.edu.icesi.repository.InstitutionRepositoryI;
+import co.edu.icesi.back.daos.AutotransitionDao;
+import co.edu.icesi.back.model.Autotransition;
+import co.edu.icesi.back.model.Institution;
+import co.edu.icesi.back.repository.InstitutionRepositoryI;
 
 
 @SpringBootTest

@@ -25,21 +25,21 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.TransactionSystemException;
 
 import co.edu.icesi.FernandezDanielTaller1Application;
-import co.edu.icesi.model.Autotransition;
-import co.edu.icesi.model.Institution;
-import co.edu.icesi.model.Localcondition;
-import co.edu.icesi.model.Precondition;
-import co.edu.icesi.model.Threshold;
-/*import co.edu.icesi.repository.AutotransitionRepositoryI;
-import co.edu.icesi.repository.InstitutionRepositoryI;
-import co.edu.icesi.repository.LocalconditionRepositoryI;
-import co.edu.icesi.repository.PreconditionRepositoryI;
-import co.edu.icesi.repository.ThresholdRepositoryI;*/
-import co.edu.icesi.service.AutotransitionService;
-import co.edu.icesi.service.InstitutionService;
-import co.edu.icesi.service.LocalconditionService;
-import co.edu.icesi.service.PreconditionService;
-import co.edu.icesi.service.ThresholdService;
+import co.edu.icesi.back.model.Autotransition;
+import co.edu.icesi.back.model.Institution;
+import co.edu.icesi.back.model.Localcondition;
+import co.edu.icesi.back.model.Precondition;
+import co.edu.icesi.back.model.Threshold;
+/*import co.edu.icesi.back.repository.AutotransitionRepositoryI;
+import co.edu.icesi.back.repository.InstitutionRepositoryI;
+import co.edu.icesi.back.repository.LocalconditionRepositoryI;
+import co.edu.icesi.back.repository.PreconditionRepositoryI;
+import co.edu.icesi.back.repository.ThresholdRepositoryI;*/
+import co.edu.icesi.back.service.AutotransitionService;
+import co.edu.icesi.back.service.InstitutionService;
+import co.edu.icesi.back.service.LocalconditionService;
+import co.edu.icesi.back.service.PreconditionService;
+import co.edu.icesi.back.service.ThresholdService;
 
 @SpringBootTest
 @TestInstance(Lifecycle.PER_CLASS)
