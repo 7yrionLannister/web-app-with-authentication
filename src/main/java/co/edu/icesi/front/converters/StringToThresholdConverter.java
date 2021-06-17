@@ -1,12 +1,12 @@
 package co.edu.icesi.front.converters;
 
+import co.edu.icesi.front.businessdelegate.BusinessDelgateI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.stereotype.Component;
 
-import co.edu.icesi.back.daos.ThresholdDao;
-import co.edu.icesi.back.model.Threshold;
+import co.edu.icesi.front.model.Threshold;
 
 
 @WritingConverter
@@ -14,11 +14,11 @@ import co.edu.icesi.back.model.Threshold;
 public class StringToThresholdConverter implements Converter<String, Threshold> {
 
 	@Autowired
-	private ThresholdDao autDao;
+	private BusinessDelgateI bd;
 	
 	@Override
 	public Threshold convert(String autId) {
-		return autDao.get(Long.parseLong(autId)).orElse(null);
+		return bd.threshold_findById(Long.parseLong(autId));
 	}
 	
 }

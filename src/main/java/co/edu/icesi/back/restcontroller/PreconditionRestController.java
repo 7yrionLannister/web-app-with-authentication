@@ -2,6 +2,7 @@ package co.edu.icesi.back.restcontroller;
 
 import co.edu.icesi.back.daos.PreconditionDao;
 import co.edu.icesi.back.model.Precondition;
+import co.edu.icesi.back.model.Threshold;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,11 @@ public class PreconditionRestController {
     @GetMapping
     public List<Precondition> getPreconditions() {
         return preconditionDao.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public Precondition getbyId(@PathVariable("id") Long id) {
+        return preconditionDao.get(id).orElseThrow(() -> new IllegalArgumentException("Invalid id"));
     }
 
     @PostMapping

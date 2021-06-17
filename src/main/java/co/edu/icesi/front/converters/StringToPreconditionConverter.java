@@ -1,12 +1,12 @@
 package co.edu.icesi.front.converters;
 
+import co.edu.icesi.front.businessdelegate.BusinessDelgateI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.stereotype.Component;
 
-import co.edu.icesi.back.daos.PreconditionDao;
-import co.edu.icesi.back.model.Precondition;
+import co.edu.icesi.front.model.Precondition;
 
 
 @WritingConverter
@@ -14,11 +14,11 @@ import co.edu.icesi.back.model.Precondition;
 public class StringToPreconditionConverter implements Converter<String, Precondition> {
 
 	@Autowired
-	private PreconditionDao autDao;
+	private BusinessDelgateI bd;
 	
 	@Override
 	public Precondition convert(String autId) {
-		return autDao.get(Long.parseLong(autId)).orElse(null);
+		return bd.precondition_get(Long.parseLong(autId));
 	}
 	
 }
