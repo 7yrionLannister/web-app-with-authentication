@@ -62,6 +62,7 @@ public class Autotransition implements Serializable {
 	private BigDecimal instInstId;*/ //FIXME lo quito para que funcione por referencia de clases y no por id
 
 	//bi-directional many-to-one association to Actionn
+	@JsonIgnore
 	@OneToMany(mappedBy="autotransition")
 	private List<Actionn> actionns;
 
@@ -76,10 +77,12 @@ public class Autotransition implements Serializable {
 	private Eventstatus eventstatus2;
 
 	//bi-directional many-to-one association to AutotranTrigger
+	@JsonIgnore
 	@OneToMany(mappedBy="autotransition")
 	private List<AutotranTrigger> autotranTriggers;
 
 	//bi-directional many-to-one association to Personautotran
+	@JsonIgnore
 	@OneToMany(mappedBy="autotransition")
 	private List<Personautotran> personautotrans;
 

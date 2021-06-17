@@ -7,7 +7,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,28 +68,25 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public Localcondition findLocalconditionById(long id) {
-
         return restTemplate.getForObject(LOC_URL+id, Localcondition.class);
     }
 
     @Override
     public void deleteLocalcondition(Localcondition loc) {
-
+        restTemplate.delete(LOC_URL+loc.getLoconId());
     }
 
     @Override
-    public void saveLocalcondition(Localcondition loc) {
-
+    public Localcondition saveLocalcondition(Localcondition loc) {
         HttpEntity<Localcondition> request = new HttpEntity<>(loc);
-        //return restTemplate.postForObject(LOC_URL, request, Localcondition.class);;
-
+        return restTemplate.postForObject(LOC_URL, request, Localcondition.class);
     }
 
     // THRESHOLD -------------------------------------------------------------------------------------------------------
 
     @Override
     public Threshold getThreshold(long id) {
-        return null;
+        return restTemplate.getForObject(THR_URL+id, Threshold.class);
     }
 
     @Override
@@ -116,13 +112,13 @@ public class BusinessDelegate implements BusinessDelgateI {
     @Override
     public List<Threshold> threshold_findAll() {
         Threshold[] array = restTemplate.getForObject(THR_URL, Threshold[].class);
-
         return Arrays.asList(array);
     }
 
     @Override
     public Threshold threshold_save(Threshold threshold) {
-        return null;
+        HttpEntity<Threshold> request = new HttpEntity<>(threshold);
+        return restTemplate.postForObject(THR_URL, request, Threshold.class);
     }
 
     @Override
@@ -132,7 +128,7 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public void threshold_delete(Threshold thr) {
-
+        restTemplate.delete(LOC_URL+thr.getThresId());
     }
 
 
@@ -141,13 +137,13 @@ public class BusinessDelegate implements BusinessDelgateI {
     @Override
     public List<Institution> institution_findAll() {
         Institution[] array = restTemplate.getForObject(INST_URL, Institution[].class);
-
         return Arrays.asList(array);
     }
 
     @Override
     public List<Institution> findAllInstitutions() {
-        return null;
+        Institution[] array = restTemplate.getForObject(INST_URL, Institution[].class);
+        return Arrays.asList(array);
     }
 
     @Override
@@ -156,13 +152,14 @@ public class BusinessDelegate implements BusinessDelgateI {
     }
 
     @Override
-    public void saveInstitution(Institution inst) {
-
+    public Institution saveInstitution(Institution inst) {
+        HttpEntity<Institution> request = new HttpEntity<>(inst);
+        return restTemplate.postForObject(INST_URL, request, Institution.class);
     }
 
     @Override
     public void deleteInstitution(Institution inst) {
-
+        restTemplate.delete(INST_URL+inst.getInstId());
     }
 
 
@@ -192,12 +189,13 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public Precondition precondition_save(Precondition pre) {
-        return null;
+        HttpEntity<Precondition> request = new HttpEntity<>(pre);
+        return restTemplate.postForObject(PRE_URL, request, Precondition.class);
     }
 
     @Override
     public void precondition_delete(Precondition pre) {
-
+        restTemplate.delete(PRE_URL+pre.getPreconId());
     }
 
     @Override
@@ -210,7 +208,7 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public void deleteAutotransition(Autotransition aut) {
-
+        restTemplate.delete(AUT_URL+aut.getAutotranId());
     }
 
     @Override
@@ -246,8 +244,9 @@ public class BusinessDelegate implements BusinessDelgateI {
     }
 
     @Override
-    public void saveAutotransition(Autotransition aut) {
-
+    public Autotransition saveAutotransition(Autotransition aut) {
+        HttpEntity<Autotransition> request = new HttpEntity<>(aut);
+        return restTemplate.postForObject(AUT_URL, request, Autotransition.class);
     }
 
 
@@ -260,12 +259,13 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public void user_delete(Userr user) {
-
+        restTemplate.delete(USER_URL+user.getUserId());
     }
 
     @Override
     public Userr user_save(Userr user) {
-        return null;
+        HttpEntity<Userr> request = new HttpEntity<>(user);
+        return restTemplate.postForObject(USER_URL, request, Userr.class);
     }
 
     @Override
