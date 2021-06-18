@@ -39,4 +39,28 @@ public class SymptomController {
         }
         return "redirect:/symps/";
     }
+
+    @GetMapping("/edit/{id}")
+    public String showUpdateForm(@PathVariable("id") long id, Model model) {
+        model.addAttribute("symp", businessDelgate.findSymptomById(id));
+        return "symps/update-symp";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String update(@ModelAttribute("symp") @Validated Symptom symptom, BindingResult result, Model model, String action) {
+        if(!action.equals("Cancel")) {
+            if(result.hasErrors()) {
+                return "symps/update";
+            }
+            businessDelgate.updateSymptom(symptom);
+        }
+        return "redirect:/symps/";
+    }
+
+    @GetMapping("/del/{id}")
+    public String delete(@PathVariable("id") long id, Model model) {
+        Symptom symptom = businessDelgate.findSymptomById(id);
+        businessDelgate.deleteSymptom(symptom);
+        return "redirect:/symps/";
+    }
 }

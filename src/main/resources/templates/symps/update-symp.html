@@ -28,7 +28,8 @@
         th:action="@{/symps/add}"
         th:object="${symp}"
 >
-  <h1>Fill in the details of the new Symptom</h1>
+  <h1>Change the details of the new Symptom</h1>
+  <input type="text" name="sympId" id="sympId" th:value="${symp.sympId}" class="form-control" readonly hidden="true">
   <label for="sympIsactive">Is active: </label>
   <br>
   <input type="radio" name="sympIsactive" id="yes" class="ml-2" value="Y" th:attrappend="checked=${symp.sympIsactive == 'Y'}?'checked'"/>
