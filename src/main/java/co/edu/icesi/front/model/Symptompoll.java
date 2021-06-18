@@ -1,5 +1,8 @@
 package co.edu.icesi.front.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
@@ -34,13 +37,16 @@ public class Symptompoll implements Serializable {
 	}
 	/** Aqui acaba la adicion del atributo
 	 * */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date sympollEnddate;
 
 	private String sympollName;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date sympollStartdate;
 
 	//bi-directional many-to-one association to Symptomquestion
+	@JsonIgnore
 	private List<Symptomquestion> symptomquestions;
 
 	public Symptompoll() {

@@ -1,5 +1,7 @@
 package co.edu.icesi.front.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class Symptom implements Serializable {
 	private String sympName;
 
 	//bi-directional many-to-one association to Symptomquestion
+	@JsonIgnore
 	private List<Symptomquestion> symptomquestions;
 
 	public Symptom() {

@@ -3,7 +3,6 @@ package co.edu.icesi.front.model;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 
-import co.edu.icesi.back.model.Symptompoll;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class Institution implements Serializable {
 	
 	@JsonIgnore
 	private List<Threshold> thresholds;
-	
+
 	public List<Threshold> getThresholds() {
 		return thresholds;
 	}
@@ -54,6 +53,9 @@ public class Institution implements Serializable {
 	public void setThresholds(List<Threshold> thresholds) {
 		this.thresholds = thresholds;
 	}
+
+	@JsonIgnore
+	private List<Symptompoll> polls;
 
 	public List<Symptompoll> getPolls() {
 		return polls;
@@ -65,9 +67,6 @@ public class Institution implements Serializable {
 
 	/** Aqui acaba la adicion de atributos
 	 * */
-
-	@JsonIgnore
-	private List<Symptompoll> polls;
 
 	@NotBlank(message = "The institution server URL must not be blank") // TALLER
 	private String instAcademicserverurl;

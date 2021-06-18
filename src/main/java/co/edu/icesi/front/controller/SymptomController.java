@@ -19,7 +19,7 @@ public class SymptomController {
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("symps", businessDelgate.findAllSymptom());
+        model.addAttribute("symps", businessDelgate.findAllSymptoms());
         return "symps/index";
     }
 

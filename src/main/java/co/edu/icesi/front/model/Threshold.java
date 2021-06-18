@@ -1,5 +1,7 @@
 package co.edu.icesi.front.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -47,6 +49,7 @@ public class Threshold implements Serializable {
 	private String thresValuetype;
 
 	//bi-directional many-to-one association to Localcondition
+	@JsonIgnore
 	private List<Localcondition> localconditions;
 
 	public Threshold() {

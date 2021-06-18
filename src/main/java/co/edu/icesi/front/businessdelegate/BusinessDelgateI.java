@@ -80,7 +80,7 @@ public interface BusinessDelgateI {
     // SYMPTOM
 
     Symptom saveSymptom(Symptom symptom);
-    List<Symptom> findAllSymptom();
+    List<Symptom> findAllSymptoms();
     void updateSymptom(Symptom symptom);
     Symptom findSymptomById(Long id);
     void deleteSymptom(Symptom symptom);
@@ -91,5 +91,13 @@ public interface BusinessDelgateI {
     Symptompoll findSymptompollById(long id);
     void updateSymptompoll(Symptompoll symptompoll);
     Symptompoll saveSymptompoll(Symptompoll symptompoll);
-    List<Symptompoll> findAllSymptompoll();
+    List<Symptompoll> findAllSymptompolls();
+
+    // SYMPTOM QUESTION
+
+    List<Symptomquestion> findAllSymptomquestions();
+    Symptomquestion saveSymptomquestion(Symptomquestion symptomquestion);
+    Symptomquestion findSymptomquestionById(long id);
+    void updateSymptomquestion(Symptomquestion symptomquestion);
+    void deleteSymptomquestion(Symptomquestion symptomquestion);
 }

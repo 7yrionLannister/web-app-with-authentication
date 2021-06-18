@@ -27,7 +27,8 @@
         th:action="@{/sympplls/add}"
         th:object="${symppll}"
 >
-  <h1>Fill in the details of the new poll</h1>
+  <h1>Change the details of the new poll</h1>
+  <input type="text" name="sympollId" id="sympollId" th:value="${symppll.sympollId}" class="form-control" readonly hidden="true">
   <label for="sympollName">Name: </label>
   <input type="text" name="sympollName" id="sympollName" th:value="${symppll.sympollName}">
   <br>

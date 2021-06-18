@@ -17,7 +17,7 @@ public class SymptomPollController {
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("sympplls", businessDelgate.findAllSymptompoll());
+        model.addAttribute("sympplls", businessDelgate.findAllSymptompolls());
         return "polls/index";
     }
 
