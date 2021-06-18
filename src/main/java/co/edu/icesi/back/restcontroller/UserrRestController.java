@@ -1,6 +1,7 @@
 package co.edu.icesi.back.restcontroller;
 
 import co.edu.icesi.back.model.Institution;
+import co.edu.icesi.back.model.Threshold;
 import co.edu.icesi.back.model.Userr;
 import co.edu.icesi.back.repository.InstitutionRepositoryI;
 import co.edu.icesi.back.repository.UserRepositoryI;
@@ -22,6 +23,11 @@ public class UserrRestController {
         return userRepository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Userr getbyId(@PathVariable("id") Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid id"));
+    }
+
     @PostMapping
     public void addUserr(@RequestBody Userr userr) {
         userRepository.save(userr);
@@ -30,6 +36,11 @@ public class UserrRestController {
     @PutMapping
     public void updateUserr(@RequestBody Userr userr) {
         userRepository.save(userr);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        userRepository.deleteById(id);
     }
 
     @GetMapping("/search/findAllByInstitution")

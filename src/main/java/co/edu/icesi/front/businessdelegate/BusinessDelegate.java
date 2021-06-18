@@ -40,22 +40,30 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public List<Localcondition> findAllLocalconditionsByThreshold(Long threshold) {
-        return null;
+        Localcondition[] array = restTemplate.getForObject(LOC_URL+
+                "search/findAllByThreshold?threshold=" + threshold, Localcondition[].class);
+        return Arrays.asList(array);
     }
 
     @Override
     public List<Localcondition> findAllLocalconditionsByPrecondition(Long precondition) {
-        return null;
+        Localcondition[] array = restTemplate.getForObject(LOC_URL+
+                "search/findAllByPrecondition?precondition=" + precondition, Localcondition[].class);
+        return Arrays.asList(array);
     }
 
     @Override
     public List<Localcondition> findAllLocalconditionsByName(String name) {
-        return null;
+        Localcondition[] array = restTemplate.getForObject(LOC_URL+
+                "search/findAllByName?name=" + name, Localcondition[].class);
+        return Arrays.asList(array);
     }
 
     @Override
     public List<Localcondition> findAllLocalconditionsByType(String type) {
-        return null;
+        Localcondition[] array = restTemplate.getForObject(LOC_URL+
+                "search/findAllByType?type=" + type, Localcondition[].class);
+        return Arrays.asList(array);
     }
 
     @Override
@@ -96,22 +104,30 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public List<Threshold> threshold_findAllByInstitution(long instId) {
-        return null;
+        Threshold[] array = restTemplate.getForObject(THR_URL+
+                "search/findAllByInstitution?institution=" + instId, Threshold[].class);
+        return Arrays.asList(array);
     }
 
     @Override
     public List<Threshold> threshold_findAllByName(String name) {
-        return null;
+        Threshold[] array = restTemplate.getForObject(THR_URL+
+                "search/findAllByName?name=" + name, Threshold[].class);
+        return Arrays.asList(array);
     }
 
     @Override
     public List<Threshold> threshold_findAllByValue(String value) {
-        return null;
+        Threshold[] array = restTemplate.getForObject(THR_URL+
+                "search/findAllByValue?value=" + value, Threshold[].class);
+        return Arrays.asList(array);
     }
 
     @Override
     public List<Threshold> threshold_findAllByType(String type) {
-        return null;
+        Threshold[] array = restTemplate.getForObject(THR_URL+
+                "search/findAllByType?type=" + type, Threshold[].class);
+        return Arrays.asList(array);
     }
 
     @Override
@@ -133,7 +149,7 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public void threshold_delete(Threshold thr) {
-        restTemplate.delete(LOC_URL+thr.getThresId());
+        restTemplate.delete(THR_URL+thr.getThresId());
     }
 
     @Override
@@ -180,12 +196,16 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public List<Precondition> precondition_findAllByAutotransition(long autotransition) {
-        return null;
+        Precondition[] array = restTemplate.getForObject(PRE_URL+
+                "search/findAllByAutotransition?autotransition=" + autotransition, Precondition[].class);
+        return Arrays.asList(array);
     }
 
     @Override
     public List<Precondition> precondition_findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne() {
-        return null;
+        Precondition[] array = restTemplate.getForObject(PRE_URL+
+                "search/findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne", Precondition[].class);
+        return Arrays.asList(array);
     }
 
     @Override
@@ -231,22 +251,30 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public List<Autotransition> findAllAutotransitionsByInstitutionInstId(Long institutionId) {
-        return null;
+        Autotransition[] array = restTemplate.getForObject(AUT_URL+
+                "search/findAllByInstitutionInstId?institution=" + institutionId, Autotransition[].class);
+        return Arrays.asList(array);
     }
 
     @Override
     public List<Autotransition> findAllAutotransitionsByName(String name) {
-        return null;
+        Autotransition[] array = restTemplate.getForObject(AUT_URL+
+                "search/findAllByName?name=" + name, Autotransition[].class);
+        return Arrays.asList(array);
     }
 
     @Override
     public List<Autotransition> findAllAutotransitionsByActive(String active) {
-        return null;
+        Autotransition[] array = restTemplate.getForObject(AUT_URL+
+                "search/findAllByActive?active=" + active, Autotransition[].class);
+        return Arrays.asList(array);
     }
 
     @Override
     public List<Autotransition> findAllAutotransitionsByLogicalOperand(String logop) {
-        return null;
+        Autotransition[] array = restTemplate.getForObject(AUT_URL+
+                "search/findAllByLogicalOperand?operand=" + logop, Autotransition[].class);
+        return Arrays.asList(array);
     }
 
     @Override
@@ -294,8 +322,10 @@ public class BusinessDelegate implements BusinessDelgateI {
     }
 
     @Override
-    public List<Institution> user_findAllByInstitution(Institution institution) {
-        return null;
+    public List<Userr> user_findAllByInstitution(Institution institution) {
+        Userr[] array = restTemplate.getForObject(INST_URL+
+                "search/findAllByInstitution?institution=" + institution, Userr[].class);
+        return Arrays.asList(array);
     }
 
     @Override

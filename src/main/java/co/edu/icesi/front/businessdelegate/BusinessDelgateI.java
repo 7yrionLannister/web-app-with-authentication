@@ -33,7 +33,7 @@ public interface BusinessDelgateI {
 
 
     // INSTITUTION
-    
+
     List<Institution> findAllInstitutions();
     Institution findInstitutionById(Long id);
     Institution saveInstitution(Institution inst);
@@ -71,6 +71,6 @@ public interface BusinessDelgateI {
     void user_delete(Userr user);
     Userr user_save(Userr user);
     List<Userr> user_findAll();
-    List<Institution> user_findAllByInstitution(Institution institution);
+    List<Userr> user_findAllByInstitution(Institution institution);
     void editUser(Userr loc);
 }
