@@ -494,127 +494,127 @@ public class BusinessDelegateTest {
     public void findAutotransitionById_test(){
         Autotransition lc = new Autotransition();
 
-        when(restTemplate.getForObject(THR_URL+lc.getThresId(), Threshold.class))
+        when(restTemplate.getForObject(AUT_URL+lc.getAutotranId(), Autotransition.class))
                 .thenReturn(lc);
 
 
-        assertEquals(bd.threshold_findById(lc.getThresId()).getThresId(), lc.getThresId(),
+        assertEquals(bd.findAutotransitionById(lc.getAutotranId()).getAutotranId(), lc.getAutotranId(),
                 "Unexpected id");
     }
 
     @Test
     public void findAllAutotransitionsByInstitutionInstId_test(){
-        Threshold[] list = new Threshold[5];
+        Autotransition[] list = new Autotransition[5];
 
         Institution inst = new Institution();
 
 
         for (int i = 0; i < list.length; i++) {
-            Threshold thr = new Threshold();
+            Autotransition thr = new Autotransition();
             thr.setInstitution(inst);
             list[i] = thr;
         }
 
 
-        when(restTemplate.getForObject(THR_URL+
-                "search/findAllByInstitution?institution=" + inst.getInstId(), Threshold[].class)).
+        when(restTemplate.getForObject(AUT_URL+
+                "search/findAllByInstitutionInstId?institution=" + inst.getInstId(), Autotransition[].class)).
                 thenReturn(list);
 
 
-        assertEquals(bd.threshold_findAllByInstitution(inst.getInstId()).size(), 5,
+        assertEquals(bd.findAllAutotransitionsByInstitutionInstId(inst.getInstId()).size(), 5,
                 "Unexpected size");
     }
 
     @Test
     public void findAllAutotransitionsByName_test(){
-        Threshold[] list = new Threshold[5];
-        String value = "prueba";
+        Autotransition[] list = new Autotransition[5];
+        String name = "prueba";
         for (int i = 0; i < list.length; i++) {
-            Threshold lc = new Threshold();
-            lc.setThresValue(value);
+            Autotransition lc = new Autotransition();
+            lc.setAutotranName(name);
             list[i] = lc;
         }
 
 
-        when(restTemplate.getForObject(THR_URL+
-                "search/findAllByValue?value=" + value, Threshold[].class)).
+        when(restTemplate.getForObject(AUT_URL+
+                "search/findAllByName?name=" + name, Autotransition[].class)).
                 thenReturn(list);
 
 
-        assertEquals(bd.threshold_findAllByValue(value).size(), 5, "Unexpected size");
+        assertEquals(bd.findAllAutotransitionsByName(name).size(), 5, "Unexpected size");
     }
 
     @Test
     public void findAllAutotransitionsByActive_test(){
-        Threshold[] list = new Threshold[5];
-        String value = "prueba";
+        Autotransition[] list = new Autotransition[5];
+        String active = "prueba";
         for (int i = 0; i < list.length; i++) {
-            Threshold lc = new Threshold();
-            lc.setThresValue(value);
+            Autotransition lc = new Autotransition();
+            lc.setAutotranIsactive(active);
             list[i] = lc;
         }
 
 
-        when(restTemplate.getForObject(THR_URL+
-                "search/findAllByValue?value=" + value, Threshold[].class)).
+        when(restTemplate.getForObject(AUT_URL+
+                "search/findAllByActive?active=" + active, Autotransition[].class)).
                 thenReturn(list);
 
 
-        assertEquals(bd.threshold_findAllByValue(value).size(), 5, "Unexpected size");
+        assertEquals(bd.findAllAutotransitionsByActive(active).size(), 5, "Unexpected size");
     }
 
     @Test
     public void findAllAutotransitionsByLogicalOperand_test(){
-        Threshold[] list = new Threshold[5];
-        String value = "prueba";
+        Autotransition[] list = new Autotransition[5];
+        String operand = "prueba";
         for (int i = 0; i < list.length; i++) {
-            Threshold lc = new Threshold();
-            lc.setThresValue(value);
+            Autotransition lc = new Autotransition();
+            lc.setAutotranLogicaloperand(operand);
             list[i] = lc;
         }
 
 
-        when(restTemplate.getForObject(THR_URL+
-                "search/findAllByValue?value=" + value, Threshold[].class)).
+        when(restTemplate.getForObject(AUT_URL+
+                "search/findAllByLogicalOperand?operand=" + operand, Autotransition[].class)).
                 thenReturn(list);
 
 
-        assertEquals(bd.threshold_findAllByValue(value).size(), 5, "Unexpected size");
+        assertEquals(bd.findAllAutotransitionsByLogicalOperand(operand).size(), 5, "Unexpected size");
     }
 
     @Test
     public void findAllAutotransitions_test(){
-        Threshold[] list = new Threshold[5];
+        Autotransition[] list = new Autotransition[5];
 
         for (int i = 0; i < list.length; i++) {
-            Threshold lc = new Threshold();
+            Autotransition lc = new Autotransition();
             list[i] = lc;
         }
 
-        when(restTemplate.getForObject(THR_URL,Threshold[].class))
+        when(restTemplate.getForObject(AUT_URL,Autotransition[].class))
                 .thenReturn(list);
 
-        assertEquals(bd.threshold_findAll().size(), 5, "Unexpected size");
+        assertEquals(bd.findAllAutotransitions().size(), 5, "Unexpected size");
     }
 
     @Test
     public void saveAutotransition_test(){
-        Threshold loc = new Threshold();
-        HttpEntity<Threshold> request = new HttpEntity<>(loc);
+        Autotransition loc = new Autotransition();
+        HttpEntity<Autotransition> request = new HttpEntity<>(loc);
 
-        when(restTemplate.postForObject(THR_URL, request, Threshold.class))
+        when(restTemplate.postForObject(AUT_URL, request, Autotransition.class))
                 .thenReturn(loc);
 
-        assertEquals(bd.threshold_save(loc).getThresId(), loc.getThresId(), "Unexpected id");
+        assertEquals(bd.saveAutotransition(loc).getAutotranId(), loc.getAutotranId(), "Unexpected id");
     }
 
     @Test
     public void editAutotransition_test(){
-        Threshold lc = new Threshold();
+        Autotransition lc = new Autotransition();
 
-        bd. editThreshold(lc);
+        bd.editAutotransition(lc);
 
-        verify(restTemplate).put(THR_URL, lc, Threshold.class);
+        verify(restTemplate).put(AUT_URL, lc, Autotransition.class);
     }
 
     @AfterAll
