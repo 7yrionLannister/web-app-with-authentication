@@ -1,5 +1,8 @@
 package co.edu.icesi.back.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -46,6 +49,7 @@ public class Symptompoll implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="SYMPOLL_ENDDATE")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date sympollEnddate;
 
 	@Column(name="SYMPOLL_NAME")
@@ -53,6 +57,7 @@ public class Symptompoll implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="SYMPOLL_STARTDATE")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date sympollStartdate;
 
 	//bi-directional many-to-one association to Epidemevent
@@ -62,6 +67,7 @@ public class Symptompoll implements Serializable {
 
 	//bi-directional many-to-one association to Symptomquestion
 	@OneToMany(mappedBy="symptompoll")
+	@JsonIgnore
 	private List<Symptomquestion> symptomquestions;
 
 	public Symptompoll() {

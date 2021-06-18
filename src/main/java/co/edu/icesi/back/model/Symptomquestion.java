@@ -1,5 +1,7 @@
 package co.edu.icesi.back.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -45,10 +47,12 @@ public class Symptomquestion implements Serializable {
 
 	//bi-directional many-to-one association to Sympweightbyday
 	@OneToMany(mappedBy="symptomquestion")
+	@JsonIgnore
 	private List<Sympweightbyday> sympweightbydays;
 
 	//bi-directional many-to-one association to UstPersonSymptom
 	@OneToMany(mappedBy="symptomquestion")
+	@JsonIgnore
 	private List<UstPersonSymptom> ustPersonSymptoms;
 
 	public Symptomquestion() {
@@ -153,5 +157,4 @@ public class Symptomquestion implements Serializable {
 
 		return ustPersonSymptom;
 	}
-
 }

@@ -1,5 +1,7 @@
 package co.edu.icesi.back.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -28,10 +30,12 @@ public class Symptom implements Serializable {
 
 	//bi-directional many-to-one association to DenialSymptom
 	@OneToMany(mappedBy="symptom")
+	@JsonIgnore
 	private List<DenialSymptom> denialSymptoms;
 
 	//bi-directional many-to-one association to Symptomquestion
 	@OneToMany(mappedBy="symptom")
+	@JsonIgnore
 	private List<Symptomquestion> symptomquestions;
 
 	public Symptom() {

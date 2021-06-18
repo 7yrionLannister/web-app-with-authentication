@@ -68,11 +68,11 @@ public class Institution implements Serializable {
 	@JsonIgnore
 	private List<Symptompoll> polls;
 
-	public List<Symptompoll> getSymptompolls() {
+	public List<Symptompoll> getPolls() {
 		return polls;
 	}
 
-	public void setSymptompoll(List<Symptompoll> polls) {
+	public void setPolls(List<Symptompoll> polls) {
 		this.polls = polls;
 	}
 	/** Aqui acaba la adicion de atributos
