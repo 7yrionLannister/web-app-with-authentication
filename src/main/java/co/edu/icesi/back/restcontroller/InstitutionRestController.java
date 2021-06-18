@@ -2,6 +2,7 @@ package co.edu.icesi.back.restcontroller;
 
 import co.edu.icesi.back.model.Institution;
 import co.edu.icesi.back.repository.InstitutionRepositoryI;
+import org.hibernate.annotations.GeneratorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,11 @@ public class InstitutionRestController {
         return institutionRepository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Institution findInstitutionById(@PathVariable("id") Long id){
+        return institutionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("invalid id"));
+    }
+
     @PostMapping
     public void addInstitution(@RequestBody Institution institution) {
         institutionRepository.save(institution);
@@ -27,7 +33,7 @@ public class InstitutionRestController {
         institutionRepository.save(institution);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         institutionRepository.deleteById(id);
     }
