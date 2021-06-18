@@ -1,10 +1,7 @@
 package co.edu.icesi.front.model;
 
-import co.edu.icesi.front.model.Institution;
-
-import java.io.Serializable;
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -37,17 +34,14 @@ public class Symptompoll implements Serializable {
 	}
 	/** Aqui acaba la adicion del atributo
 	 * */
-	@Column(name="SYMPOLL_ENDDATE")
 	private Date sympollEnddate;
 
-	@Column(name="SYMPOLL_NAME")
 	private String sympollName;
 
-	@Column(name="SYMPOLL_STARTDATE")
 	private Date sympollStartdate;
 
 	//bi-directional many-to-one association to Symptomquestion
-	private List<co.edu.icesi.front.model.Symptomquestion> symptomquestions;
+	private List<Symptomquestion> symptomquestions;
 
 	public Symptompoll() {
 	}
@@ -92,11 +86,11 @@ public class Symptompoll implements Serializable {
 		this.sympollStartdate = sympollStartdate;
 	}
 
-	public List<co.edu.icesi.front.model.Symptomquestion> getSymptomquestions() {
+	public List<Symptomquestion> getSymptomquestions() {
 		return this.symptomquestions;
 	}
 
-	public void setSymptomquestions(List<co.edu.icesi.front.model.Symptomquestion> symptomquestions) {
+	public void setSymptomquestions(List<Symptomquestion> symptomquestions) {
 		this.symptomquestions = symptomquestions;
 	}
 

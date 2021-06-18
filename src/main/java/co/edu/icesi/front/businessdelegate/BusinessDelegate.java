@@ -25,10 +25,11 @@ public class BusinessDelegate implements BusinessDelgateI {
     private final static String PRE_URL = URL + "/preconditions/";
     private final static String LOC_URL = URL + "/localconditions/";
     private final static String SYMP_URL = URL + "/symptoms/";
+    private final static String SYMP_POLL_URL = URL + "/symptompolls/";
 
     private RestTemplate restTemplate;
 
-    public BusinessDelegate(){
+    public BusinessDelegate() {
         this.restTemplate = new RestTemplate();
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -360,5 +361,33 @@ public class BusinessDelegate implements BusinessDelgateI {
     @Override
     public void deleteSymptom(Symptom symptom) {
         restTemplate.delete(SYMP_URL + symptom.getSympId());
+    }
+
+    @Override
+    public void deleteSymptompoll(Symptompoll symptompoll) {
+        restTemplate.delete(SYMP_POLL_URL + symptompoll.getSympollId());
+    }
+
+    @Override
+    public Symptompoll findSymptompollById(long id) {
+        return restTemplate.getForObject(SYMP_POLL_URL + id, Symptompoll.class);
+    }
+
+    @Override
+    public void updateSymptompoll(Symptompoll symptompoll) {
+        restTemplate.put(SYMP_URL, symptompoll, Symptompoll.class);
+    }
+
+    @Override
+    public Symptompoll saveSymptompoll(Symptompoll symptompoll) {
+        HttpEntity<Symptompoll> request = new HttpEntity<>(symptompoll);
+        return restTemplate.postForObject(SYMP_POLL_URL, request, Symptompoll.class);
+    }
+
+    @Override
+    public List<Symptompoll> findAllSymptompoll() {
+        Symptompoll[] array = restTemplate.getForObject(SYMP_URL, Symptompoll[].class);
+
+        return Arrays.asList(array);
     }
 }

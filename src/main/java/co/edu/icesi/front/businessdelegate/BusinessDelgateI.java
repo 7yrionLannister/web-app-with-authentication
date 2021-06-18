@@ -79,8 +79,14 @@ public interface BusinessDelgateI {
     Symptom saveSymptom(Symptom symptom);
     List<Symptom> findAllSymptom();
     void updateSymptom(Symptom symptom);
-
     Symptom findSymptomById(Long id);
-
     void deleteSymptom(Symptom symptom);
+
+    // SYMPTOM POLL
+
+    void deleteSymptompoll(Symptompoll symptompoll);
+    Symptompoll findSymptompollById(long id);
+    void updateSymptompoll(Symptompoll symptompoll);
+    Symptompoll saveSymptompoll(Symptompoll symptompoll);
+    List<Symptompoll> findAllSymptompoll();
 }
