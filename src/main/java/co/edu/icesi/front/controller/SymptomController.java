@@ -2,6 +2,7 @@ package co.edu.icesi.front.controller;
 
 import co.edu.icesi.front.model.Symptom;
 import co.edu.icesi.front.businessdelegate.BusinessDelgateI;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("symps")
 public class SymptomController {
+
+    @Autowired
     private BusinessDelgateI businessDelgate;
 
     @GetMapping

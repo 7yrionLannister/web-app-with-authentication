@@ -1,10 +1,9 @@
 package co.edu.icesi.front.model;
 
-import co.edu.icesi.back.model.Epidemevent;
-import co.edu.icesi.back.model.Institution;
+import co.edu.icesi.front.model.Institution;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -14,15 +13,9 @@ import java.util.List;
  * The persistent class for the SYMPTOMPOLL database table.
  * 
  */
-@Entity
-@NamedQuery(name="Symptompoll.findAll", query="SELECT s FROM Symptompoll s")
 public class Symptompoll implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="SYMPTOMPOLL_SYMPOLLID_GENERATOR", sequenceName="SYMPTOMPOLL_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SYMPTOMPOLL_SYMPOLLID_GENERATOR")
-	@Column(name="SYMPOLL_ID")
 	private long sympollId;
 
 	/*@Column(name="INST_INST_ID")
@@ -32,12 +25,10 @@ public class Symptompoll implements Serializable {
 	 * Ademas, dejar esto en manos del programador no es buena idea cuando es algo que ya se maneja
 	 * a nivel de base de datos relacional.
 	 * */
-	@ManyToOne
-	@JoinColumn(name="INST_INST_ID")
 	@NotNull(message = "The poll must be associated to an institution") // ENUNCIADO
-	private co.edu.icesi.back.model.Institution institution;
+	private Institution institution;
 
-	public co.edu.icesi.back.model.Institution getInstitution() {
+	public Institution getInstitution() {
 		return institution;
 	}
 
@@ -46,25 +37,16 @@ public class Symptompoll implements Serializable {
 	}
 	/** Aqui acaba la adicion del atributo
 	 * */
-
-	@Temporal(TemporalType.DATE)
 	@Column(name="SYMPOLL_ENDDATE")
 	private Date sympollEnddate;
 
 	@Column(name="SYMPOLL_NAME")
 	private String sympollName;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="SYMPOLL_STARTDATE")
 	private Date sympollStartdate;
 
-	//bi-directional many-to-one association to Epidemevent
-	@ManyToOne
-	@JoinColumn(name="EPIEVE_EPIEVE_ID")
-	private Epidemevent epidemevent;
-
 	//bi-directional many-to-one association to Symptomquestion
-	@OneToMany(mappedBy="symptompoll")
 	private List<co.edu.icesi.front.model.Symptomquestion> symptomquestions;
 
 	public Symptompoll() {
@@ -110,14 +92,6 @@ public class Symptompoll implements Serializable {
 		this.sympollStartdate = sympollStartdate;
 	}
 
-	public Epidemevent getEpidemevent() {
-		return this.epidemevent;
-	}
-
-	public void setEpidemevent(Epidemevent epidemevent) {
-		this.epidemevent = epidemevent;
-	}
-
 	public List<co.edu.icesi.front.model.Symptomquestion> getSymptomquestions() {
 		return this.symptomquestions;
 	}
@@ -126,18 +100,17 @@ public class Symptompoll implements Serializable {
 		this.symptomquestions = symptomquestions;
 	}
 
-	public co.edu.icesi.front.model.Symptomquestion addSymptomquestion(co.edu.icesi.front.model.Symptomquestion symptomquestion) {
+	public Symptomquestion addSymptomquestion(Symptomquestion symptomquestion) {
 		getSymptomquestions().add(symptomquestion);
 		symptomquestion.setSymptompoll(this);
 
 		return symptomquestion;
 	}
 
-	public co.edu.icesi.front.model.Symptomquestion removeSymptomquestion(Symptomquestion symptomquestion) {
+	public Symptomquestion removeSymptomquestion(Symptomquestion symptomquestion) {
 		getSymptomquestions().remove(symptomquestion);
 		symptomquestion.setSymptompoll(null);
 
 		return symptomquestion;
 	}
-
 }

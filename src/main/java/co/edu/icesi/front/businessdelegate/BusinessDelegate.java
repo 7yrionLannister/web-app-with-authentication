@@ -24,6 +24,7 @@ public class BusinessDelegate implements BusinessDelgateI {
     private final static String THR_URL = URL + "/thresholds/";
     private final static String PRE_URL = URL + "/preconditions/";
     private final static String LOC_URL = URL + "/localconditions/";
+    private final static String SYMP_URL = URL + "/symptoms/";
 
     private RestTemplate restTemplate;
 
@@ -336,6 +337,13 @@ public class BusinessDelegate implements BusinessDelgateI {
     @Override
     public Symptom saveSymptom(Symptom symptom) {
         HttpEntity<Symptom> request = new HttpEntity<>(symptom);
-        return restTemplate.postForObject(AUT_URL, request, Symptom.class);
+        return restTemplate.postForObject(SYMP_URL, request, Symptom.class);
+    }
+
+    @Override
+    public List<Symptom> findAllSymptom() {
+        Symptom[] array = restTemplate.getForObject(SYMP_URL, Symptom[].class);
+
+        return Arrays.asList(array);
     }
 }
