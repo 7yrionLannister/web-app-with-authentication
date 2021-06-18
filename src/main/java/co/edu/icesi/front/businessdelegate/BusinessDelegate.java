@@ -323,8 +323,8 @@ public class BusinessDelegate implements BusinessDelgateI {
 
     @Override
     public List<Userr> user_findAllByInstitution(Institution institution) {
-        Userr[] array = restTemplate.getForObject(INST_URL+
-                "search/findAllByInstitution?institution=" + institution, Userr[].class);
+        Userr[] array = restTemplate.getForObject(USER_URL+
+                "search/findAllByInstitution?institution=" + institution.getInstId(), Userr[].class);
         return Arrays.asList(array);
     }
 
