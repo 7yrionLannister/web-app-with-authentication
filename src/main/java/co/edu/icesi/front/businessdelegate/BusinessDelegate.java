@@ -38,6 +38,10 @@ public class BusinessDelegate implements BusinessDelgateI {
         this.restTemplate.setMessageConverters(messageConverters);
     }
 
+    public void setRestTemplate(RestTemplate rt){
+        this.restTemplate = rt;
+    }
+
     // Localcondition --------------------------------------------------------------------------------------------------
 
     @Override

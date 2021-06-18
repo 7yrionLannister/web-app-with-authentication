@@ -1,10 +1,13 @@
 package co.edu.icesi.front.businessdelegate;
 
 import co.edu.icesi.front.model.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 public interface BusinessDelgateI {
+
+    void setRestTemplate(RestTemplate restTemplate);
 
     // LOCALCONDITION
 
