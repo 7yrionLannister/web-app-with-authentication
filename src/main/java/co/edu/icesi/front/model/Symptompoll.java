@@ -1,4 +1,7 @@
-package co.edu.icesi.back.model;
+package co.edu.icesi.front.model;
+
+import co.edu.icesi.back.model.Epidemevent;
+import co.edu.icesi.back.model.Institution;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -32,9 +35,9 @@ public class Symptompoll implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="INST_INST_ID")
 	@NotNull(message = "The poll must be associated to an institution") // ENUNCIADO
-	private Institution institution;
+	private co.edu.icesi.back.model.Institution institution;
 
-	public Institution getInstitution() {
+	public co.edu.icesi.back.model.Institution getInstitution() {
 		return institution;
 	}
 
@@ -62,7 +65,7 @@ public class Symptompoll implements Serializable {
 
 	//bi-directional many-to-one association to Symptomquestion
 	@OneToMany(mappedBy="symptompoll")
-	private List<Symptomquestion> symptomquestions;
+	private List<co.edu.icesi.front.model.Symptomquestion> symptomquestions;
 
 	public Symptompoll() {
 	}
@@ -115,22 +118,22 @@ public class Symptompoll implements Serializable {
 		this.epidemevent = epidemevent;
 	}
 
-	public List<Symptomquestion> getSymptomquestions() {
+	public List<co.edu.icesi.front.model.Symptomquestion> getSymptomquestions() {
 		return this.symptomquestions;
 	}
 
-	public void setSymptomquestions(List<Symptomquestion> symptomquestions) {
+	public void setSymptomquestions(List<co.edu.icesi.front.model.Symptomquestion> symptomquestions) {
 		this.symptomquestions = symptomquestions;
 	}
 
-	public Symptomquestion addSymptomquestion(Symptomquestion symptomquestion) {
+	public co.edu.icesi.front.model.Symptomquestion addSymptomquestion(co.edu.icesi.front.model.Symptomquestion symptomquestion) {
 		getSymptomquestions().add(symptomquestion);
 		symptomquestion.setSymptompoll(this);
 
 		return symptomquestion;
 	}
 
-	public Symptomquestion removeSymptomquestion(Symptomquestion symptomquestion) {
+	public co.edu.icesi.front.model.Symptomquestion removeSymptomquestion(Symptomquestion symptomquestion) {
 		getSymptomquestions().remove(symptomquestion);
 		symptomquestion.setSymptompoll(null);
 

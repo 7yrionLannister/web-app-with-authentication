@@ -73,4 +73,9 @@ public interface BusinessDelgateI {
     List<Userr> user_findAll();
     List<Institution> user_findAllByInstitution(Institution institution);
     void editUser(Userr loc);
+
+    // SYMPTOM
+
+    Symptom saveSymptom(Symptom symptom);
+    List<Symptom> findAllSymptom();
 }

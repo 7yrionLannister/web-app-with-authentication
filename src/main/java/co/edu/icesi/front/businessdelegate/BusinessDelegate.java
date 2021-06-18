@@ -302,4 +302,10 @@ public class BusinessDelegate implements BusinessDelgateI {
     public void editUser(Userr loc){
         restTemplate.put(USER_URL, loc, Userr.class);
     }
+
+    @Override
+    public Symptom saveSymptom(Symptom symptom) {
+        HttpEntity<Symptom> request = new HttpEntity<>(symptom);
+        return restTemplate.postForObject(AUT_URL, request, Symptom.class);
+    }
 }

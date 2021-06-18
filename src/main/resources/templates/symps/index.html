@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Institutions</title>
+<link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous"
+/>
+<link
+        rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+        integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+        crossorigin="anonymous"
+/>
+<link rel="stylesheet" href="../css/shards.min.css" />
+</head>
+<body>
+	<div class="container my-5">
+		<div class="row">
+			<div class="col-md-10">
+				<div>
+					<h2 class="my-5">Institutions</h2>
+					<h3 class="alert alert-primary"
+						th:if="${insts.iterator().hasNext() == false}">
+						There are not institutions
+					</h3>
+					<table class="table table-striped table-responsive-md">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Name</th>
+								<th>Server URL</th>
+								<th>Login URL</th>
+								<th>Login username</th>
+								<th>Login password</th>
+								<th>Programmed courses URL</th>
+								<th>Thresholds</th>
+								<th>Users</th>
+								<th>Autotransitions</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="inst : ${insts}" th:value="${inst}">
+								<td th:text="${inst.instId}"></td>
+								<td th:text="${inst.instName}"></td>
+								<td th:text="${inst.instAcademicserverurl}"></td>
+								<td th:text="${inst.instAcadloginurl}"></td>
+								<td th:text="${inst.instAcadloginusername}"></td>
+								<td th:text="${inst.instAcadloginpassword}"></td>
+								<td th:text="${inst.instAcadprogrammedcoursesurl}"></td>
+								<td><a th:href="@{/thrs?institution={id}(id=${inst.instId})}">Go to thresholds</a></td>
+								<td><a th:href="@{/users?institution={id}(id=${inst.instId})}">Go to users</a></td>
+								<td><a th:href="@{/auts?institution={id}(id=${inst.instId})}">Go to autotransitions</a></td>
+								<td><a th:href="@{/insts/edit/{id}(id=${inst.instId})}"
+									class="btn btn-primary"> <i class="fas fa-edit"></i>
+								</a></td>
+								<td><a th:href="@{/insts/del/{id}(id=${inst.instId})}"
+									class="btn btn-primary"> <i class="fas fa-times"></i>
+								</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p class="my-5"><a href="/users/add"><i class="fas fa-user-plus ml-2 btn btn-primary"></i> <label>Add User</label></a></p>
+				<p class="my-5"><a href="/auts/add"><i class="fas fa-plus ml-2 btn btn-primary"></i> <label>Add Autotransition</label></a></p>
+				<p class="my-5"><a href="/insts/add"><i class="fas fa-university ml-2 btn btn-primary"></i> <label>Add Institution</label></a></p>
+				<p class="my-5"><a href="/locs/add"><i class="fas fa-arrows-alt-h ml-2 btn btn-primary"></i> <label>Add Local condition</label></a></p>
+				<p class="my-5"><a href="/pres/add"><i class="fas fa-check ml-2 btn btn-primary"></i> <label>Add Precondition</label></a></p>
+				<p class="my-5"><a href="/thrs/add"><i class="fas fa-question ml-2 btn btn-primary"></i> <label>Add Threshold</label></a></p>
+			</div>
+		</div>
+		<a href="/"><i class="fas fa-home ml-2"></i> Go back to main</a>
+	</div>
+</body>
+</html>
