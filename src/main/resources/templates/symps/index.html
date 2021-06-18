@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Institutions</title>
+<title>Symptoms</title>
 <link
         rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -24,44 +24,30 @@
 		<div class="row">
 			<div class="col-md-10">
 				<div>
-					<h2 class="my-5">Institutions</h2>
+					<h2 class="my-5">Symptoms</h2>
 					<h3 class="alert alert-primary"
-						th:if="${insts.iterator().hasNext() == false}">
-						There are not institutions
+						th:if="${symps.iterator().hasNext() == false}">
+						There are not symptoms
 					</h3>
 					<table class="table table-striped table-responsive-md">
 						<thead>
 							<tr>
 								<th>Id</th>
+								<th>Is active</th>
 								<th>Name</th>
-								<th>Server URL</th>
-								<th>Login URL</th>
-								<th>Login username</th>
-								<th>Login password</th>
-								<th>Programmed courses URL</th>
-								<th>Thresholds</th>
-								<th>Users</th>
-								<th>Autotransitions</th>
 								<th>Edit</th>
 								<th>Delete</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="inst : ${insts}" th:value="${inst}">
-								<td th:text="${inst.instId}"></td>
-								<td th:text="${inst.instName}"></td>
-								<td th:text="${inst.instAcademicserverurl}"></td>
-								<td th:text="${inst.instAcadloginurl}"></td>
-								<td th:text="${inst.instAcadloginusername}"></td>
-								<td th:text="${inst.instAcadloginpassword}"></td>
-								<td th:text="${inst.instAcadprogrammedcoursesurl}"></td>
-								<td><a th:href="@{/thrs?institution={id}(id=${inst.instId})}">Go to thresholds</a></td>
-								<td><a th:href="@{/users?institution={id}(id=${inst.instId})}">Go to users</a></td>
-								<td><a th:href="@{/auts?institution={id}(id=${inst.instId})}">Go to autotransitions</a></td>
-								<td><a th:href="@{/insts/edit/{id}(id=${inst.instId})}"
+							<tr th:each="symp : ${symps}" th:value="${symps}">
+								<td th:text="${symp.sympId}"></td>
+								<td th:text="${symp.sympIsactive}"></td>
+								<td th:text="${symp.sympName}"></td>
+								<td><a th:href="@{/symps/edit/{id}(id=${symp.sympId})}"
 									class="btn btn-primary"> <i class="fas fa-edit"></i>
 								</a></td>
-								<td><a th:href="@{/insts/del/{id}(id=${inst.instId})}"
+								<td><a th:href="@{/symps/del/{id}(id=${symp.sympId})}"
 									class="btn btn-primary"> <i class="fas fa-times"></i>
 								</a></td>
 							</tr>
@@ -74,6 +60,9 @@
 				<p class="my-5"><a href="/locs/add"><i class="fas fa-arrows-alt-h ml-2 btn btn-primary"></i> <label>Add Local condition</label></a></p>
 				<p class="my-5"><a href="/pres/add"><i class="fas fa-check ml-2 btn btn-primary"></i> <label>Add Precondition</label></a></p>
 				<p class="my-5"><a href="/thrs/add"><i class="fas fa-question ml-2 btn btn-primary"></i> <label>Add Threshold</label></a></p>
+				<p class="my-5"><a href="/symps/add"><i class="fas fa-question ml-2 btn btn-primary"></i> <label>Add Symptom</label></a></p>
+				<p class="my-5"><a href="/sympqstns/add"><i class="fas fa-question ml-2 btn btn-primary"></i> <label>Add Symptom Question</label></a></p>
+				<p class="my-5"><a href="/sympplls/add"><i class="fas fa-question ml-2 btn btn-primary"></i> <label>Add Symptom Poll</label></a></p>
 			</div>
 		</div>
 		<a href="/"><i class="fas fa-home ml-2"></i> Go back to main</a>

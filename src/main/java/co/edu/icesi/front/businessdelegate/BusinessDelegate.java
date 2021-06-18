@@ -350,4 +350,19 @@ public class BusinessDelegate implements BusinessDelgateI {
 
         return Arrays.asList(array);
     }
+
+    @Override
+    public void updateSymptom(Symptom symptom) {
+        restTemplate.put(SYMP_URL, symptom, Symptom.class);
+    }
+
+    @Override
+    public Symptom findSymptomById(Long id) {
+        return restTemplate.getForObject(SYMP_URL + id, Symptom.class);
+    }
+
+    @Override
+    public void deleteSymptom(Symptom symptom) {
+        restTemplate.delete(SYMP_URL + symptom.getSympId());
+    }
 }

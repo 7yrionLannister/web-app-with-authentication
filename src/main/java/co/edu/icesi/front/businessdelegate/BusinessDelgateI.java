@@ -81,4 +81,9 @@ public interface BusinessDelgateI {
 
     Symptom saveSymptom(Symptom symptom);
     List<Symptom> findAllSymptom();
+    void updateSymptom(Symptom symptom);
+
+    Symptom findSymptomById(Long id);
+
+    void deleteSymptom(Symptom symptom);
 }
