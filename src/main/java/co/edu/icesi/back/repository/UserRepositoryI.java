@@ -13,5 +13,4 @@ public interface UserRepositoryI extends CrudRepository<Userr, Long> {
 
 	Userr findByUserName(String username);
 	List<Userr> findAllByInstitution(Institution fromInstitutionController);
-
 }

@@ -95,5 +95,6 @@ public class InstitutionService implements InstitutionServiceI {
 		inst.setInstLdapusername(ldapusername);
 		inst.setInstLdapusersearchbase(ldapusersearchbase);
 		inst.setInstName(name);
+		institutionRepository.save(inst);
 	}
 }
