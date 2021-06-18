@@ -63,6 +63,18 @@ public class Institution implements Serializable {
 	public void setThresholds(List<Threshold> thresholds) {
 		this.thresholds = thresholds;
 	}
+
+	@OneToMany(mappedBy="institution")
+	@JsonIgnore
+	private List<Symptompoll> polls;
+
+	public List<Symptompoll> getSymptompolls() {
+		return polls;
+	}
+
+	public void setSymptompoll(List<Symptompoll> polls) {
+		this.polls = polls;
+	}
 	/** Aqui acaba la adicion de atributos
 	 * */
 
