@@ -72,8 +72,9 @@ public class PreconditionDao implements Dao<Precondition> {
 	}
 	
 	public List<Precondition> findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne() {
-		//String q = "SELECT p FROM Precondition p WHERE p.preconId <> (SELECT l.precondition FROM Localcondition l WHERE l.threshold.thresValue > 1 GROUP BY l.precondition HAVING count(*) >= 2).precondition.preconId";
-		String q = "SELECT l.precondition FROM Localcondition l WHERE l.threshold.thresValue > 1 GROUP BY l.precondition HAVING count(*) >= 2";
+		String q = "SELECT p FROM Precondition p WHERE p IN (SELECT l.precondition FROM Localcondition l WHERE l.threshold.thresValue > '1' GROUP BY l.precondition HAVING count(l) >= 2)"; // works with postgresql and presumably with h2
+		//String q = "SELECT l.precondition FROM Localcondition l WHERE l.threshold.thresValue > 1 GROUP BY l.precondition.preconId HAVING count(*) >= 2"; // works only in h2, do not know why
+		//String q = "SELECT l.precondition FROM Localcondition l WHERE l.threshold.thresValue > '1' GROUP BY l.precondition HAVING count(l) >= 2"; // the same sa the one above but with type safety
 		Query query = entityManager.createQuery(q);
 		return query.getResultList();
 	}

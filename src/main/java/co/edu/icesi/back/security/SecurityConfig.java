@@ -8,6 +8,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import co.edu.icesi.back.model.UserType;
 
+
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -17,7 +18,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity//.userDetailsService(myCustomUserDetailsService)
-		.csrf().disable()// se deshabilita para que funcionen las peticiones a los rest controllers
+		.csrf().disable()// se deshabilita para que funcionen las peticiones a los rest controllers, es mala practica deshabilitarlo, corregirlo de otra manera
 		.formLogin()
 		.loginPage("/login").permitAll()
 		.and().authorizeRequests()

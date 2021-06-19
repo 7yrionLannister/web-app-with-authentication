@@ -51,7 +51,7 @@ public class PreconditionController implements PreconditionControllerI {
 		} else if(autotransition != null) {
 			//model.addAttribute("pres", preconditionRepository.findAllByAutotransition(autotransitionService.findById(autotransition).get().getAutotranId())); // Workshop2
 			model.addAttribute("pres", bd.precondition_findAllByAutotransition(autotransition)); // Workshop3
-		} if(complicatedQuery != null) {
+		} else if(complicatedQuery != null) {
 			model.addAttribute("pres", bd.precondition_findAllWithAtLeastTwoLocalconditionsWithAThresholdWithValueGreatherThanOne());
 		} else {
 			model.addAttribute("pres", bd.precondition_findAll());
